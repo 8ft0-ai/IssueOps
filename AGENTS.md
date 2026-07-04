@@ -1,38 +1,40 @@
 # Agent operating rules
 
-These rules apply to Codex and any other agentic coding tool used in this repository.
+These rules apply to Codex and any other coding agent used in this repository.
 
-Codex is the preferred implementation agent, but the repository process is intentionally tool-agnostic. The issue, branch, pull request and validation evidence are the durable record of work.
+Codex is the preferred implementation agent. The workflow is built around contract-bound coding: the issue defines the work, the branch contains the implementation and the pull request provides the evidence for review.
 
 ## Core rule
 
-Work from the issue contract, not from private assumptions.
+Work from the issue contract.
 
-Before changing files, the agent should be able to point to:
+Before changing files, the agent should know:
 
-- the GitHub issue being implemented;
-- the readiness review comment;
-- the implementation plan comment;
-- the intended feature branch; and
-- the validation expectations.
+- which issue is being implemented;
+- what is in scope;
+- what is out of scope;
+- how success will be assessed;
+- what validation evidence is expected; and
+- which branch contains the work.
+
+If the issue is unclear, the agent should surface the ambiguity rather than inventing missing intent.
 
 ## Scope control
 
-The agent must stay within the issue scope.
-
 Do:
 
-- implement the smallest change that satisfies the acceptance criteria;
+- make the smallest change that satisfies the acceptance criteria;
 - preserve existing repository conventions;
-- update documentation when required by the issue;
+- keep documentation and templates consistent with the issue;
 - record assumptions in the pull request; and
-- call out validation that could not be performed.
+- state any validation that could not be completed.
 
 Do not:
 
 - refactor unrelated files;
+- tidy or optimise outside the issue scope;
 - introduce unrelated tooling;
-- change repository policy outside the issue scope;
+- add future-stage automation unless the issue asks for it;
 - mark validation complete unless it was actually completed; or
 - merge changes without human approval.
 
@@ -46,33 +48,35 @@ Preferred branch format:
 feature/<issue-number>-short-description
 ```
 
-If a tool cannot create the preferred branch name, use the closest safe fallback and record the caveat in the issue or pull request.
+If a tool cannot create the preferred branch name, use the closest safe fallback and record the caveat in the pull request.
 
 ## Pull requests
 
-Open pull requests as drafts when work is still in progress or validation is incomplete.
+The pull request is the evidence pack.
 
-The pull request should include:
+It should explain:
 
-- linked issue;
-- summary of changes;
-- non-goals and excluded work;
-- validation performed;
-- pending validation, if any;
-- assumptions and caveats; and
-- pre-approval groundedness review.
+- which issue contract it implements;
+- what changed;
+- what was deliberately excluded;
+- how the acceptance criteria were satisfied;
+- what validation evidence supports the change;
+- what remains unchecked; and
+- what assumptions or caveats remain.
 
-## Pre-approval groundedness review
+Open the pull request as a draft while the work is still being reviewed or validation is incomplete.
 
-Before approval, answer:
+## Contract verification
 
-1. Did we do what was needed?
-2. Did we only do what was asked?
+Before approval, verify the pull request against the issue contract.
 
-The final recommendation must be one of:
+Answer:
+
+1. Did the pull request fulfil the contract?
+2. Did the pull request stay inside the contract boundaries?
+
+Use one final recommendation:
 
 - Approve
 - Approve after minor fixes
 - Do not approve yet
-
-Do not recommend approval if the implementation is incomplete, validation is misleading, or scope has drifted.
