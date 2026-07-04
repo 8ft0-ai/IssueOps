@@ -22,6 +22,7 @@ It includes:
 - a safe tool-operation check before mutating repository actions;
 - one branch per issue;
 - Codex-assisted implementation within the contract;
+- lightweight validation evidence for documentation and template changes;
 - a draft pull request as the evidence pack;
 - contract verification before approval; and
 - explicit human approval before merge.
@@ -43,6 +44,7 @@ Readiness check = contract check
 Implementation plan = proposed execution path
 Tool-operation check = safe actuation gate
 Codex = contract-bound implementer
+Validation check = evidence hygiene
 Pull request = evidence pack
 Human review = contract verification
 Merge = human approval decision
@@ -123,7 +125,21 @@ Codex should execute the contract, not reinterpret it. It should make the smalle
 
 The agent should stop or surface a caveat when the contract is incomplete, contradictory or impossible to validate in the current environment.
 
-## 7. Create the evidence pack
+## 7. Validate lightly
+
+Validation should support the evidence pack. It should not become the main workflow.
+
+For documentation and template changes, lightweight validation can be manual. Useful checks include:
+
+- reading changed files back from the feature branch;
+- reviewing Markdown for clarity, headings, examples and useful checklists;
+- reviewing issue-form YAML if it changed;
+- checking internal documentation links by inspection; and
+- confirming that no automation or application code was added.
+
+If a check was not performed, record that honestly in the pull request rather than implying validation is complete.
+
+## 8. Create the evidence pack
 
 Open a draft pull request while the work is still being reviewed or validation remains incomplete.
 
@@ -137,7 +153,7 @@ The pull request should show:
 - what remains unchecked; and
 - any assumptions, risks or caveats.
 
-## 8. Verify the contract
+## 9. Verify the contract
 
 Before approval, review the pull request against the issue contract.
 
@@ -158,7 +174,7 @@ Use one final recommendation:
 
 Do not recommend approval if validation is misleading, the implementation is incomplete or the scope has drifted.
 
-## 9. Own the merge decision
+## 10. Own the merge decision
 
 A human owns the final approval and merge decision.
 
@@ -172,5 +188,6 @@ Stage 1 is successful when the repository can demonstrate this loop manually:
 2. The contract is checked before implementation.
 3. The repository operation is checked before mutation.
 4. Codex implements within the contract.
-5. The pull request provides the evidence pack.
-6. A human verifies the contract and decides whether to merge.
+5. Lightweight validation evidence is recorded.
+6. The pull request provides the evidence pack.
+7. A human verifies the contract and decides whether to merge.
