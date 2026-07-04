@@ -1,15 +1,20 @@
-# Manual label taxonomy
+# Manual label model
 
-Stage 1 uses labels as a manual communication aid. Labels do not trigger automation yet. They help contributors understand the current state of an issue or pull request.
+Stage 1 uses labels as manual state markers. Labels do not trigger automation yet.
+
+The labels should describe the state of the execution contract, the agent work and the review evidence. Written issue and pull request content remains the source of truth.
 
 | Label | Meaning |
 | --- | --- |
-| `needs-triage` | New work that has not yet been assessed. |
-| `needs-clarification` | Work that needs a clearer scope, acceptance criteria or validation expectation. |
-| `ready-for-agent` | Work that has passed readiness review and can be implemented by Codex or another coding agent. |
-| `agent-in-progress` | Work that has a posted implementation plan and an active feature branch. |
-| `blocked` | Work that cannot continue until a decision, access requirement or failed check is resolved. |
-| `needs-human-review` | Work that is ready for human review. |
-| `validation-pending` | Work where some validation remains incomplete and is explicitly recorded in the pull request. |
+| `contract/draft` | The issue contract exists but has not been checked. |
+| `contract/needs-clarification` | The contract is not clear enough for agent implementation. |
+| `contract/ready` | The contract is clear enough for Codex to implement. |
+| `agent/codex` | Codex is the intended implementation agent. |
+| `agent/in-progress` | Agent-assisted implementation has started. |
+| `review/evidence-needed` | The pull request needs clearer evidence before review. |
+| `review/human-required` | A human review decision is required. |
+| `validation/pending` | Validation remains incomplete and must be recorded in the pull request. |
+| `validation/complete` | Required validation for the current stage has been completed. |
+| `scope/drift-risk` | The work may be moving outside the issue contract. |
 
-In Stage 1, labels are advisory only. Written issue comments and pull request descriptions remain the source of truth.
+These labels are intentionally lightweight. Later stages may attach automation to label changes, but Stage 1 keeps labels manual and advisory.
