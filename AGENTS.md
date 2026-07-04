@@ -19,6 +19,23 @@ Before changing files, the agent should know:
 
 If the issue is unclear, the agent should surface the ambiguity rather than inventing missing intent.
 
+## Safe repository operations
+
+Before any mutating repository operation, perform the safe tool-operation check in [`docs/tool-operations.md`](docs/tool-operations.md).
+
+The agent should identify:
+
+- the current workflow phase;
+- the intended operation;
+- the exact selected tool;
+- the target repository object;
+- the expected side effect; and
+- the side effects that are forbidden in that phase.
+
+If the selected tool does not match the intended operation, stop before making the call.
+
+If an unintended repository mutation occurs, stop further writes. Perform only the minimum remediation needed to make the accidental change safe, report what happened, and wait for explicit instruction before continuing.
+
 ## Scope control
 
 Do:

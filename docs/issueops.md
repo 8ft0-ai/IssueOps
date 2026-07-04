@@ -8,7 +8,7 @@ The central idea is that the issue is the execution contract. It defines what Co
 
 The pull request is the evidence pack. It should not merely describe the diff. It should show whether the contract was fulfilled, whether the boundaries were respected and what validation supports the result.
 
-See [`docs/examples`](examples/README.md) for example execution contracts and contract verification reviews.
+See [`docs/examples`](examples/README.md) for example execution contracts and contract verification reviews. See [`docs/tool-operations.md`](tool-operations.md) for the safe tool-operation protocol used before mutating repository actions.
 
 ## Stage 1 boundary
 
@@ -19,6 +19,7 @@ It includes:
 - a structured execution-contract issue form;
 - a readiness check before implementation starts;
 - an implementation plan before file changes begin;
+- a safe tool-operation check before mutating repository actions;
 - one branch per issue;
 - Codex-assisted implementation within the contract;
 - a draft pull request as the evidence pack;
@@ -40,6 +41,7 @@ It does not include:
 Issue = execution contract
 Readiness check = contract check
 Implementation plan = proposed execution path
+Tool-operation check = safe actuation gate
 Codex = contract-bound implementer
 Pull request = evidence pack
 Human review = contract verification
@@ -93,7 +95,15 @@ The plan should state:
 
 This step makes the agent's proposed path visible before implementation.
 
-## 4. Create one branch per contract
+## 4. Check the repository operation
+
+Before any mutating repository operation, perform the safe tool-operation check.
+
+The agent should identify the current phase, intended operation, selected tool, target, expected side effect and forbidden side effects. If the selected tool does not match the intended operation, stop before making the call.
+
+If an unintended repository mutation occurs, stop further writes except for minimum remediation, report what happened and wait for explicit instruction before continuing.
+
+## 5. Create one branch per contract
 
 Create one branch from `main` for each issue.
 
@@ -105,7 +115,7 @@ feature/<issue-number>-short-description
 
 Do not commit directly to `main` unless the repository owner explicitly requests a bootstrap exception or hotfix.
 
-## 5. Execute the contract with Codex
+## 6. Execute the contract with Codex
 
 Codex is the preferred implementation agent.
 
@@ -113,7 +123,7 @@ Codex should execute the contract, not reinterpret it. It should make the smalle
 
 The agent should stop or surface a caveat when the contract is incomplete, contradictory or impossible to validate in the current environment.
 
-## 6. Create the evidence pack
+## 7. Create the evidence pack
 
 Open a draft pull request while the work is still being reviewed or validation remains incomplete.
 
@@ -127,7 +137,7 @@ The pull request should show:
 - what remains unchecked; and
 - any assumptions, risks or caveats.
 
-## 7. Verify the contract
+## 8. Verify the contract
 
 Before approval, review the pull request against the issue contract.
 
@@ -148,7 +158,7 @@ Use one final recommendation:
 
 Do not recommend approval if validation is misleading, the implementation is incomplete or the scope has drifted.
 
-## 8. Own the merge decision
+## 9. Own the merge decision
 
 A human owns the final approval and merge decision.
 
@@ -160,6 +170,7 @@ Stage 1 is successful when the repository can demonstrate this loop manually:
 
 1. A human writes an execution contract.
 2. The contract is checked before implementation.
-3. Codex implements within the contract.
-4. The pull request provides the evidence pack.
-5. A human verifies the contract and decides whether to merge.
+3. The repository operation is checked before mutation.
+4. Codex implements within the contract.
+5. The pull request provides the evidence pack.
+6. A human verifies the contract and decides whether to merge.
