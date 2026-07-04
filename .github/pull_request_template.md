@@ -20,7 +20,12 @@ How this satisfies the acceptance criteria:
 
 Validation performed:
 
-- [ ] 
+- [ ] Read back changed files from the feature branch
+- [ ] Reviewed Markdown for clarity and structure
+- [ ] Reviewed issue-form YAML, if changed
+- [ ] Checked internal documentation links by inspection
+- [ ] Confirmed no automation or application code was added
+- [ ] Other:
 
 Validation not performed:
 
