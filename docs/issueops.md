@@ -1,25 +1,26 @@
-# Manual IssueOps workflow
+# Agentic IssueOps workflow
 
-Stage 1 defines the manual IssueOps flow for this repository. The purpose is to make agentic coding work visible, reviewable and bounded before introducing automation.
+Stage 1 establishes a manual IssueOps flow for agentic coding with Codex.
 
-The operating principle is simple: the issue is the execution contract. The agent does not work from an informal prompt or a vague ticket. It works from an issue that describes the problem, scope, non-goals, acceptance criteria and validation expectations.
+This is not a general governance workflow for access requests, policy exceptions or operational approvals. It is a delivery model for using an agentic coding tool safely in a repository.
 
-Codex is the preferred agentic coding tool for implementation, but the workflow is deliberately tool-agnostic. The repository should remain understandable to humans and portable to other agents if needed.
+The central idea is that the issue is the execution contract. It defines what Codex may do, what it must not do, how success will be judged and what evidence the pull request must provide.
 
-## Stage 1 scope
+The pull request is the evidence pack. It should not merely describe the diff. It should show whether the contract was fulfilled, whether the boundaries were respected and what validation supports the result.
 
-Stage 1 includes the manual process and repository artefacts needed to support issue-driven work.
+## Stage 1 boundary
+
+Stage 1 is manual by design.
 
 It includes:
 
-- structured implementation issues;
-- readiness review before implementation;
-- an implementation plan before branch creation;
-- one feature branch per issue;
-- Codex-assisted implementation within issue scope;
-- draft pull requests while work is in progress;
-- validation evidence in the pull request;
-- pre-approval groundedness review; and
+- a structured execution-contract issue form;
+- a readiness check before implementation starts;
+- an implementation plan before file changes begin;
+- one branch per issue;
+- Codex-assisted implementation within the contract;
+- a draft pull request as the evidence pack;
+- contract verification before approval; and
 - explicit human approval before merge.
 
 It does not include:
@@ -28,60 +29,71 @@ It does not include:
 - auto-merge;
 - branch protection changes;
 - required status checks;
-- complex GitHub Actions orchestration; or
+- GitHub Actions orchestration; or
 - application code.
 
-## Flow
+## Operating model
 
-### 1. Create the issue
+```text
+Issue = execution contract
+Readiness check = contract check
+Implementation plan = proposed execution path
+Codex = contract-bound implementer
+Pull request = evidence pack
+Human review = contract verification
+Merge = human approval decision
+```
 
-Every change starts with a GitHub issue. The issue should describe the work clearly enough that a human reviewer and a coding agent can understand the intended outcome without relying on private context.
+## 1. Define the execution contract
 
-A good issue includes:
+Every change starts with an issue. The issue must be specific enough that a human reviewer can understand the intent and Codex can implement without inventing missing product or engineering decisions.
 
-- problem statement;
-- scope;
-- non-goals;
+A good execution contract defines:
+
+- the problem;
+- the expected outcome;
+- the included scope;
+- explicit non-goals;
 - acceptance criteria;
-- validation expectations;
-- assumptions or constraints; and
-- notes for the agent where useful.
+- expected validation evidence;
+- change risk; and
+- instructions for Codex, including anything the agent must not infer.
 
-If the issue is unclear, implementation should not start. Ask for clarification in the issue instead.
+If the issue is vague, implementation should not begin. A weak contract should be clarified before Codex starts work.
 
-### 2. Review readiness
+## 2. Check the contract is executable
 
-Before implementation starts, add an issue comment stating whether the issue is ready.
+Before implementation, the issue should be checked for readiness.
 
-A ready issue should have:
+The readiness check asks:
 
-- clear intent;
-- bounded scope;
-- explicit non-goals or exclusions;
-- reviewable acceptance criteria;
-- validation expectations; and
-- no unresolved decision that would materially change the implementation.
+- Is the expected outcome clear?
+- Are the boundaries explicit?
+- Are the acceptance criteria reviewable?
+- Is the expected validation evidence clear?
+- Is there enough context for Codex to act without guessing?
+- Is the work small enough to review safely?
 
-If the issue is not ready, add a clarification comment and leave the issue unimplemented.
+If the answer is no, refine the issue rather than starting the branch.
 
-### 3. Post the implementation plan
+## 3. Record the proposed execution path
 
-When the issue is ready, post a detailed implementation plan as an issue comment before creating the branch.
+When the contract is ready, record the implementation plan before changing files.
 
-The plan should include:
+The plan should state:
 
-- proposed branch name;
-- files expected to change;
-- implementation steps;
-- validation to run;
-- scope controls; and
-- known risks or caveats.
+- the branch name;
+- the files expected to change;
+- the intended sequence of work;
+- the validation to perform;
+- the work explicitly left out; and
+- any assumptions or caveats.
 
-This makes the planned work visible before the agent changes the repository.
+This step makes the agent's proposed path visible before implementation.
 
-### 4. Create the feature branch
+## 4. Create one branch per contract
 
-Create one branch per issue from `main`.
+Create one branch from `main` for each issue.
 
 Preferred branch format:
 
@@ -89,84 +101,63 @@ Preferred branch format:
 feature/<issue-number>-short-description
 ```
 
-Example:
+Do not commit directly to `main` unless the repository owner explicitly requests a bootstrap exception or hotfix.
 
-```text
-feature/1-manual-issueops-foundation
-```
+## 5. Execute the contract with Codex
 
-Do not commit directly to `main` unless the repository owner explicitly requests a hotfix or bootstrap exception.
+Codex is the preferred implementation agent.
 
-### 5. Implement within issue scope
+Codex should execute the contract, not reinterpret it. It should make the smallest change that satisfies the issue and should avoid unrelated refactoring, speculative improvements or future-stage automation unless the contract asks for them.
 
-Use Codex as the preferred implementation agent. Keep the work bounded by the issue and the implementation plan.
+The agent should stop or surface a caveat when the contract is incomplete, contradictory or impossible to validate in the current environment.
 
-The agent should:
+## 6. Create the evidence pack
 
-- follow existing repository conventions;
-- avoid unrelated refactoring;
-- avoid speculative future-stage work;
-- preserve compatibility unless the issue requires otherwise;
-- update documentation where needed; and
-- record any assumptions that affected the implementation.
+Open a draft pull request while the work is still being reviewed or validation remains incomplete.
 
-### 6. Open a draft pull request
+The pull request should show:
 
-Open a draft pull request while work is still being reviewed or validation is incomplete.
-
-The pull request should link the issue and explain:
-
+- the linked execution contract;
 - what changed;
-- what was intentionally not changed;
-- what validation was performed;
-- what validation remains pending;
-- assumptions and caveats; and
-- whether the change is ready for review.
+- what was deliberately excluded;
+- how the acceptance criteria were satisfied;
+- what validation evidence exists;
+- what remains unchecked; and
+- any assumptions, risks or caveats.
 
-### 7. Validate the change
-
-Run the validation that is relevant to the change. For documentation-only changes, validation may be a manual Markdown and scope review. For code changes in later stages, validation should include the relevant tests and checks.
-
-Do not mark validation complete unless it was actually completed. If validation is unavailable in the current environment, mark it as pending and explain exactly what remains to be done.
-
-### 8. Perform the pre-approval groundedness review
+## 7. Verify the contract
 
 Before approval, review the pull request against the issue contract.
 
-The review must answer:
+The review is not asking whether the change looks reasonable in isolation. It is asking whether Codex fulfilled the contract and stayed inside it.
 
-1. Did we do what was needed?
-2. Did we only do what was asked?
+The reviewer should answer:
 
-It should check:
+- Did the PR satisfy the acceptance criteria?
+- Did the PR avoid unrelated or speculative changes?
+- Is the validation evidence sufficient for this stage?
+- What uncertainty remains?
 
-- issue alignment;
-- scope control;
-- validation evidence;
-- risks and caveats; and
-- final recommendation.
-
-Use one of these final recommendations:
+Use one final recommendation:
 
 - Approve
 - Approve after minor fixes
 - Do not approve yet
 
-Do not recommend approval if validation is incomplete, scope has drifted, or the implementation does not satisfy the issue.
+Do not recommend approval if validation is misleading, the implementation is incomplete or the scope has drifted.
 
-### 9. Human approval and merge
+## 8. Own the merge decision
 
-A human reviewer approves the pull request and merges it when satisfied.
+A human owns the final approval and merge decision.
 
-The merge decision should be based on the issue contract, validation evidence and groundedness review, not on whether the agent produced a plausible-looking change.
+The agent can produce the change and the evidence pack, but the human decides whether the contract was fulfilled and whether the repository should accept the result.
 
 ## Stage 1 success criteria
 
-Stage 1 is successful when a contributor can:
+Stage 1 is successful when the repository can demonstrate this loop manually:
 
-- create a structured issue;
-- determine whether it is ready for agent implementation;
-- see the implementation plan before repository changes begin;
-- review a small pull request linked to the issue;
-- understand what validation was performed; and
-- make an explicit approve-or-reject decision before merge.
+1. A human writes an execution contract.
+2. The contract is checked before implementation.
+3. Codex implements within the contract.
+4. The pull request provides the evidence pack.
+5. A human verifies the contract and decides whether to merge.
