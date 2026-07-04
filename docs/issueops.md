@@ -8,6 +8,8 @@ The central idea is that the issue is the execution contract. It defines what Co
 
 The pull request is the evidence pack. It should not merely describe the diff. It should show whether the contract was fulfilled, whether the boundaries were respected and what validation supports the result.
 
+See [`docs/examples`](examples/README.md) for example execution contracts and contract verification reviews.
+
 ## Stage 1 boundary
 
 Stage 1 is manual by design.
