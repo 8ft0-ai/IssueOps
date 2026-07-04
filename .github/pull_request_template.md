@@ -1,48 +1,56 @@
-## Linked issue
+## Execution contract
 
 Closes #
 
-## Summary
-
-Describe the change.
-
-## Scope
+## Evidence pack
 
 What changed:
 
 - 
 
-What did not change:
+What was deliberately excluded:
 
 - 
 
-## Validation
+How this satisfies the acceptance criteria:
+
+- 
+
+## Validation evidence
 
 Validation performed:
 
 - [ ] 
 
-Pending validation:
+Validation not performed:
 
 - [ ] None
 - [ ] Pending local validation
 - [ ] Pending environment-specific validation
 
+Explain any unchecked validation:
+
+- 
+
 ## Assumptions and caveats
 
 - 
 
-## Groundedness review
+## Contract verification
 
-Did we do what was needed?
-
-- 
-
-Did we only do what was asked?
+Did the pull request fulfil the issue contract?
 
 - 
 
-Final recommendation:
+Did the pull request stay inside the contract boundaries?
+
+- 
+
+What uncertainty remains?
+
+- 
+
+## Final recommendation
 
 - [ ] Approve
 - [ ] Approve after minor fixes
