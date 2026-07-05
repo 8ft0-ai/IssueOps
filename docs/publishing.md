@@ -33,6 +33,8 @@ The build job uses:
 
 - `contents: read` to read the repository contents.
 
+The build job uploads the generated `site/` directory as a Pages artifact, but it does not deploy the site.
+
 The deploy job uses:
 
 - `pages: write` to publish the Pages artifact; and
