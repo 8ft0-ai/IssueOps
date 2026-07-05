@@ -1,6 +1,6 @@
 # Stage 1 baseline release
 
-Recommended tag: `v0.1.0`
+Tag: `v0.1.0`
 
 Release title: Stage 1: Manual Execution-Contract IssueOps
 
@@ -34,8 +34,8 @@ The release defines the issue as the execution contract, the pull request as the
 - Application code.
 - Release automation.
 
-## Release recommendation
+## Release status
 
-After the Stage 1.4 release-prep pull request is merged, the repository is ready to tag `v0.1.0` as the first manual execution-contract IssueOps baseline.
+`v0.1.0` is the first manual execution-contract IssueOps baseline release.
 
-The tag should be created as a separate explicit release action after review and merge.
+The release captures the Stage 1 manual workflow and its explicit exclusions. Later work should build on this baseline through separate issues, implementation plans, validation evidence and human review.
