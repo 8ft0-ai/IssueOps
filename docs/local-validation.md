@@ -9,7 +9,7 @@ From the repository root:
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install mkdocs
+python -m pip install -r requirements.txt
 mkdocs build --strict
 ```
 
@@ -22,9 +22,11 @@ On Windows PowerShell, activate the virtual environment with:
 Then run:
 
 ```powershell
-python -m pip install mkdocs
+python -m pip install -r requirements.txt
 mkdocs build --strict
 ```
+
+The `requirements.txt` file pins the documentation tooling used by both local validation and the GitHub Pages publishing workflow.
 
 ## Preview the site
 
@@ -38,7 +40,7 @@ Then open the local URL printed by MkDocs.
 
 ## Publishing validation
 
-The GitHub Pages publishing workflow also runs:
+The GitHub Pages publishing workflow also installs the pinned documentation dependencies and runs:
 
 ```bash
 mkdocs build --strict
@@ -50,7 +52,7 @@ See [Publishing the documentation site](publishing.md) for the CI publishing pat
 
 ## Manual validation fallback
 
-If MkDocs is not available in the current environment, record that clearly in the pull request and perform the best available manual checks:
+If MkDocs or the pinned dependencies are not available in the current environment, record that clearly in the pull request and perform the best available manual checks:
 
 - read changed Markdown files back from the branch;
 - review `mkdocs.yml` navigation against the issue acceptance criteria;
