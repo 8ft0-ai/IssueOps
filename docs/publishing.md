@@ -18,7 +18,7 @@ The workflow uses the standard GitHub Pages action path:
 1. Check out the repository.
 2. Configure GitHub Pages.
 3. Set up Python.
-4. Install MkDocs.
+4. Install pinned documentation dependencies from `requirements.txt`.
 5. Run `mkdocs build --strict`.
 6. Upload the generated `site/` directory as a Pages artifact.
 7. Deploy the artifact to GitHub Pages.
@@ -27,13 +27,24 @@ The strict MkDocs build is the publishing gate. If MkDocs cannot build the site,
 
 ## Permissions
 
-The workflow uses the least required permissions for Pages publishing:
+The workflow uses job-scoped permissions so each job receives only what it needs.
 
-- `contents: read` to read the repository contents;
+The build job uses:
+
+- `contents: read` to read the repository contents.
+
+The deploy job uses:
+
 - `pages: write` to publish the Pages artifact; and
 - `id-token: write` for the Pages deployment identity token.
 
-It does not grant write access to repository contents and does not change issues, pull requests, branch protection, labels or wiki content.
+The workflow does not grant write access to repository contents and does not change issues, pull requests, branch protection, labels or wiki content.
+
+## Dependency pinning
+
+The workflow installs documentation dependencies from `requirements.txt` instead of installing the latest MkDocs release on every run.
+
+This keeps local validation and CI publishing aligned and reduces the risk that an upstream MkDocs release unexpectedly breaks Pages deployment.
 
 ## Manual repository setting
 
@@ -52,6 +63,7 @@ This setting is repository-level configuration and is not changed by the workflo
 Before changing publishing configuration, validate the site locally with:
 
 ```bash
+python -m pip install -r requirements.txt
 mkdocs build --strict
 ```
 
