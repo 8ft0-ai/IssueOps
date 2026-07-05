@@ -1,0 +1,36 @@
+site_name: IssueOps
+site_description: Canonical documentation for the manual execution-contract IssueOps workflow.
+repo_url: https://github.com/8ft0-ai/IssueOps
+repo_name: 8ft0-ai/IssueOps
+docs_dir: docs
+
+theme:
+  name: mkdocs
+
+nav:
+  - Home: index.md
+  - Operating model:
+      - Stage 1 workflow: issueops.md
+      - Execution contracts: execution-contracts.md
+      - Pull requests as evidence packs: pr-evidence-packs.md
+      - Contract verification: contract-verification.md
+  - Manual controls:
+      - Manual labels: labels.md
+      - Safe tool operations: tool-operations.md
+  - Examples:
+      - Overview: examples/README.md
+      - Execution contract example: examples/execution-contract-example.md
+      - Contract verification example: examples/contract-verification-example.md
+  - Project record:
+      - Site and wiki boundaries: site-vs-wiki.md
+      - Roadmap: roadmap.md
+      - Stage 1 release notes: releases/stage-1.md
+  - Validation:
+      - Local MkDocs validation: local-validation.md
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+
+strict: true

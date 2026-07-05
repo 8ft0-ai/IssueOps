@@ -26,4 +26,4 @@ Merge = human approval decision
 
 Start with [`docs/issueops.md`](docs/issueops.md) for the workflow, [`AGENTS.md`](AGENTS.md) for agent operating rules, [`docs/tool-operations.md`](docs/tool-operations.md) for safe repository operations, [`docs/examples`](docs/examples/README.md) for examples and [`docs/labels.md`](docs/labels.md) for the manual label model.
 
-The recommended first baseline release is [`v0.1.0`](docs/releases/stage-1.md): Stage 1 manual execution-contract IssueOps.
+The first baseline release is [`v0.1.0`](docs/releases/stage-1.md): Stage 1 manual execution-contract IssueOps.
