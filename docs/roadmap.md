@@ -18,7 +18,7 @@ It includes:
 - pull requests as evidence packs; and
 - human contract verification before merge.
 
-The recommended first baseline release is [`v0.1.0`](releases/stage-1.md).
+The first baseline release is [`v0.1.0`](releases/stage-1.md).
 
 ## Stage 2.1: Canonical documentation site
 
