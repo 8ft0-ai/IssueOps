@@ -48,6 +48,6 @@ The GitHub wiki remains useful, but it has a different role. It is for project m
 
 ## Current baseline
 
-The first baseline is [Stage 1: Manual Execution-Contract IssueOps](releases/stage-1.md). It defines the manual workflow, explicit exclusions and release recommendation for `v0.1.0`.
+The first baseline is [Stage 1: Manual Execution-Contract IssueOps](releases/stage-1.md), released as `v0.1.0`. It defines the manual workflow and explicit exclusions.
 
 Stage 1 does not add automatic Codex execution, auto-merge, branch protection changes, required checks, GitHub Actions orchestration or application code.
