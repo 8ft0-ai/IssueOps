@@ -36,6 +36,18 @@ mkdocs serve
 
 Then open the local URL printed by MkDocs.
 
+## Publishing validation
+
+The GitHub Pages publishing workflow also runs:
+
+```bash
+mkdocs build --strict
+```
+
+The generated `site/` directory is uploaded as the Pages artifact only after the strict build succeeds. A failed MkDocs build should block deployment.
+
+See [Publishing the documentation site](publishing.md) for the CI publishing path, workflow triggers, permissions and manual repository setting.
+
 ## Manual validation fallback
 
 If MkDocs is not available in the current environment, record that clearly in the pull request and perform the best available manual checks:
