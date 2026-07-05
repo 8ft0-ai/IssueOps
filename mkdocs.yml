@@ -24,12 +24,12 @@ nav:
   - Project record:
       - Site and wiki boundaries: site-vs-wiki.md
       - Roadmap: roadmap.md
+      - Publishing: publishing.md
       - Stage 1 release notes: releases/stage-1.md
   - Validation:
       - Local MkDocs validation: local-validation.md
 
 markdown_extensions:
-  - admonition
   - toc:
       permalink: true
 

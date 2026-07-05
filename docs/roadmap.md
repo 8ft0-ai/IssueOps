@@ -26,6 +26,14 @@ Stage 2.1 creates the MkDocs/GitHub Pages documentation track. The goal is to gi
 
 This stage keeps the wiki separate as project memory. It does not clean up or rewrite the wiki.
 
+## Stage 2.2: GitHub Pages publishing
+
+Stage 2.2 adds the publishing path for the MkDocs documentation site.
+
+It introduces a GitHub Actions workflow that builds the site with `mkdocs build --strict`, uploads the generated `site/` directory as a Pages artifact and deploys it to GitHub Pages. The workflow runs on pushes to `main` and can also be started manually.
+
+See [Publishing the documentation site](publishing.md) for the workflow, permissions and manual repository setting.
+
 ## Future work
 
 Future stages may explore:
@@ -33,7 +41,6 @@ Future stages may explore:
 - richer documentation examples;
 - more explicit contract-readiness checklists;
 - lightweight release documentation;
-- optional GitHub Actions validation for the documentation site;
 - carefully bounded Codex execution triggers; and
 - stronger review evidence gates.
 
@@ -41,6 +48,6 @@ These items are future possibilities, not implemented capabilities.
 
 ## Non-goals for the current baseline
 
-The current baseline does not include automatic Codex execution, auto-merge, branch protection changes, required status checks, GitHub Actions orchestration or application code.
+The current baseline does not include automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work or application code.
 
 Any future automation should be introduced through its own execution contract, implementation plan, validation evidence and human review.
