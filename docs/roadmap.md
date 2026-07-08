@@ -138,6 +138,14 @@ It explains when a summary is useful, where to record it and how to capture comp
 
 See [Batch completion summaries](batch-completion-summaries.md) for the reusable format.
 
+## Stage 2.16: Lifecycle label definition check
+
+Stage 2.16 checks whether the recommended lifecycle labels can be created through the available tooling.
+
+The current connector can apply and remove labels on issues and pull requests, but does not expose repository-label creation. The missing lifecycle labels therefore remain recommended-only until created through GitHub UI or a repository-label creation API/tool.
+
+See [Manual lifecycle labels](labels.md) for the current label state and creation blocker.
+
 ## Future work
 
 Future stages may explore:
