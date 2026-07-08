@@ -36,6 +36,41 @@ Forbidden side effects: no issues, no files, no pull requests
 
 If the selected tool does not match the intended operation, stop before making the call.
 
+## Compact evidence format
+
+For routine low-risk operations, use this compact format:
+
+```text
+Safe operation: <intended operation>; no <forbidden side effects>.
+```
+
+Examples:
+
+```text
+Safe operation: readiness comment only; no branch/file/label/merge mutation.
+```
+
+```text
+Safe operation: update docs file on feature branch; no issue/label/merge mutation.
+```
+
+The compact format is acceptable when:
+
+- the operation is routine and low risk;
+- the target is unambiguous;
+- the issue contract and implementation plan are already recorded; and
+- the forbidden side effects are obvious and named.
+
+Use the full format when:
+
+- the operation changes workflow files, labels, repository settings or permissions;
+- the operation creates or merges a PR;
+- the target is ambiguous;
+- a previous operation failed or behaved unexpectedly; or
+- the change is high risk enough that a reviewer needs the full actuation record.
+
+The compact format shortens evidence. It does not remove the requirement to check the selected tool before mutation.
+
 ## Dependency state before branch setup
 
 Before entering branch setup, the readiness comment should record dependency state and the safe starting point for the branch.
