@@ -42,12 +42,19 @@ It makes the issue-to-PR lifecycle easier to follow by describing the readiness 
 
 See [IssueOps operating protocol](issueops-protocol.md) for the process overview.
 
+## Stage 2.4: Dependency-aware readiness
+
+Stage 2.4 strengthens the readiness gate by requiring dependency state and a safe starting point to be recorded before branch creation.
+
+It documents how to handle issues with no dependency, satisfied dependencies, unsatisfied blocking dependencies and repository-setting or environment dependencies. This remains a manual readiness control and does not add automated dependency detection or branch enforcement.
+
+See [IssueOps operating protocol](issueops-protocol.md#dependency-check-format) for the dependency-check format.
+
 ## Future work
 
 Future stages may explore:
 
 - richer documentation examples;
-- dependency-aware readiness checks;
 - workflow-change review checklists;
 - pre-merge and post-merge validation guidance;
 - review remediation and evidence-pack update protocols;
@@ -59,6 +66,6 @@ These items are future possibilities, not implemented capabilities.
 
 ## Non-goals for the current baseline
 
-The current baseline does not include automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work or application code.
+The current baseline does not include automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work or application code.
 
 Any future automation should be introduced through its own execution contract, implementation plan, validation evidence and human review.
