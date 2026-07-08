@@ -146,6 +146,14 @@ The current connector can apply and remove labels on issues and pull requests, b
 
 See [Manual lifecycle labels](labels.md) for the current label state and creation blocker.
 
+## Stage 2.17: Compact safe tool-operation evidence
+
+Stage 2.17 adds a compact evidence format for routine low-risk safe tool-operation checks.
+
+It preserves the full pre-mutation check for high-risk or ambiguous operations while allowing concise evidence for routine comments and documentation updates. This remains a manual safety protocol and does not add automation or weaken mutation controls.
+
+See [Safe tool operations](tool-operations.md) for the compact and full formats.
+
 ## Future work
 
 Future stages may explore:
