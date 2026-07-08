@@ -6,6 +6,8 @@ Use this checklist for any pull request that adds or changes files under `.githu
 
 This is a manual review aid. It does not add workflow linting, required status checks, branch protection or automated enforcement.
 
+For broader validation expectations across documentation, workflow, publishing, process-label and future application-code changes, see [Change-type validation guidance](change-type-validation.md).
+
 ## When to use this checklist
 
 Use this checklist when a change:

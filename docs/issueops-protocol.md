@@ -217,6 +217,8 @@ When the issue is incomplete, contradictory or impossible to validate in the cur
 
 Validation should match the change type and the issue contract.
 
+Use [Change-type validation guidance](change-type-validation.md) to select the relevant evidence for documentation, workflow, publishing, process-label and future application-code changes.
+
 For documentation changes, useful pre-merge evidence includes:
 
 - changed files read back from the branch;
@@ -346,6 +348,7 @@ Use this checklist before asking for review:
 - [ ] Safe tool-operation checks were used before repository mutations.
 - [ ] Implementation stays inside scope and non-goals.
 - [ ] Changed files were read back from the branch.
+- [ ] Change-type validation guidance was applied.
 - [ ] Pre-merge validation was completed or clearly recorded as not performed.
 - [ ] Post-merge verification needs are explicitly recorded if they exist.
 - [ ] Pull request explains changed scope, exclusions, validation and caveats.
@@ -362,12 +365,14 @@ This page is the canonical process overview. The focused pages remain the detail
 - [Contract verification](contract-verification.md) explains human review.
 - [Safe tool operations](tool-operations.md) explains repository mutation safety.
 - [Local MkDocs validation](local-validation.md) explains documentation-site validation.
+- [Workflow-change review checklist](workflow-changes.md) explains workflow-specific review expectations.
+- [Change-type validation guidance](change-type-validation.md) explains definitions of done by change type.
 - [Publishing the documentation site](publishing.md) explains the GitHub Pages workflow and manual Pages setting.
 
 ## Current manual boundary
 
 The current baseline remains deliberately manual.
 
-It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, pre-merge validation records, post-merge verification records and human review.
+It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
 
 It does not include automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification or application code.

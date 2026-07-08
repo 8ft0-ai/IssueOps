@@ -66,6 +66,14 @@ It documents when pending validation should block merge, when post-merge verific
 
 See [Pull requests as evidence packs](pr-evidence-packs.md#validation-status) and [Contract verification](contract-verification.md#pre-merge-versus-post-merge-checks) for the detailed guidance.
 
+## Stage 2.11: Change-type validation guidance
+
+Stage 2.11 defines lightweight validation expectations by change type.
+
+It covers documentation, workflow, publishing/deployment, process-label and future application-code changes. The guidance explains expected, optional and not-applicable validation so PR evidence can be specific without overstating checks that did not run.
+
+See [Change-type validation guidance](change-type-validation.md) for the definitions of done.
+
 ## Future work
 
 Future stages may explore:

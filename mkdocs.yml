@@ -30,6 +30,7 @@ nav:
   - Validation:
       - Local MkDocs validation: local-validation.md
       - Workflow-change review checklist: workflow-changes.md
+      - Change-type validation guidance: change-type-validation.md
 
 markdown_extensions:
   - toc:
