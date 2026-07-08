@@ -2,6 +2,8 @@
 
 Use these checks before asking for review on documentation-site changes.
 
+For broader validation expectations by change type, see [Change-type validation guidance](change-type-validation.md).
+
 ## Build the site
 
 From the repository root:
@@ -74,6 +76,7 @@ If MkDocs or the pinned dependencies are not available in the current environmen
 - review `mkdocs.yml` navigation against the issue acceptance criteria;
 - inspect internal documentation links;
 - apply the [workflow-change review checklist](workflow-changes.md) when workflow files or workflow descriptions changed;
+- apply the [change-type validation guidance](change-type-validation.md) to avoid claiming irrelevant validation;
 - confirm the site distinguishes canonical docs from wiki/project-memory material;
 - confirm existing Stage 1 workflow content remains accurate; and
 - confirm no wiki cleanup, automation, branch protection, auto-merge or application code changes were introduced.
