@@ -1,20 +1,55 @@
-# Manual label model
+# Manual lifecycle labels
 
-Stage 1 uses labels as manual state markers. Labels do not trigger automation yet.
+Labels support visibility in the manual IssueOps workflow.
 
-The labels should describe the state of the execution contract, the agent work and the review evidence. Written issue and pull request content remains the source of truth.
+They are not the source of truth. The issue contract, readiness comment, implementation-plan comment, pull request evidence pack, validation evidence and human review remain the authoritative record.
 
-| Label | Meaning |
-| --- | --- |
-| `contract/draft` | The issue contract exists but has not been checked. |
-| `contract/needs-clarification` | The contract is not clear enough for agent implementation. |
-| `contract/ready` | The contract is clear enough for Codex to implement. |
-| `agent/codex` | Codex is the intended implementation agent. |
-| `agent/in-progress` | Agent-assisted implementation has started. |
-| `review/evidence-needed` | The pull request needs clearer evidence before review. |
-| `review/human-required` | A human review decision is required. |
-| `validation/pending` | Validation remains incomplete and must be recorded in the pull request. |
-| `validation/complete` | Required validation for the current stage has been completed. |
-| `scope/drift-risk` | The work may be moving outside the issue contract. |
+Labels do not trigger automation, Codex execution, branch protection, required checks, auto-merge or post-merge verification.
 
-These labels are intentionally lightweight. Later stages may attach automation to label changes, but Stage 1 keeps labels manual and advisory.
+## Minimal lifecycle label set
+
+Use a deliberately small label set:
+
+| Label | Meaning | Apply when | Remove when |
+| --- | --- | --- | --- |
+| `contract/draft` | The issue contract exists but has not been checked for readiness. | An issue is created as a draft contract. | The issue is clarified and marked ready, or closed as not ready/not planned. |
+| `contract/ready` | The issue is clear enough to implement safely. | Readiness and dependency checks pass. | Implementation begins, the contract changes materially, or the issue becomes blocked. |
+| `plan/posted` | The implementation plan has been posted before branch creation. | The plan comment is added. | Usually left in place for auditability. |
+| `review/changes-requested` | Review feedback requires remediation before approval. | Required review fixes are identified. | Required fixes are applied and remediation evidence is recorded. |
+| `validation/pending` | Required validation remains incomplete or unavailable. | Validation cannot be completed before review or merge. | Validation is completed, marked not applicable, or moved to explicit post-merge verification. |
+| `post-merge/verification-needed` | A post-merge check must remain visible after merge. | A workflow, publishing, release or environment check cannot be completed before merge. | The post-merge verification is completed and recorded. |
+
+## Current repository state
+
+The `contract/draft` label is already in use.
+
+The remaining labels are recommended lifecycle labels until the repository label definitions are created through GitHub UI/API tooling. The connector available for this implementation can apply or remove labels on issues and PRs, but it does not expose repository-label creation.
+
+Recommended labels not created by this PR:
+
+- `contract/ready`
+- `plan/posted`
+- `review/changes-requested`
+- `validation/pending`
+- `post-merge/verification-needed`
+
+## Usage rules
+
+Use labels to make state easier to scan, not to replace written evidence.
+
+A label should never be the only place where a decision is recorded. For example:
+
+- `contract/ready` should correspond to a readiness comment.
+- `plan/posted` should correspond to an implementation-plan comment.
+- `validation/pending` should correspond to PR evidence that names the missing validation.
+- `post-merge/verification-needed` should correspond to a specific post-merge verification item.
+
+## Non-goals
+
+Do not add labels for every possible state.
+
+Do not use labels to imply automation that does not exist.
+
+Do not change historical labels unless there is a specific issue contract for doing so.
+
+Do not attach GitHub Actions, branch protection, required checks or auto-merge behaviour to labels without a separate issue contract, implementation plan, validation evidence and review.
