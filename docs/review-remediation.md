@@ -52,6 +52,22 @@ Do not use review feedback as a reason to add unrelated refactoring, new automat
 
 If feedback is valuable but out of scope, record it as follow-up work rather than expanding the current PR.
 
+## Material remediation
+
+A remediation is material when it changes any of the following:
+
+- validation evidence;
+- security or permissions posture;
+- dependency model;
+- deployment behaviour;
+- public documentation claims;
+- files outside the original stated scope;
+- assumptions, caveats or remaining checks.
+
+Material remediation should update the PR body or add a clearly labelled top-level remediation evidence comment so the final state is visible without reconstructing it from commits and threads.
+
+Minor typo, grammar or wording fixes do not require a full PR body update unless they change meaning, scope, validation or risk.
+
 ## Replying, resolving and updating evidence
 
 Use inline replies when the feedback was inline or thread-specific.
@@ -70,8 +86,6 @@ Update the PR body when remediation changes any of the following:
 
 If remediation only fixes a typo or wording issue with no material evidence change, an inline reply may be enough.
 
-Issue #28 defines the more detailed material-remediation evidence update rule.
-
 ## Compact remediation checklist
 
 Before asking for review again, confirm:
@@ -86,14 +100,14 @@ Before asking for review again, confirm:
 - [ ] Branch diff was compared against `main` for scope drift.
 - [ ] Inline comments were replied to where useful.
 - [ ] Threads were resolved only after fixes were present.
-- [ ] PR evidence was updated or a remediation summary was posted where material.
+- [ ] PR evidence was updated or a remediation evidence comment was posted where material.
 
 ## Evidence to record
 
 A remediation summary can use this format:
 
 ```md
-## Remediation summary
+## Remediation evidence
 
 Review feedback addressed:
 
@@ -102,6 +116,11 @@ Review feedback addressed:
 - Change made:
 - Validation rerun:
 - Scope impact:
+
+Final contract check:
+
+- Did the PR still do what was needed?
+- Did the PR still only do what was asked?
 
 Remaining items:
 
