@@ -32,6 +32,7 @@ nav:
       - Stage 1 release notes: releases/stage-1.md
   - Validation:
       - Local MkDocs validation: local-validation.md
+      - Repository-native validation: repository-native-validation.md
       - Documentation currency checklist: documentation-currency.md
       - Workflow-change review checklist: workflow-changes.md
       - Change-type validation guidance: change-type-validation.md
