@@ -30,7 +30,7 @@ Expected validation:
 - MkDocs navigation reviewed when navigation changes;
 - internal links checked by inspection or build output;
 - `mkdocs build --strict` run with the pinned documentation dependency;
-- documentation currency checked where release, roadmap, PR, workflow or capability status is mentioned;
+- [documentation currency checklist](documentation-currency.md) applied where release, roadmap, PR, workflow, setting, label or capability status is mentioned;
 - scope checked to confirm no unrelated automation, app code or repository settings changed.
 
 Optional validation:
