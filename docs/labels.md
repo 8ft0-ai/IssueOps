@@ -23,15 +23,21 @@ Use a deliberately small label set:
 
 The `contract/draft` label is already in use.
 
-The remaining labels are recommended lifecycle labels until the repository label definitions are created through GitHub UI/API tooling. The connector available for this implementation can apply or remove labels on issues and PRs, but it does not expose repository-label creation.
+Repository-label creation was checked during Stage 2.16. The available connector can apply or remove labels on issues and pull requests, but it does not expose repository-label creation. Because creation is not available in the current tool environment, this documentation does not claim the remaining labels were created.
 
-Recommended labels not created by this PR:
+Recommended labels not yet created:
 
 - `contract/ready`
 - `plan/posted`
 - `review/changes-requested`
 - `validation/pending`
 - `post-merge/verification-needed`
+
+## Creation blocker
+
+To complete label creation later, use GitHub UI or a repository-label creation API/tool that can create label definitions.
+
+After creation, update this page to move the labels from recommended-only to available, and record the created labels in the PR evidence pack.
 
 ## Usage rules
 
