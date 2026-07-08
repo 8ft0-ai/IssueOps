@@ -15,6 +15,7 @@ nav:
       - Stage 1 workflow: issueops.md
       - Execution contracts: execution-contracts.md
       - Pull requests as evidence packs: pr-evidence-packs.md
+      - PR evidence templates: pr-evidence-templates.md
       - Contract verification: contract-verification.md
       - PR review remediation: review-remediation.md
   - Manual controls:
