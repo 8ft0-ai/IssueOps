@@ -50,6 +50,14 @@ It documents how to handle issues with no dependency, satisfied dependencies, un
 
 See [IssueOps operating protocol](issueops-protocol.md#dependency-check-format) for the dependency-check format.
 
+## Stage 2.6: Workflow-change review checklist
+
+Stage 2.6 adds a focused checklist for pull requests that add or change GitHub Actions workflows.
+
+It covers trigger scope, job-scoped permissions, pinned or bounded dependencies, build/deploy separation, artifacts, environments, secrets, OIDC permissions, manual repository settings, failure behaviour and unsupported automation claims. This remains a manual review checklist and does not add workflow linting, required checks, branch protection or workflow behaviour changes.
+
+See [Workflow-change review checklist](workflow-changes.md) for the detailed guidance.
+
 ## Stage 2.9: Pre-merge and post-merge validation protocol
 
 Stage 2.9 strengthens validation evidence by separating checks that must be completed before merge from checks that can only be verified after merge, deployment, release or environment configuration.
@@ -63,7 +71,6 @@ See [Pull requests as evidence packs](pr-evidence-packs.md#validation-status) an
 Future stages may explore:
 
 - richer documentation examples;
-- workflow-change review checklists;
 - review remediation and evidence-pack update protocols;
 - lightweight release documentation;
 - carefully bounded Codex execution triggers; and
@@ -73,6 +80,6 @@ These items are future possibilities, not implemented capabilities.
 
 ## Non-goals for the current baseline
 
-The current baseline does not include automatic dependency detection, automatic Codex execution, automatic post-merge verification, auto-merge, branch protection changes, required status checks for agent work or application code.
+The current baseline does not include automatic dependency detection, automatic Codex execution, automatic workflow linting, automatic post-merge verification, auto-merge, branch protection changes, required status checks for agent work or application code.
 
 Any future automation should be introduced through its own execution contract, implementation plan, validation evidence and human review.
