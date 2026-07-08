@@ -122,6 +122,14 @@ It covers documentation-only, workflow, publishing/deployment, process-label and
 
 See [PR evidence templates](pr-evidence-templates.md) for the reusable formats.
 
+## Stage 2.14: Repository-native validation evidence
+
+Stage 2.14 defines repository-native validation as the preferred evidence path and representative validation as a bounded fallback.
+
+It explains when actual checkout, CI, deployment or repository-setting evidence should be used, when representative fallback is acceptable and when fallback validation should block merge.
+
+See [Repository-native validation](repository-native-validation.md) for the detailed guidance.
+
 ## Future work
 
 Future stages may explore:
