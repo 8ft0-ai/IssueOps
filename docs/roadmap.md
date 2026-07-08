@@ -130,6 +130,14 @@ It explains when actual checkout, CI, deployment or repository-setting evidence 
 
 See [Repository-native validation](repository-native-validation.md) for the detailed guidance.
 
+## Stage 2.15: Batch completion summaries
+
+Stage 2.15 defines a lightweight summary record for multi-issue delegated batch runs.
+
+It explains when a summary is useful, where to record it and how to capture completed issues, merged PRs, validation, caveats and follow-up work without replacing per-issue and per-PR evidence.
+
+See [Batch completion summaries](batch-completion-summaries.md) for the reusable format.
+
 ## Future work
 
 Future stages may explore:
