@@ -59,8 +59,8 @@ Use the PR evidence pack to separate these states.
 | Change type | Pre-merge validation examples | Post-merge verification examples |
 | --- | --- | --- |
 | Documentation-only change | Read changed files from the branch, review links, review `mkdocs.yml`, run `mkdocs build --strict`. | Usually none, unless the published site needs to be checked after merge. |
-| Workflow change | Review YAML, triggers, permissions, dependency installation, artifact paths and local build where available. | Observe the workflow run after merge or manual dispatch. |
-| Publishing change | Run MkDocs build, review Pages workflow path and confirm manual settings are documented. | Check Pages deployment, public URL and repository Pages source setting. |
+| Workflow change | Review YAML, triggers, permissions, dependency installation, artifact paths and local build where available. Apply the [workflow-change review checklist](workflow-changes.md). | Observe the workflow run after merge or manual dispatch. |
+| Publishing change | Run MkDocs build, review Pages workflow path, apply the [workflow-change review checklist](workflow-changes.md) when workflow files change, and confirm manual settings are documented. | Check Pages deployment, public URL and repository Pages source setting. |
 | Release change | Review release notes, tag wording, version references and changelog links. | Confirm tag or release publication after it is created. |
 | Environment-specific change | Review configuration files and document expected environment state. | Confirm the external setting or environment state after it is available. |
 
@@ -73,6 +73,7 @@ If MkDocs or the pinned dependencies are not available in the current environmen
 - read changed Markdown files back from the branch;
 - review `mkdocs.yml` navigation against the issue acceptance criteria;
 - inspect internal documentation links;
+- apply the [workflow-change review checklist](workflow-changes.md) when workflow files or workflow descriptions changed;
 - confirm the site distinguishes canonical docs from wiki/project-memory material;
 - confirm existing Stage 1 workflow content remains accurate; and
 - confirm no wiki cleanup, automation, branch protection, auto-merge or application code changes were introduced.
