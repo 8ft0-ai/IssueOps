@@ -43,10 +43,122 @@ The readiness comment should confirm that:
 - the acceptance criteria are reviewable;
 - the validation evidence is clear;
 - the work is small enough to review safely;
-- dependencies or ordering constraints have been considered; and
+- dependencies or ordering constraints have been checked;
+- a safe starting point has been identified; and
 - the issue can be implemented without inventing missing intent.
 
-If the issue is unclear, the correct action is to post a clarification comment, not to create a branch.
+If the issue is unclear or a blocking dependency is not satisfied, the correct action is to post a clarification or blocked-dependency comment, not to create a branch.
+
+#### Dependency check format
+
+Use a dependency check when posting readiness:
+
+```md
+## Dependency check
+
+Required prior work:
+
+- Issue/PR/release:
+- Required state:
+- Current state:
+
+Safe starting point:
+
+- Base branch or commit:
+- Reason this is safe:
+
+Decision:
+
+- Ready to implement / blocked pending dependency / clarification required.
+```
+
+The dependency check is still manual. It records what was checked; it does not automate dependency detection or enforce branch creation.
+
+#### Readiness examples
+
+No dependency:
+
+```md
+## Dependency check
+
+Required prior work:
+
+- Issue/PR/release: None identified.
+- Required state: Not applicable.
+- Current state: Not applicable.
+
+Safe starting point:
+
+- Base branch or commit: `main`.
+- Reason this is safe: The issue is documentation-only and does not depend on another pending change.
+
+Decision:
+
+- Ready to implement.
+```
+
+Dependency satisfied:
+
+```md
+## Dependency check
+
+Required prior work:
+
+- Issue/PR/release: PR #32.
+- Required state: Merged to `main`.
+- Current state: Closed and merged.
+
+Safe starting point:
+
+- Base branch or commit: `main` after PR #32 merge.
+- Reason this is safe: The required protocol page now exists on `main`.
+
+Decision:
+
+- Ready to implement.
+```
+
+Dependency not yet satisfied:
+
+```md
+## Dependency check
+
+Required prior work:
+
+- Issue/PR/release: PR #32.
+- Required state: Merged to `main`.
+- Current state: Open and still under review.
+
+Safe starting point:
+
+- Base branch or commit: None yet.
+- Reason this is safe: Not applicable until PR #32 merges.
+
+Decision:
+
+- Blocked pending dependency. Do not create a feature branch yet.
+```
+
+Repository setting or environment dependency:
+
+```md
+## Dependency check
+
+Required prior work:
+
+- Issue/PR/release: Repository Pages source setting.
+- Required state: Pages source configured for GitHub Actions.
+- Current state: Manual repository setting not confirmed in code.
+
+Safe starting point:
+
+- Base branch or commit: `main`.
+- Reason this is safe: Code changes can proceed, but the PR must record the manual setting as pending validation.
+
+Decision:
+
+- Ready to implement with explicit pending repository-setting validation.
+```
 
 ### 3. Post the implementation plan
 
@@ -55,6 +167,7 @@ If the issue is ready, post an implementation-plan comment before changing files
 The plan should record:
 
 - the proposed branch name;
+- the safe starting point identified during readiness;
 - the files or documentation areas expected to change;
 - the intended sequence of work;
 - the validation to perform;
@@ -65,7 +178,7 @@ This makes the execution path visible before implementation starts.
 
 ### 4. Create one branch per issue
 
-Create one feature branch from `main` for the issue.
+Create one feature branch from `main` for the issue only after readiness and dependency state have been recorded.
 
 Preferred branch format:
 
@@ -191,6 +304,7 @@ Use this checklist before asking for review:
 
 - [ ] Issue contract is clear and bounded.
 - [ ] Readiness comment is posted.
+- [ ] Dependency check records required prior work, current state, safe starting point and decision.
 - [ ] Implementation-plan comment is posted.
 - [ ] Feature branch follows `feature/<issue-number>-short-description`.
 - [ ] Safe tool-operation checks were used before repository mutations.
@@ -217,6 +331,6 @@ This page is the canonical process overview. The focused pages remain the detail
 
 The current baseline remains deliberately manual.
 
-It includes documentation, readiness checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, validation records and human review.
+It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, validation records and human review.
 
-It does not include automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work or application code.
+It does not include automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work or application code.
