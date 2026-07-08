@@ -56,7 +56,29 @@ Pending validation should block merge when it is needed to decide whether the is
 
 ## Remediation evidence
 
-If review remediation changes the PR materially, the evidence pack should remain accurate.
+If review remediation changes the PR materially, the evidence pack must remain accurate.
+
+A remediation is material when it changes validation evidence, security or permissions posture, dependency model, deployment behaviour, public documentation claims, files outside the original stated scope, assumptions, caveats or remaining checks.
+
+For material remediation, either update the PR body or post a clearly labelled top-level remediation evidence comment. Minor typo or wording fixes can usually be handled with an inline reply if they do not change meaning, scope, validation or risk.
+
+Use this format when a separate remediation evidence comment is clearer than rewriting the full PR body:
+
+```md
+## Remediation evidence
+
+Review feedback addressed:
+
+- Comment/thread:
+- Change made:
+- Validation rerun:
+- Scope impact:
+
+Final contract check:
+
+- Did the PR still do what was needed?
+- Did the PR still only do what was asked?
+```
 
 Use the [PR review remediation protocol](review-remediation.md) to classify review feedback, apply required fixes, rerun validation and decide whether to reply inline, post a top-level summary or update the PR body.
 

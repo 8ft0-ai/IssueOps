@@ -309,8 +309,9 @@ At minimum:
 - apply required fixes within the existing contract;
 - avoid broadening the work unless the repository owner explicitly approves the scope change or a new issue is created;
 - read changed files back and rerun affected validation;
-- reply to addressed comments; and
-- resolve review threads only when the fix is present and validation is not failing.
+- reply to addressed comments;
+- resolve review threads only when the fix is present and validation is not failing; and
+- update the PR body or post clearly labelled remediation evidence when remediation materially changes validation, risk, scope, assumptions, caveats or remaining checks.
 
 ### 11. Merge only after human approval
 
@@ -373,6 +374,6 @@ This page is the canonical process overview. The focused pages remain the detail
 
 The current baseline remains deliberately manual.
 
-It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, review remediation guidance, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
+It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, review remediation guidance, material-remediation evidence updates, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
 
 It does not include automatic review bots, automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification or application code.

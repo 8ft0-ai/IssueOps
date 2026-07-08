@@ -56,7 +56,9 @@ When review feedback requires changes, use the [PR review remediation protocol](
 
 The final review should consider the remediated PR state, including any updated validation evidence, scope changes, caveats or remaining checks.
 
-Do not recommend approval if remediation is incomplete, available validation is failing or the final PR no longer satisfies the issue contract.
+If remediation was material, check that the PR body or a clearly labelled remediation evidence comment reflects the final state. Reviewers should not have to reconstruct the final evidence from commits and review threads alone.
+
+Do not recommend approval if remediation is incomplete, available validation is failing, material remediation evidence is stale or the final PR no longer satisfies the issue contract.
 
 ## Final recommendation
 
