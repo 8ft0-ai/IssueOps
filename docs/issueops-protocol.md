@@ -217,7 +217,7 @@ When the issue is incomplete, contradictory or impossible to validate in the cur
 
 Validation should match the change type and the issue contract.
 
-For documentation changes, useful evidence includes:
+For documentation changes, useful pre-merge evidence includes:
 
 - changed files read back from the branch;
 - MkDocs navigation checked;
@@ -225,7 +225,31 @@ For documentation changes, useful evidence includes:
 - `mkdocs build --strict` run with the pinned documentation dependency; and
 - confirmation that no unrelated automation or application code was introduced.
 
-If validation cannot be completed, record it honestly as pending or not performed. Do not mark validation complete unless it actually ran.
+Pre-merge validation is evidence available before the merge decision. Post-merge verification is evidence that can only be collected after merge, deployment, release or environment-specific configuration.
+
+If validation cannot be completed before merge, record it honestly as post-merge verification or not performed. Do not mark validation complete unless it actually ran.
+
+Use this validation status format in PR evidence when a change has both pre-merge and post-merge checks:
+
+```md
+## Validation status
+
+Pre-merge validation completed:
+
+- [x] Files read back from branch
+- [x] Local build/test completed
+- [x] Scope checked against issue
+
+Post-merge verification required:
+
+- [ ] Workflow run observed
+- [ ] Deployment URL checked
+- [ ] Repository setting confirmed
+
+Merge decision:
+
+- Safe to merge with post-merge verification pending / do not merge yet.
+```
 
 See [Local MkDocs validation](local-validation.md) for the current documentation-site validation path.
 
@@ -239,10 +263,13 @@ The PR should include:
 - what changed;
 - what was deliberately excluded;
 - how the acceptance criteria were satisfied;
-- validation performed;
+- pre-merge validation performed;
 - validation not performed or still pending;
+- post-merge verification required, if any;
 - assumptions, risks and caveats; and
 - a pre-approval groundedness review.
+
+A PR can be mergeable while post-merge verification is still pending, but only when the issue contract allows it, available validation is not failing, the remaining checks are explicitly named and the reviewer accepts the residual risk.
 
 See [Pull requests as evidence packs](pr-evidence-packs.md) for evidence-pack guidance.
 
@@ -255,13 +282,17 @@ The reviewer should ask:
 1. Did the pull request do what was needed?
 2. Did the pull request only do what was asked?
 
-The review should check issue alignment, scope control, validation evidence, risks and caveats.
+The review should check issue alignment, scope control, pre-merge validation evidence, post-merge verification needs, risks and caveats.
 
 Use one final recommendation:
 
 - Approve
 - Approve after minor fixes
 - Do not approve yet
+
+Pending validation should block merge when it affects whether the implementation satisfies the issue, when available validation is failing, when the remaining check is required before a safe merge decision, or when the PR would be misleading without the result.
+
+Post-merge verification can be acceptable when the implementation is complete, available validation is not failing, the remaining check cannot run until after merge or deployment, and the PR clearly records the required follow-up.
 
 See [Contract verification](contract-verification.md) for the review model.
 
@@ -284,7 +315,9 @@ Detailed remediation guidance is planned as follow-up work.
 
 The agent can implement the contract and prepare the evidence pack, but a human owns the approval and merge decision.
 
-Do not merge while required validation is failing, the implementation is incomplete, the scope has drifted or the PR does not satisfy the issue contract.
+Do not merge while required pre-merge validation is failing, the implementation is incomplete, the scope has drifted or the PR does not satisfy the issue contract.
+
+If post-merge verification remains, the merge decision should explicitly accept that residual check and identify how it will be recorded.
 
 ### 12. Track post-merge verification when needed
 
@@ -293,10 +326,13 @@ Some work cannot be fully validated before merge. Publishing, release and enviro
 When that happens, the PR should distinguish:
 
 - validation completed before merge;
-- validation that remains pending after merge; and
-- the specific post-merge checks required.
+- validation that remains pending after merge;
+- the specific post-merge checks required; and
+- whether a follow-up issue or label is needed to keep the check visible.
 
-Post-merge validation should be recorded rather than ignored. Detailed post-merge validation guidance is planned as follow-up work.
+Post-merge verification should be recorded rather than ignored. It may be recorded in a follow-up issue, a PR comment after merge, or a manual project note, depending on the work and the repository owner's preference.
+
+This protocol does not create lifecycle labels or automate post-merge checks. A label such as `post-merge/verification-needed` may be useful later, but label creation is a separate issue.
 
 ## Compact checklist
 
@@ -310,10 +346,11 @@ Use this checklist before asking for review:
 - [ ] Safe tool-operation checks were used before repository mutations.
 - [ ] Implementation stays inside scope and non-goals.
 - [ ] Changed files were read back from the branch.
-- [ ] Relevant validation was completed or clearly recorded as pending.
+- [ ] Pre-merge validation was completed or clearly recorded as not performed.
+- [ ] Post-merge verification needs are explicitly recorded if they exist.
 - [ ] Pull request explains changed scope, exclusions, validation and caveats.
 - [ ] Pre-approval groundedness review answers whether the PR did what was needed and only what was asked.
-- [ ] Post-merge verification needs are recorded if they exist.
+- [ ] Merge recommendation distinguishes blocking validation from acceptable post-merge verification.
 
 ## Relationship to existing docs
 
@@ -331,6 +368,6 @@ This page is the canonical process overview. The focused pages remain the detail
 
 The current baseline remains deliberately manual.
 
-It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, validation records and human review.
+It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, pre-merge validation records, post-merge verification records and human review.
 
-It does not include automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work or application code.
+It does not include automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification or application code.
