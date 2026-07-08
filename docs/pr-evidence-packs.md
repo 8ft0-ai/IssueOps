@@ -12,8 +12,9 @@ A useful evidence pack records:
 - the files or documentation areas changed;
 - the work deliberately left out;
 - the acceptance criteria satisfied;
-- the validation performed;
-- any validation still pending; and
+- the pre-merge validation performed;
+- any validation not performed;
+- any post-merge verification still required; and
 - any assumptions, risks or caveats.
 
 ## Validation evidence
@@ -22,9 +23,39 @@ Validation evidence should be concrete. For documentation-only changes, this may
 
 For later code changes, the evidence should reflect the repository validation that actually ran. Validation should not be marked complete unless it was completed.
 
+## Validation status
+
+When a change has checks that can run before merge and checks that can only run after merge, separate them in the PR body.
+
+Use this format:
+
+```md
+## Validation status
+
+Pre-merge validation completed:
+
+- [x] Files read back from branch
+- [x] Local build/test completed
+- [x] Scope checked against issue
+
+Post-merge verification required:
+
+- [ ] Workflow run observed
+- [ ] Deployment URL checked
+- [ ] Repository setting confirmed
+
+Merge decision:
+
+- Safe to merge with post-merge verification pending / do not merge yet.
+```
+
+Post-merge verification is acceptable only when the implementation is complete, available validation is not failing, the remaining check cannot run before merge or deployment and the PR states exactly what still needs to be verified.
+
+Pending validation should block merge when it is needed to decide whether the issue contract was satisfied, when available validation is failing or when merging would make the evidence pack misleading.
+
 ## Scope evidence
 
-The evidence pack should also record what did not change. This is especially important in Stage 1, where the workflow remains manual and does not include automatic Codex execution, branch protection changes, auto-merge, GitHub Actions orchestration or application code.
+The evidence pack should also record what did not change. This is especially important in the current manual baseline, where the workflow does not include automatic Codex execution, branch protection changes, auto-merge, required status checks for agent work, automatic post-merge verification or application code.
 
 ## Review hand-off
 
