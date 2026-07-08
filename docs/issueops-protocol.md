@@ -22,6 +22,8 @@ The source of truth is the repository record:
 - the review records contract verification; and
 - the merge records the human acceptance decision.
 
+Labels may help make lifecycle state easier to scan, but they do not replace the repository record. See [Manual lifecycle labels](labels.md) for the lightweight label model.
+
 ## Lifecycle
 
 ### 1. Create or select an issue contract
@@ -335,7 +337,7 @@ When that happens, the PR should distinguish:
 
 Post-merge verification should be recorded rather than ignored. It may be recorded in a follow-up issue, a PR comment after merge, or a manual project note, depending on the work and the repository owner's preference.
 
-This protocol does not create lifecycle labels or automate post-merge checks. A label such as `post-merge/verification-needed` may be useful later, but label creation is a separate issue.
+This protocol does not automate post-merge checks. A label such as `post-merge/verification-needed` may be useful once the repository label exists; see [Manual lifecycle labels](labels.md).
 
 ## Compact checklist
 
@@ -351,6 +353,7 @@ Use this checklist before asking for review:
 - [ ] Changed files were read back from the branch.
 - [ ] Change-type validation guidance was applied.
 - [ ] Documentation currency was checked when the PR changes factual docs claims.
+- [ ] Label changes were recorded as created, updated, removed or recommended-only where applicable.
 - [ ] Pre-merge validation was completed or clearly recorded as not performed.
 - [ ] Post-merge verification needs are explicitly recorded if they exist.
 - [ ] Pull request explains changed scope, exclusions, validation and caveats.
@@ -366,6 +369,7 @@ This page is the canonical process overview. The focused pages remain the detail
 - [Pull requests as evidence packs](pr-evidence-packs.md) explains PR evidence expectations.
 - [Contract verification](contract-verification.md) explains human review.
 - [PR review remediation](review-remediation.md) explains how to classify and address review feedback.
+- [Manual lifecycle labels](labels.md) explains advisory label usage.
 - [Safe tool operations](tool-operations.md) explains repository mutation safety.
 - [Local MkDocs validation](local-validation.md) explains documentation-site validation.
 - [Documentation currency checklist](documentation-currency.md) explains factual consistency checks for docs.
@@ -377,6 +381,6 @@ This page is the canonical process overview. The focused pages remain the detail
 
 The current baseline remains deliberately manual.
 
-It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, review remediation guidance, material-remediation evidence updates, documentation currency checks, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
+It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, advisory lifecycle labels, evidence-pack PRs, review remediation guidance, material-remediation evidence updates, documentation currency checks, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
 
-It does not include automatic review bots, automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification, automated fact checking or application code.
+It does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic label transitions, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification, automated fact checking or application code.
