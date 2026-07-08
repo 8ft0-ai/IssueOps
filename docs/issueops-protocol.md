@@ -224,7 +224,8 @@ For documentation changes, useful pre-merge evidence includes:
 - changed files read back from the branch;
 - MkDocs navigation checked;
 - internal links checked by inspection or build output;
-- `mkdocs build --strict` run with the pinned documentation dependency; and
+- `mkdocs build --strict` run with the pinned documentation dependency;
+- documentation currency checked when releases, roadmap stages, PRs, workflows, labels, repository settings or automation are mentioned; and
 - confirmation that no unrelated automation or application code was introduced.
 
 Pre-merge validation is evidence available before the merge decision. Post-merge verification is evidence that can only be collected after merge, deployment, release or environment-specific configuration.
@@ -349,6 +350,7 @@ Use this checklist before asking for review:
 - [ ] Implementation stays inside scope and non-goals.
 - [ ] Changed files were read back from the branch.
 - [ ] Change-type validation guidance was applied.
+- [ ] Documentation currency was checked when the PR changes factual docs claims.
 - [ ] Pre-merge validation was completed or clearly recorded as not performed.
 - [ ] Post-merge verification needs are explicitly recorded if they exist.
 - [ ] Pull request explains changed scope, exclusions, validation and caveats.
@@ -366,6 +368,7 @@ This page is the canonical process overview. The focused pages remain the detail
 - [PR review remediation](review-remediation.md) explains how to classify and address review feedback.
 - [Safe tool operations](tool-operations.md) explains repository mutation safety.
 - [Local MkDocs validation](local-validation.md) explains documentation-site validation.
+- [Documentation currency checklist](documentation-currency.md) explains factual consistency checks for docs.
 - [Workflow-change review checklist](workflow-changes.md) explains workflow-specific review expectations.
 - [Change-type validation guidance](change-type-validation.md) explains definitions of done by change type.
 - [Publishing the documentation site](publishing.md) explains the GitHub Pages workflow and manual Pages setting.
@@ -374,6 +377,6 @@ This page is the canonical process overview. The focused pages remain the detail
 
 The current baseline remains deliberately manual.
 
-It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, review remediation guidance, material-remediation evidence updates, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
+It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, review remediation guidance, material-remediation evidence updates, documentation currency checks, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
 
-It does not include automatic review bots, automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification or application code.
+It does not include automatic review bots, automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification, automated fact checking or application code.

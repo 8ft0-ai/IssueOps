@@ -20,9 +20,15 @@ A useful evidence pack records:
 
 ## Validation evidence
 
-Validation evidence should be concrete and matched to the type of change. For documentation-only changes, this may include reading changed Markdown files back from the branch, checking internal links by inspection, reviewing the MkDocs navigation and confirming that the change did not introduce automation or application code.
+Validation evidence should be concrete and matched to the type of change. For documentation-only changes, this may include reading changed Markdown files back from the branch, checking internal links by inspection, applying the [documentation currency checklist](documentation-currency.md), reviewing the MkDocs navigation and confirming that the change did not introduce automation or application code.
 
 For workflow, publishing, process-label and future application-code changes, use the [change-type validation guidance](change-type-validation.md) to select the relevant evidence. Validation should not be marked complete unless it was completed.
+
+## Documentation currency evidence
+
+When documentation mentions releases, roadmap stages, PRs, issues, workflows, repository settings, labels, public site status or automation, record that the [documentation currency checklist](documentation-currency.md) was applied.
+
+The PR should state whether the affected docs describe current, planned, pending or manual capabilities. Future automation should not be described as implemented unless it has actually been added and validated.
 
 ## Validation status
 

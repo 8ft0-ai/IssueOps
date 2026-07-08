@@ -50,6 +50,14 @@ It documents how to handle issues with no dependency, satisfied dependencies, un
 
 See [IssueOps operating protocol](issueops-protocol.md#dependency-check-format) for the dependency-check format.
 
+## Stage 2.5: Documentation currency checks
+
+Stage 2.5 adds a reusable checklist for documentation currency and factual consistency.
+
+It covers release tags, completed versus future stages, merged versus open PRs, repository settings, workflow availability, public site status and unsupported automation claims. This remains a manual documentation review aid and does not add automated fact checking, release automation, Pages publishing changes or wiki cleanup.
+
+See [Documentation currency checklist](documentation-currency.md) for the detailed guidance.
+
 ## Stage 2.6: Workflow-change review checklist
 
 Stage 2.6 adds a focused checklist for pull requests that add or change GitHub Actions workflows.
@@ -103,6 +111,6 @@ These items are future possibilities, not implemented capabilities.
 
 ## Non-goals for the current baseline
 
-The current baseline does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic workflow linting, automatic post-merge verification, auto-merge, branch protection changes, required status checks for agent work or application code.
+The current baseline does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic workflow linting, automatic post-merge verification, automated fact checking, auto-merge, branch protection changes, required status checks for agent work or application code.
 
 Any future automation should be introduced through its own execution contract, implementation plan, validation evidence and human review.
