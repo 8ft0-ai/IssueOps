@@ -9,6 +9,7 @@ The reviewer should be able to compare the pull request with the issue contract 
 A useful evidence pack records:
 
 - the linked issue contract;
+- the change type or types;
 - the files or documentation areas changed;
 - the work deliberately left out;
 - the acceptance criteria satisfied;
@@ -19,9 +20,9 @@ A useful evidence pack records:
 
 ## Validation evidence
 
-Validation evidence should be concrete. For documentation-only changes, this may include reading changed Markdown files back from the branch, checking internal links by inspection, reviewing the MkDocs navigation and confirming that the change did not introduce automation or application code.
+Validation evidence should be concrete and matched to the type of change. For documentation-only changes, this may include reading changed Markdown files back from the branch, checking internal links by inspection, reviewing the MkDocs navigation and confirming that the change did not introduce automation or application code.
 
-For later code changes, the evidence should reflect the repository validation that actually ran. Validation should not be marked complete unless it was completed.
+For workflow, publishing, process-label and future application-code changes, use the [change-type validation guidance](change-type-validation.md) to select the relevant evidence. Validation should not be marked complete unless it was completed.
 
 ## Validation status
 
