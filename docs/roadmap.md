@@ -114,6 +114,14 @@ It explains who can authorise a batch, which changes are eligible, which gates s
 
 See [Delegated batch mode](delegated-batch-mode.md) for the detailed guidance.
 
+## Stage 2.13: PR evidence templates
+
+Stage 2.13 adds compact PR evidence templates by change type.
+
+It covers documentation-only, workflow, publishing/deployment, process-label and future application-code changes. The templates keep required scope, validation, caveat and groundedness evidence while reducing repeated long-form PR bodies for low-risk work.
+
+See [PR evidence templates](pr-evidence-templates.md) for the reusable formats.
+
 ## Future work
 
 Future stages may explore:
