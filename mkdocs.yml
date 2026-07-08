@@ -29,6 +29,7 @@ nav:
       - Stage 1 release notes: releases/stage-1.md
   - Validation:
       - Local MkDocs validation: local-validation.md
+      - Workflow-change review checklist: workflow-changes.md
 
 markdown_extensions:
   - toc:
