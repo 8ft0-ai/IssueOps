@@ -58,6 +58,14 @@ It covers trigger scope, job-scoped permissions, pinned or bounded dependencies,
 
 See [Workflow-change review checklist](workflow-changes.md) for the detailed guidance.
 
+## Stage 2.7: PR review remediation protocol
+
+Stage 2.7 defines how review feedback should be classified, addressed and evidenced.
+
+It covers required fixes, optional improvements, clarification-needed items, out-of-scope feedback, validation reruns, thread replies, thread resolution and remediation summaries. This remains a manual review protocol and does not add review bots, required review rules, permission changes or automatic thread resolution.
+
+See [PR review remediation](review-remediation.md) for the detailed guidance.
+
 ## Stage 2.9: Pre-merge and post-merge validation protocol
 
 Stage 2.9 strengthens validation evidence by separating checks that must be completed before merge from checks that can only be verified after merge, deployment, release or environment configuration.
@@ -79,7 +87,7 @@ See [Change-type validation guidance](change-type-validation.md) for the definit
 Future stages may explore:
 
 - richer documentation examples;
-- review remediation and evidence-pack update protocols;
+- evidence-pack update protocols after material remediation;
 - lightweight release documentation;
 - carefully bounded Codex execution triggers; and
 - stronger review evidence gates.
@@ -88,6 +96,6 @@ These items are future possibilities, not implemented capabilities.
 
 ## Non-goals for the current baseline
 
-The current baseline does not include automatic dependency detection, automatic Codex execution, automatic workflow linting, automatic post-merge verification, auto-merge, branch protection changes, required status checks for agent work or application code.
+The current baseline does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic workflow linting, automatic post-merge verification, auto-merge, branch protection changes, required status checks for agent work or application code.
 
 Any future automation should be introduced through its own execution contract, implementation plan, validation evidence and human review.
