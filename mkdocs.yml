@@ -10,6 +10,7 @@ theme:
 nav:
   - Home: index.md
   - Operating model:
+      - IssueOps operating protocol: issueops-protocol.md
       - Stage 1 workflow: issueops.md
       - Execution contracts: execution-contracts.md
       - Pull requests as evidence packs: pr-evidence-packs.md
