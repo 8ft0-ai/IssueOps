@@ -34,12 +34,23 @@ It introduces a GitHub Actions workflow that builds the site with `mkdocs build 
 
 See [Publishing the documentation site](publishing.md) for the workflow, permissions and manual repository setting.
 
+## Stage 2.3: Operating protocol hardening
+
+Stage 2.3 documents the manual IssueOps operating protocol as a first-class process contract.
+
+It makes the issue-to-PR lifecycle easier to follow by describing the readiness gate, implementation plan, branch discipline, safe tool-operation check, validation evidence, PR evidence pack, contract verification, review remediation and post-merge verification boundary in one canonical place.
+
+See [IssueOps operating protocol](issueops-protocol.md) for the process overview.
+
 ## Future work
 
 Future stages may explore:
 
 - richer documentation examples;
-- more explicit contract-readiness checklists;
+- dependency-aware readiness checks;
+- workflow-change review checklists;
+- pre-merge and post-merge validation guidance;
+- review remediation and evidence-pack update protocols;
 - lightweight release documentation;
 - carefully bounded Codex execution triggers; and
 - stronger review evidence gates.
