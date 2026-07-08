@@ -15,6 +15,7 @@ nav:
       - Execution contracts: execution-contracts.md
       - Pull requests as evidence packs: pr-evidence-packs.md
       - Contract verification: contract-verification.md
+      - PR review remediation: review-remediation.md
   - Manual controls:
       - Manual labels: labels.md
       - Safe tool operations: tool-operations.md
