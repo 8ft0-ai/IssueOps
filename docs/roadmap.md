@@ -50,13 +50,20 @@ It documents how to handle issues with no dependency, satisfied dependencies, un
 
 See [IssueOps operating protocol](issueops-protocol.md#dependency-check-format) for the dependency-check format.
 
+## Stage 2.9: Pre-merge and post-merge validation protocol
+
+Stage 2.9 strengthens validation evidence by separating checks that must be completed before merge from checks that can only be verified after merge, deployment, release or environment configuration.
+
+It documents when pending validation should block merge, when post-merge verification can be acceptable and how the PR evidence pack should record both states. This remains a manual evidence protocol and does not add labels, automation, required checks or branch protection.
+
+See [Pull requests as evidence packs](pr-evidence-packs.md#validation-status) and [Contract verification](contract-verification.md#pre-merge-versus-post-merge-checks) for the detailed guidance.
+
 ## Future work
 
 Future stages may explore:
 
 - richer documentation examples;
 - workflow-change review checklists;
-- pre-merge and post-merge validation guidance;
 - review remediation and evidence-pack update protocols;
 - lightweight release documentation;
 - carefully bounded Codex execution triggers; and
@@ -66,6 +73,6 @@ These items are future possibilities, not implemented capabilities.
 
 ## Non-goals for the current baseline
 
-The current baseline does not include automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work or application code.
+The current baseline does not include automatic dependency detection, automatic Codex execution, automatic post-merge verification, auto-merge, branch protection changes, required status checks for agent work or application code.
 
 Any future automation should be introduced through its own execution contract, implementation plan, validation evidence and human review.
