@@ -106,6 +106,14 @@ It covers documentation, workflow, publishing/deployment, process-label and futu
 
 See [Change-type validation guidance](change-type-validation.md) for the definitions of done.
 
+## Stage 2.12: Delegated batch mode
+
+Stage 2.12 defines owner-authorised delegated batch mode for low-risk issue completion.
+
+It explains who can authorise a batch, which changes are eligible, which gates still apply, when the agent must stop for manual review and how merge authorisation is recorded. This remains a manual delegation model and does not configure GitHub auto-merge, branch protection or required checks.
+
+See [Delegated batch mode](delegated-batch-mode.md) for the detailed guidance.
+
 ## Future work
 
 Future stages may explore:
@@ -119,6 +127,6 @@ These items are future possibilities, not implemented capabilities.
 
 ## Non-goals for the current baseline
 
-The current baseline does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic label transitions, automatic workflow linting, automatic post-merge verification, automated fact checking, auto-merge, branch protection changes, required status checks for agent work or application code.
+The current baseline does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic label transitions, automatic workflow linting, automatic post-merge verification, automated fact checking, GitHub auto-merge configuration, branch protection changes, required status checks for agent work or application code.
 
 Any future automation should be introduced through its own execution contract, implementation plan, validation evidence and human review.
