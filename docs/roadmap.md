@@ -90,6 +90,14 @@ It documents when pending validation should block merge, when post-merge verific
 
 See [Pull requests as evidence packs](pr-evidence-packs.md#validation-status) and [Contract verification](contract-verification.md#pre-merge-versus-post-merge-checks) for the detailed guidance.
 
+## Stage 2.10: Lifecycle labels
+
+Stage 2.10 defines a minimal advisory label set for the manual IssueOps lifecycle.
+
+It covers draft contracts, ready contracts, posted plans, review changes requested, pending validation and post-merge verification needs. These labels support visibility only; they do not trigger automation or replace written issue and PR evidence. The labels are documented as recommended until the repository label definitions are created through GitHub UI/API tooling.
+
+See [Manual lifecycle labels](labels.md) for the detailed guidance.
+
 ## Stage 2.11: Change-type validation guidance
 
 Stage 2.11 defines lightweight validation expectations by change type.
@@ -111,6 +119,6 @@ These items are future possibilities, not implemented capabilities.
 
 ## Non-goals for the current baseline
 
-The current baseline does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic workflow linting, automatic post-merge verification, automated fact checking, auto-merge, branch protection changes, required status checks for agent work or application code.
+The current baseline does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic label transitions, automatic workflow linting, automatic post-merge verification, automated fact checking, auto-merge, branch protection changes, required status checks for agent work or application code.
 
 Any future automation should be introduced through its own execution contract, implementation plan, validation evidence and human review.

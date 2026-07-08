@@ -128,6 +128,8 @@ Not applicable unless explicitly scoped:
 - application tests;
 - deployment checks.
 
+If repository label creation is not available in the current tool environment, record the affected labels as recommended-only rather than claiming they were created.
+
 ## Future application-code changes
 
 Application-code validation is intentionally general until the repository contains application code.
