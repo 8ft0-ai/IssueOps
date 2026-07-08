@@ -44,6 +44,14 @@ If a blocking dependency is not satisfied, do not create the branch. Post the de
 
 This is a manual readiness control. It does not add automated dependency detection or branch enforcement.
 
+## Workflow file changes
+
+Workflow files are high-leverage repository mutations.
+
+Before changing `.github/workflows/*`, confirm that the issue explicitly allows workflow changes and that the implementation plan names the workflow files or workflow behaviour expected to change.
+
+Apply the [workflow-change review checklist](workflow-changes.md) before opening a PR that adds or changes workflow files. If the issue does not authorise workflow changes, do not modify workflow files as an incidental fix.
+
 ## Phase boundaries
 
 ### Issue setup
