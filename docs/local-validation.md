@@ -50,6 +50,22 @@ The generated `site/` directory is uploaded as the Pages artifact only after the
 
 See [Publishing the documentation site](publishing.md) for the CI publishing path, workflow triggers, permissions and manual repository setting.
 
+## Pre-merge and post-merge validation boundaries
+
+Some checks can be completed before merge. Others can only be completed after the change is merged, deployed, released or configured in the repository environment.
+
+Use the PR evidence pack to separate these states.
+
+| Change type | Pre-merge validation examples | Post-merge verification examples |
+| --- | --- | --- |
+| Documentation-only change | Read changed files from the branch, review links, review `mkdocs.yml`, run `mkdocs build --strict`. | Usually none, unless the published site needs to be checked after merge. |
+| Workflow change | Review YAML, triggers, permissions, dependency installation, artifact paths and local build where available. | Observe the workflow run after merge or manual dispatch. |
+| Publishing change | Run MkDocs build, review Pages workflow path and confirm manual settings are documented. | Check Pages deployment, public URL and repository Pages source setting. |
+| Release change | Review release notes, tag wording, version references and changelog links. | Confirm tag or release publication after it is created. |
+| Environment-specific change | Review configuration files and document expected environment state. | Confirm the external setting or environment state after it is available. |
+
+Pending validation should block merge when it is needed to decide whether the issue contract was satisfied. Post-merge verification can be acceptable when the implementation is complete, available validation is not failing and the remaining check cannot run before merge or deployment.
+
 ## Manual validation fallback
 
 If MkDocs or the pinned dependencies are not available in the current environment, record that clearly in the pull request and perform the best available manual checks:
