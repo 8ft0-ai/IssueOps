@@ -35,10 +35,28 @@ Before implementation starts, the issue should be checked for readiness. The che
 - the boundaries are explicit;
 - the acceptance criteria can be reviewed;
 - the validation evidence is clear;
-- the work is small enough to review safely; and
+- the work is small enough to review safely;
+- dependencies or ordering constraints are identified;
+- the dependency state is satisfied or explicitly recorded as pending; and
 - there is enough context for Codex to act without guessing.
 
 If the answer is no, clarify the issue before creating a branch.
+
+## Dependency-aware readiness
+
+A readiness comment should record dependency state before branch creation.
+
+The dependency check should answer:
+
+- Does this issue depend on a prior issue, pull request, release, repository setting or environment state?
+- What state is required for that dependency?
+- What state was observed before implementation?
+- Which branch or commit is safe to start from?
+- Is the decision ready to implement, blocked pending dependency or clarification required?
+
+Branches should not be created while a blocking dependency is unsatisfied. If a repository setting or environment dependency cannot be verified in code, the readiness comment and later PR evidence should record that explicitly.
+
+See [IssueOps operating protocol](issueops-protocol.md) for the standard dependency-check format and examples.
 
 ## Relationship to Jira
 

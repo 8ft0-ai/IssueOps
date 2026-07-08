@@ -36,6 +36,14 @@ Forbidden side effects: no issues, no files, no pull requests
 
 If the selected tool does not match the intended operation, stop before making the call.
 
+## Dependency state before branch setup
+
+Before entering branch setup, the readiness comment should record dependency state and the safe starting point for the branch.
+
+If a blocking dependency is not satisfied, do not create the branch. Post the dependency state on the issue instead and wait until the required prior work, release, repository setting or environment state is available.
+
+This is a manual readiness control. It does not add automated dependency detection or branch enforcement.
+
 ## Phase boundaries
 
 ### Issue setup
@@ -43,6 +51,7 @@ If the selected tool does not match the intended operation, stop before making t
 Allowed operations:
 
 - fetch the issue;
+- fetch related issues, pull requests, branches or files needed to confirm dependency state;
 - add readiness or implementation-plan comments.
 
 Not allowed in this phase:
@@ -56,7 +65,7 @@ Not allowed in this phase:
 
 Allowed operations:
 
-- create the feature branch;
+- create the feature branch after readiness and dependency state are recorded;
 - search or fetch branches if needed;
 - fetch files for context.
 
