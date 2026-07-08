@@ -54,6 +54,12 @@ Post-merge verification is acceptable only when the implementation is complete, 
 
 Pending validation should block merge when it is needed to decide whether the issue contract was satisfied, when available validation is failing or when merging would make the evidence pack misleading.
 
+## Remediation evidence
+
+If review remediation changes the PR materially, the evidence pack should remain accurate.
+
+Use the [PR review remediation protocol](review-remediation.md) to classify review feedback, apply required fixes, rerun validation and decide whether to reply inline, post a top-level summary or update the PR body.
+
 ## Scope evidence
 
 The evidence pack should also record what did not change. This is especially important in the current manual baseline, where the workflow does not include automatic Codex execution, branch protection changes, auto-merge, required status checks for agent work, automatic post-merge verification or application code.

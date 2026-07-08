@@ -50,6 +50,14 @@ Post-merge verification can be acceptable when:
 - the PR clearly records the remaining check; and
 - the reviewer explicitly accepts the residual risk.
 
+## Review remediation
+
+When review feedback requires changes, use the [PR review remediation protocol](review-remediation.md).
+
+The final review should consider the remediated PR state, including any updated validation evidence, scope changes, caveats or remaining checks.
+
+Do not recommend approval if remediation is incomplete, available validation is failing or the final PR no longer satisfies the issue contract.
+
 ## Final recommendation
 
 Use one final recommendation:
