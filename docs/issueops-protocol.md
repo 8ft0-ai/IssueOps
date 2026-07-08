@@ -300,18 +300,17 @@ See [Contract verification](contract-verification.md) for the review model.
 
 ### 10. Remediate review feedback inside the contract
 
-When review feedback is received, classify it before making changes:
+When review feedback is received, use the [PR review remediation protocol](review-remediation.md).
 
-- required fix;
-- optional improvement;
-- clarification needed; or
-- out of scope for the issue.
+At minimum:
 
-Apply required fixes within the existing contract. Do not broaden the work during remediation unless the repository owner explicitly approves the scope change or a new issue is created.
-
-After remediation, read changed files back, rerun available validation, reply to addressed comments and resolve review threads only when the fix is present.
-
-Detailed remediation guidance is planned as follow-up work.
+- collect PR conversation comments, submitted reviews and inline review threads;
+- classify each item as required fix, optional improvement, clarification needed or out of scope;
+- apply required fixes within the existing contract;
+- avoid broadening the work unless the repository owner explicitly approves the scope change or a new issue is created;
+- read changed files back and rerun affected validation;
+- reply to addressed comments; and
+- resolve review threads only when the fix is present and validation is not failing.
 
 ### 11. Merge only after human approval
 
@@ -363,6 +362,7 @@ This page is the canonical process overview. The focused pages remain the detail
 - [Execution contracts](execution-contracts.md) explains how to write agent-ready issues.
 - [Pull requests as evidence packs](pr-evidence-packs.md) explains PR evidence expectations.
 - [Contract verification](contract-verification.md) explains human review.
+- [PR review remediation](review-remediation.md) explains how to classify and address review feedback.
 - [Safe tool operations](tool-operations.md) explains repository mutation safety.
 - [Local MkDocs validation](local-validation.md) explains documentation-site validation.
 - [Workflow-change review checklist](workflow-changes.md) explains workflow-specific review expectations.
@@ -373,6 +373,6 @@ This page is the canonical process overview. The focused pages remain the detail
 
 The current baseline remains deliberately manual.
 
-It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
+It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, evidence-pack PRs, review remediation guidance, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
 
-It does not include automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification or application code.
+It does not include automatic review bots, automatic dependency detection, automatic Codex execution, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification or application code.
