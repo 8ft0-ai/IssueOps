@@ -66,6 +66,14 @@ It covers required fixes, optional improvements, clarification-needed items, out
 
 See [PR review remediation](review-remediation.md) for the detailed guidance.
 
+## Stage 2.8: Material remediation evidence updates
+
+Stage 2.8 defines when material review remediation must update the PR body or add a clearly labelled remediation evidence comment.
+
+It covers materiality criteria, final contract checks, validation reruns, scope impact and the distinction between minor comment replies and material evidence updates. This remains a manual evidence protocol and does not add PR automation, templates, branch protection or required checks.
+
+See [Pull requests as evidence packs](pr-evidence-packs.md#remediation-evidence) and [PR review remediation](review-remediation.md#material-remediation) for the detailed guidance.
+
 ## Stage 2.9: Pre-merge and post-merge validation protocol
 
 Stage 2.9 strengthens validation evidence by separating checks that must be completed before merge from checks that can only be verified after merge, deployment, release or environment configuration.
@@ -87,7 +95,6 @@ See [Change-type validation guidance](change-type-validation.md) for the definit
 Future stages may explore:
 
 - richer documentation examples;
-- evidence-pack update protocols after material remediation;
 - lightweight release documentation;
 - carefully bounded Codex execution triggers; and
 - stronger review evidence gates.
