@@ -7,7 +7,11 @@ on:
     paths:
       - "planning/**"
       - "scripts/validate_planning.py"
+      - "scripts/validate_delivery_graph.py"
+      - "scripts/render_delivery_graph.py"
       - "tests/test_validate_planning.py"
+      - "tests/test_validate_delivery_graph.py"
+      - "tests/test_render_delivery_graph.py"
       - ".github/workflows/planning-validation.yml"
   workflow_dispatch:
 
@@ -30,5 +34,17 @@ jobs:
       - name: Run planning validator tests
         run: python -m unittest discover -s tests -p 'test_validate_planning.py' -v
 
+      - name: Run delivery graph validator tests
+        run: python -m unittest discover -s tests -p 'test_validate_delivery_graph.py' -v
+
+      - name: Run delivery graph renderer tests
+        run: python -m unittest discover -s tests -p 'test_render_delivery_graph.py' -v
+
       - name: Validate planning artefacts
         run: python scripts/validate_planning.py
+
+      - name: Validate delivery graph metadata
+        run: python scripts/validate_delivery_graph.py
+
+      - name: Check generated delivery graph is current
+        run: python scripts/render_delivery_graph.py --check
