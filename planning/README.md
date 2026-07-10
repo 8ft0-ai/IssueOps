@@ -9,19 +9,22 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 ## Start here
 
 ```text
-planning/README.md        -> operating rules
-planning/roadmap/index.md -> intended stage outcomes and boundaries
-planning/delivery/index.md -> completed delivery evidence
-planning/delivery-log.md  -> concise chronological ledger
+planning/README.md                 -> operating rules
+planning/roadmap/index.md          -> intended stage outcomes and boundaries
+planning/delivery/index.md         -> completed delivery evidence
+planning/delivery-log.md           -> concise chronological ledger
+planning/delivery/graph.md         -> generated causal navigation
 ```
 
 ## Planning versus delivery
 
 ```text
-planning/roadmap/  -> forward-looking intent, boundaries and acceptance gates
-planning/delivery/ -> what actually shipped, what proved it and what was learned
-planning/delivery-log.md -> short chronological summary
-GitHub history     -> detailed execution and review evidence
+planning/roadmap/                  -> forward-looking intent, boundaries and acceptance gates
+planning/delivery/*.md             -> what actually shipped, what proved it and what was learned
+planning/delivery-log.md           -> short chronological summary
+planning/delivery/delivery.yaml    -> compact causal graph metadata
+planning/delivery/graph.md         -> generated Mermaid navigation
+GitHub history                     -> detailed execution and review evidence
 ```
 
 A roadmap specification must not become the completed delivery narrative. A delivery record must not rewrite what was intended before the work began.
@@ -77,6 +80,22 @@ A retrospective roadmap record must distinguish:
 
 It must not imply that the roadmap or complete issue decomposition existed before the work.
 
+## Delivery graph
+
+The delivery graph explains why one stage led to the next, what provided the strongest proof, which artefacts became dependencies and which boundaries carried forward.
+
+It is not an issue or pull-request inventory. Add a node only when it explains direction, proof, an enduring boundary, a produced dependency or a future decision point.
+
+When `planning/delivery/delivery.yaml` changes:
+
+```bash
+python scripts/validate_delivery_graph.py
+python scripts/render_delivery_graph.py
+python scripts/render_delivery_graph.py --check
+```
+
+Commit the regenerated `planning/delivery/graph.md` in the same pull request.
+
 ## Close-out
 
 A stage closes when:
@@ -88,4 +107,4 @@ A stage closes when:
 - the concise delivery log is updated; and
 - the next decision boundary is recorded without creating speculative execution work.
 
-Future delivery-graph metadata may be added only when it explains causality, proof or an enduring boundary more clearly than the Markdown records alone.
+Update the delivery graph only when close-out changes the causal delivery story. Routine activity belongs in the Markdown record and GitHub history, not as graph nodes.
