@@ -2,6 +2,8 @@
 
 IssueOps develops the operating model in deliberate stages. Each stage must preserve the central contract: the issue bounds the work, the pull request carries evidence, and a human retains approval authority.
 
+This page is the concise public roadmap. Detailed stage intent, retrospective delivery evidence and close-out records live in the top-level `planning/` control surface. GitHub issues, pull requests, reviews, commits and workflow runs remain the canonical detailed audit trail.
+
 ## Stage 1 — Manual execution-contract foundation
 
 Status: complete.
