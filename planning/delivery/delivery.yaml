@@ -91,6 +91,33 @@
       "summary": "The baseline does not authorise automatic agent execution, lifecycle transitions or auto-merge."
     },
     {
+      "id": "decision-planning-adoption",
+      "type": "decision",
+      "title": "Adopt stage planning for multi-issue work",
+      "summary": "Use the planning model proportionately for cross-cutting, governance-sensitive or proof-dependent stages."
+    },
+    {
+      "id": "pr-70",
+      "type": "pull_request",
+      "title": "PR #70 — Planning control surface",
+      "summary": "Added separate roadmap and delivery records, templates and structural validation.",
+      "url": "https://github.com/8ft0-ai/IssueOps/pull/70"
+    },
+    {
+      "id": "pr-73",
+      "type": "pull_request",
+      "title": "PR #73 — Compact delivery graph",
+      "summary": "Proved the causal graph, schema validation, rendering and freshness checks.",
+      "url": "https://github.com/8ft0-ai/IssueOps/pull/73"
+    },
+    {
+      "id": "artifact-adoption-record",
+      "type": "artifact",
+      "title": "Planning-process adoption record",
+      "summary": "Records the adopted model, proportionality rule, graph threshold and Stage 3 boundary.",
+      "path": "planning/delivery/planning-process-adoption.md"
+    },
+    {
       "id": "decision-stage-3",
       "type": "decision",
       "title": "Stage 3 requires deliberate shaping",
@@ -113,7 +140,11 @@
     {"from": "stage-1", "to": "boundary-human-authority", "type": "preserved"},
     {"from": "stage-2", "to": "boundary-human-authority", "type": "preserved"},
     {"from": "stage-2", "to": "boundary-bounded-automation", "type": "preserved"},
-    {"from": "stage-2", "to": "decision-stage-3", "type": "carried_forward_to"},
+    {"from": "stage-2", "to": "decision-planning-adoption", "type": "motivated"},
+    {"from": "decision-planning-adoption", "to": "pr-70", "type": "implemented_by"},
+    {"from": "decision-planning-adoption", "to": "pr-73", "type": "validated_by"},
+    {"from": "decision-planning-adoption", "to": "artifact-adoption-record", "type": "produced"},
+    {"from": "decision-planning-adoption", "to": "decision-stage-3", "type": "carried_forward_to"},
     {"from": "boundary-bounded-automation", "to": "decision-stage-3", "type": "motivated"}
   ]
 }
