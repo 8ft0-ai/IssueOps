@@ -1,0 +1,34 @@
+name: Validate planning artefacts
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "planning/**"
+      - "scripts/validate_planning.py"
+      - "tests/test_validate_planning.py"
+      - ".github/workflows/planning-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate planning structure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run planning validator tests
+        run: python -m unittest discover -s tests -p 'test_validate_planning.py' -v
+
+      - name: Validate planning artefacts
+        run: python scripts/validate_planning.py
