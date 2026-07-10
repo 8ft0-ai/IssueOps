@@ -48,17 +48,30 @@ The workflow installs documentation dependencies from `requirements.txt` instead
 
 This keeps local validation and CI publishing aligned and reduces the risk that an upstream MkDocs release unexpectedly breaks Pages deployment.
 
-## Manual repository setting
+## Production verification
 
-The repository may still need GitHub Pages configured to use GitHub Actions as the Pages source.
+The production publishing path was verified through GitHub Actions workflow run `28924550021`.
 
-If the site does not publish after this workflow is merged, check the repository settings:
+The run:
+
+- built the MkDocs site successfully;
+- installed the pinned documentation dependencies;
+- completed `mkdocs build --strict` successfully;
+- uploaded the GitHub Pages artifact;
+- deployed commit `74a6c36f3d2e340f3969fe54b098098e688c5ad6`; and
+- reported a successful deployment to `https://8ft0-ai.github.io/IssueOps/`.
+
+The repository owner also confirmed that the live landing page and representative documentation pages rendered correctly. This verifies that the repository-level Pages source is configured for GitHub Actions and that the production publishing path is operational.
+
+## Repository setting
+
+GitHub Pages must use GitHub Actions as the build and deployment source. This setting is repository-level configuration and is not changed by the workflow file itself.
+
+The production verification above confirms that the required setting is currently configured correctly. If a future deployment fails because the source setting changes:
 
 1. Open repository settings.
 2. Open Pages.
 3. Under build and deployment, set the source to GitHub Actions.
-
-This setting is repository-level configuration and is not changed by the workflow file itself.
 
 ## Local validation
 
