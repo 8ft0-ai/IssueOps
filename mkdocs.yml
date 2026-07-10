@@ -29,6 +29,7 @@ nav:
   - Project record:
       - Site and wiki boundaries: site-vs-wiki.md
       - Roadmap: roadmap.md
+      - Stage 2 contributor usability review: contributor-usability-review.md
       - Publishing: publishing.md
       - Stage 1 release notes: releases/stage-1.md
   - Validation:
