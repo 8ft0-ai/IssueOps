@@ -32,6 +32,7 @@ nav:
       - Stage 2 contributor usability review: contributor-usability-review.md
       - Publishing: publishing.md
       - Stage 1 release notes: releases/stage-1.md
+      - Stage 2 release notes: releases/stage-2.md
   - Validation:
       - Local MkDocs validation: local-validation.md
       - Repository-native validation: repository-native-validation.md
