@@ -26,7 +26,7 @@ Record the branch name, expected files, implementation sequence, validation, ass
 
 Create one branch per issue, then use the safe tool-operation check before repository mutations.
 
-**Finding:** the safe-operation control is valuable, but contributors need an easy way to distinguish the compact format for routine low-risk work from the full format for ambiguous or high-risk operations. The canonical protocol now points contributors directly to the compact evidence path.
+**Finding:** the safe-operation control is valuable, but contributors need an easy way to distinguish the compact format for routine low-risk work from the full format for ambiguous or high-risk operations. The documentation home page now points contributors directly to the compact evidence path.
 
 ### 5. Implement only the contract
 
@@ -38,7 +38,7 @@ Make the smallest change that satisfies the issue and avoid unrelated refactorin
 
 Choose validation by change type, prefer repository-native evidence and record unavailable checks honestly.
 
-**Finding:** the specialised validation pages are useful, but a first-time contributor must decide which page to open. The canonical protocol now provides a small-change path that directs contributors to change-type guidance first, then repository-native validation and workflow-specific review only when applicable.
+**Finding:** the specialised validation pages are useful, but a first-time contributor must decide which page to open. The documentation home page now provides a small-change path that directs contributors to change-type guidance first, then repository-native validation and workflow-specific review only when applicable.
 
 The Stage 2.20 and Stage 2.21 runs also exposed a practical workflow gap: branch validation was initially manual and attempted production deployment. PR #61 corrected this by adding automatic pull-request validation and restricting deployment to `main`.
 
@@ -46,7 +46,7 @@ The Stage 2.20 and Stage 2.21 runs also exposed a practical workflow gap: branch
 
 The PR should record scope, exclusions, acceptance evidence, validation, caveats and the pre-approval groundedness review.
 
-**Finding:** the full evidence requirements are clear, while compact templates are easy to miss. The canonical protocol now links directly to the PR evidence templates as the starting point for routine changes, without weakening the full evidence requirements.
+**Finding:** the full evidence requirements are clear, while compact templates are easy to miss. The documentation home page now links directly to the PR evidence templates as the starting point for routine changes, without weakening the full evidence requirements.
 
 ### 8. Review, remediate and merge
 
@@ -63,7 +63,7 @@ Publishing, release and environment-specific changes may require evidence after 
 ## Changes made from this review
 
 - The home page now directs contributors to the canonical Stage 2 operating protocol rather than the older Stage 1 workflow.
-- The canonical protocol now includes a first-time contributor path for small changes.
+- The home page now includes a first-time contributor path for small changes.
 - Compact safe-operation and PR evidence formats are linked directly from that path.
 - This review is included in the documentation navigation as a Stage 2 project record.
 
