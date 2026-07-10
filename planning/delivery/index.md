@@ -23,6 +23,14 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 - [Stage 1 — Manual execution-contract foundation](stage-01-manual-execution-contract-foundation.md)
 - [Stage 2 — Published and hardened operating model](stage-02-operating-model-hardening.md)
 
+## Causal delivery graph
+
+- [Graph modelling rules](graph-modelling-rules.md)
+- [Generated delivery graph](graph.md)
+- Structured source: `planning/delivery/delivery.yaml`
+
+The graph explains causality and representative proof. It does not replace the delivery records or GitHub history.
+
 ## Concise ledger
 
 See [`planning/delivery-log.md`](../delivery-log.md) for the chronological summary.
