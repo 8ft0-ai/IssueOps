@@ -21,7 +21,7 @@ superseded
 ## Retrospective records
 
 - [Stage 1 — Manual execution-contract foundation](stage-01-manual-execution-contract-foundation.md) — completed retrospective reconstruction.
-- Stage 2 reconstruction remains pending through issue #66.
+- [Stage 2 — Published and hardened operating model](stage-02-operating-model-hardening.md) — completed retrospective reconstruction.
 
 Retrospective records must not claim that the complete planning structure existed before delivery.
 

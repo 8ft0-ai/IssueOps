@@ -21,7 +21,7 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 ## Completed records
 
 - [Stage 1 — Manual execution-contract foundation](stage-01-manual-execution-contract-foundation.md)
-- Stage 2 delivery reconstruction remains pending through issue #66.
+- [Stage 2 — Published and hardened operating model](stage-02-operating-model-hardening.md)
 
 ## Concise ledger
 
