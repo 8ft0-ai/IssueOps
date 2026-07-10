@@ -20,7 +20,8 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 
 ## Completed records
 
-Stage 1 and Stage 2 delivery records will be added through issues #65 and #66 after evidence review.
+- [Stage 1 — Manual execution-contract foundation](stage-01-manual-execution-contract-foundation.md)
+- Stage 2 delivery reconstruction remains pending through issue #66.
 
 ## Concise ledger
 
