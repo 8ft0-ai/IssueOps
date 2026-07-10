@@ -20,7 +20,10 @@ superseded
 
 ## Retrospective records
 
-Stage 1 and Stage 2 records will be reconstructed through issues #65 and #66. They must be marked retrospective and must not claim that the complete planning structure existed before delivery.
+- [Stage 1 — Manual execution-contract foundation](stage-01-manual-execution-contract-foundation.md) — completed retrospective reconstruction.
+- Stage 2 reconstruction remains pending through issue #66.
+
+Retrospective records must not claim that the complete planning structure existed before delivery.
 
 ## Active and future stages
 
