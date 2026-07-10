@@ -22,6 +22,7 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 
 - [Stage 1 — Manual execution-contract foundation](stage-01-manual-execution-contract-foundation.md)
 - [Stage 2 — Published and hardened operating model](stage-02-operating-model-hardening.md)
+- [Planning-process adoption](planning-process-adoption.md)
 
 ## Causal delivery graph
 

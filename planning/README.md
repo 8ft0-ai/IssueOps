@@ -54,6 +54,23 @@ roadmap specification
 
 Native GitHub sub-issues are optional. Parent and child relationships may be explicit in issue bodies and planning records.
 
+## Adoption decision
+
+The planning model is adopted for future multi-issue stages.
+
+The adoption applies proportionately. A stage pack is the default only when work crosses issue boundaries, changes authority or governance, requires an end-to-end proof, or needs an explicit close-out decision. It is not a mandatory wrapper for ordinary bounded work.
+
+The adopted model keeps four questions separate:
+
+```text
+What did we intend?       -> roadmap record
+What actually shipped?    -> delivery record
+What proved it?           -> linked GitHub and workflow evidence
+Why did that lead onward? -> compact delivery graph
+```
+
+See [the planning-process adoption record](delivery/planning-process-adoption.md) for the evidence, limitations and final decision.
+
 ## Stage lifecycle
 
 Use this status vocabulary:
@@ -85,6 +102,16 @@ It must not imply that the roadmap or complete issue decomposition existed befor
 The delivery graph explains why one stage led to the next, what provided the strongest proof, which artefacts became dependencies and which boundaries carried forward.
 
 It is not an issue or pull-request inventory. Add a node only when it explains direction, proof, an enduring boundary, a produced dependency or a future decision point.
+
+Update the graph when an item:
+
+- explains why delivery changed direction;
+- is the strongest proof for a stage or increment;
+- becomes a dependency for future work;
+- preserves an enduring authority or governance boundary; or
+- creates the next decision point.
+
+Routine issues, pull requests and CI runs remain in the delivery record and GitHub history.
 
 When `planning/delivery/delivery.yaml` changes:
 

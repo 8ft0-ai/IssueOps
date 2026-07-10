@@ -17,6 +17,10 @@ flowchart LR
   n_release_v0_2["v0.2.0 recommended baseline\n(release)"]
   n_boundary_human_authority["Human contract and merge authority\n(boundary)"]
   n_boundary_bounded_automation["Automation remains bounded\n(boundary)"]
+  n_decision_planning_adoption["Adopt stage planning for multi-issue work\n(decision)"]
+  n_pr_70["PR #70 — Planning control surface\n(pull request)"]
+  n_pr_73["PR #73 — Compact delivery graph\n(pull request)"]
+  n_artifact_adoption_record["Planning-process adoption record\n(artifact)"]
   n_decision_stage_3["Stage 3 requires deliberate shaping\n(decision)"]
 
   n_stage_1 -->|implemented by| n_pr_2
@@ -34,6 +38,10 @@ flowchart LR
   n_stage_1 -->|preserved| n_boundary_human_authority
   n_stage_2 -->|preserved| n_boundary_human_authority
   n_stage_2 -->|preserved| n_boundary_bounded_automation
-  n_stage_2 -->|carried forward to| n_decision_stage_3
+  n_stage_2 -->|motivated| n_decision_planning_adoption
+  n_decision_planning_adoption -->|implemented by| n_pr_70
+  n_decision_planning_adoption -->|validated by| n_pr_73
+  n_decision_planning_adoption -->|produced| n_artifact_adoption_record
+  n_decision_planning_adoption -->|carried forward to| n_decision_stage_3
   n_boundary_bounded_automation -->|motivated| n_decision_stage_3
 ```
