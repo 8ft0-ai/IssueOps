@@ -1,172 +1,87 @@
 # Roadmap
 
-This roadmap is intentionally conservative. The project starts by proving the manual execution-contract workflow before adding automation.
+IssueOps develops the operating model in deliberate stages. Each stage must preserve the central contract: the issue bounds the work, the pull request carries evidence, and a human retains approval authority.
 
-## Current baseline: Stage 1
+## Stage 1 — Manual execution-contract foundation
 
-Stage 1 establishes the manual execution-contract IssueOps baseline.
+Status: complete.
 
-It includes:
+Stage 1 established the manual execution-contract IssueOps baseline:
 
 - structured issue contracts;
 - readiness checks before implementation;
 - implementation plans before file changes;
 - safe tool-operation checks before repository mutations;
 - one branch per issue;
-- Codex-assisted implementation within the contract;
+- agent-assisted implementation within the contract;
 - lightweight validation evidence;
 - pull requests as evidence packs; and
 - human contract verification before merge.
 
-The first baseline release is [`v0.1.0`](releases/stage-1.md).
+The Stage 1 baseline is released as [`v0.1.0`](releases/stage-1.md).
 
-## Stage 2.1: Canonical documentation site
+## Stage 2 — Published and hardened operating model
 
-Stage 2.1 creates the MkDocs/GitHub Pages documentation track. The goal is to give readers a stable, curated entry point for the project thesis, workflow, controls, examples and release notes.
+Status: complete, with one explicitly deferred non-blocking limitation.
 
-This stage keeps the wiki separate as project memory. It does not clean up or rewrite the wiki.
+Stage 2 extended the manual baseline through five capability groups.
 
-## Stage 2.2: GitHub Pages publishing
+### Canonical documentation and publishing
 
-Stage 2.2 adds the publishing path for the MkDocs documentation site.
+Stage 2 introduced the MkDocs documentation site, GitHub Pages publishing, pinned strict builds, production deployment from `main`, and verified live-site evidence.
 
-It introduces a GitHub Actions workflow that builds the site with `mkdocs build --strict`, uploads the generated `site/` directory as a Pages artifact and deploys it to GitHub Pages. The workflow runs on pushes to `main` and can also be started manually.
+### Operating-protocol consolidation
 
-See [Publishing the documentation site](publishing.md) for the workflow, permissions and manual repository setting.
+The repository now has one canonical protocol covering readiness, dependency checks, planning, branch discipline, safe operations, validation, PR evidence, contract verification, remediation and post-merge verification.
 
-## Stage 2.3: Operating protocol hardening
+### Evidence and validation controls
 
-Stage 2.3 documents the manual IssueOps operating protocol as a first-class process contract.
+Stage 2 added documentation-currency checks, workflow-change review, change-type validation guidance, compact PR evidence templates, material-remediation updates, and a clear distinction between pre-merge validation and post-merge verification.
 
-It makes the issue-to-PR lifecycle easier to follow by describing the readiness gate, implementation plan, branch discipline, safe tool-operation check, validation evidence, PR evidence pack, contract verification, review remediation and post-merge verification boundary in one canonical place.
+Repository-native validation is preferred. Pull requests automatically build the documentation site and upload the Pages artefact, while production deployment is skipped until the change reaches `main`.
 
-See [IssueOps operating protocol](issueops-protocol.md) for the process overview.
+### Bounded delegation and usability
 
-## Stage 2.4: Dependency-aware readiness
+Stage 2 defined owner-authorised delegated batch mode, batch completion summaries and compact safe-operation evidence for routine low-risk work. A complete dogfood run tested the protocol, and a contributor usability review improved the front door without removing specialised controls.
 
-Stage 2.4 strengthens the readiness gate by requiring dependency state and a safe starting point to be recorded before branch creation.
+### Advisory lifecycle visibility
 
-It documents how to handle issues with no dependency, satisfied dependencies, unsatisfied blocking dependencies and repository-setting or environment dependencies. This remains a manual readiness control and does not add automated dependency detection or branch enforcement.
+Stage 2 defines a small lifecycle label model, but the additional repository label definitions were not created because the connected tooling cannot create labels with descriptions and colours. Issue #54 was closed as a non-blocking deferred limitation.
 
-See [IssueOps operating protocol](issueops-protocol.md#dependency-check-format) for the dependency-check format.
+Written issue and pull-request evidence remains canonical. No workflow depends on the missing labels.
 
-## Stage 2.5: Documentation currency checks
+The Stage 2 baseline is documented in the [`v0.2.0` release recommendation](releases/stage-2.md).
 
-Stage 2.5 adds a reusable checklist for documentation currency and factual consistency.
+## Stage 3 — Deliberate automation shaping
 
-It covers release tags, completed versus future stages, merged versus open PRs, repository settings, workflow availability, public site status and unsupported automation claims. This remains a manual documentation review aid and does not add automated fact checking, release automation, Pages publishing changes or wiki cleanup.
+Status: not started.
 
-See [Documentation currency checklist](documentation-currency.md) for the detailed guidance.
+Stage 3 must begin with a reviewed shaping and planning decision. It should identify which bounded automation would reduce genuine friction without weakening:
 
-## Stage 2.6: Workflow-change review checklist
+- issue-contract authority;
+- explicit implementation planning;
+- safe repository operations;
+- evidence quality;
+- human contract verification;
+- merge and publication authority; or
+- honest handling of incomplete validation.
 
-Stage 2.6 adds a focused checklist for pull requests that add or change GitHub Actions workflows.
+Potential areas include bounded execution triggers, evidence collection and lifecycle assistance. These are candidate planning topics, not implemented or authorised capabilities.
 
-It covers trigger scope, job-scoped permissions, pinned or bounded dependencies, build/deploy separation, artifacts, environments, secrets, OIDC permissions, manual repository settings, failure behaviour and unsupported automation claims. This remains a manual review checklist and does not add workflow linting, required checks, branch protection or workflow behaviour changes.
+No Stage 3 execution backlog should be created until its outcome, autonomy boundary, acceptance evidence and non-goals are reviewed and approved.
 
-See [Workflow-change review checklist](workflow-changes.md) for the detailed guidance.
+## Current exclusions
 
-## Stage 2.7: PR review remediation protocol
+The current baseline does not include:
 
-Stage 2.7 defines how review feedback should be classified, addressed and evidenced.
+- automatic agent execution;
+- automatic dependency detection;
+- automatic lifecycle transitions;
+- automatic review bots;
+- automatic post-merge verification;
+- required status checks for agent work;
+- branch protection changes;
+- GitHub auto-merge configuration; or
+- autonomous publication decisions.
 
-It covers required fixes, optional improvements, clarification-needed items, out-of-scope feedback, validation reruns, thread replies, thread resolution and remediation summaries. This remains a manual review protocol and does not add review bots, required review rules, permission changes or automatic thread resolution.
-
-See [PR review remediation](review-remediation.md) for the detailed guidance.
-
-## Stage 2.8: Material remediation evidence updates
-
-Stage 2.8 defines when material review remediation must update the PR body or add a clearly labelled remediation evidence comment.
-
-It covers materiality criteria, final contract checks, validation reruns, scope impact and the distinction between minor comment replies and material evidence updates. This remains a manual evidence protocol and does not add PR automation, templates, branch protection or required checks.
-
-See [Pull requests as evidence packs](pr-evidence-packs.md#remediation-evidence) and [PR review remediation](review-remediation.md#material-remediation) for the detailed guidance.
-
-## Stage 2.9: Pre-merge and post-merge validation protocol
-
-Stage 2.9 strengthens validation evidence by separating checks that must be completed before merge from checks that can only be verified after merge, deployment, release or environment configuration.
-
-It documents when pending validation should block merge, when post-merge verification can be acceptable and how the PR evidence pack should record both states. This remains a manual evidence protocol and does not add labels, automation, required checks or branch protection.
-
-See [Pull requests as evidence packs](pr-evidence-packs.md#validation-status) and [Contract verification](contract-verification.md#pre-merge-versus-post-merge-checks) for the detailed guidance.
-
-## Stage 2.10: Lifecycle labels
-
-Stage 2.10 defines a minimal advisory label set for the manual IssueOps lifecycle.
-
-It covers draft contracts, ready contracts, posted plans, review changes requested, pending validation and post-merge verification needs. These labels support visibility only; they do not trigger automation or replace written issue and PR evidence. The labels are documented as recommended until the repository label definitions are created through GitHub UI/API tooling.
-
-See [Manual lifecycle labels](labels.md) for the detailed guidance.
-
-## Stage 2.11: Change-type validation guidance
-
-Stage 2.11 defines lightweight validation expectations by change type.
-
-It covers documentation, workflow, publishing/deployment, process-label and future application-code changes. The guidance explains expected, optional and not-applicable validation so PR evidence can be specific without overstating checks that did not run.
-
-See [Change-type validation guidance](change-type-validation.md) for the definitions of done.
-
-## Stage 2.12: Delegated batch mode
-
-Stage 2.12 defines owner-authorised delegated batch mode for low-risk issue completion.
-
-It explains who can authorise a batch, which changes are eligible, which gates still apply, when the agent must stop for manual review and how merge authorisation is recorded. This remains a manual delegation model and does not configure GitHub auto-merge, branch protection or required checks.
-
-See [Delegated batch mode](delegated-batch-mode.md) for the detailed guidance.
-
-## Stage 2.13: PR evidence templates
-
-Stage 2.13 adds compact PR evidence templates by change type.
-
-It covers documentation-only, workflow, publishing/deployment, process-label and future application-code changes. The templates keep required scope, validation, caveat and groundedness evidence while reducing repeated long-form PR bodies for low-risk work.
-
-See [PR evidence templates](pr-evidence-templates.md) for the reusable formats.
-
-## Stage 2.14: Repository-native validation evidence
-
-Stage 2.14 defines repository-native validation as the preferred evidence path and representative validation as a bounded fallback.
-
-It explains when actual checkout, CI, deployment or repository-setting evidence should be used, when representative fallback is acceptable and when fallback validation should block merge.
-
-See [Repository-native validation](repository-native-validation.md) for the detailed guidance.
-
-## Stage 2.15: Batch completion summaries
-
-Stage 2.15 defines a lightweight summary record for multi-issue delegated batch runs.
-
-It explains when a summary is useful, where to record it and how to capture completed issues, merged PRs, validation, caveats and follow-up work without replacing per-issue and per-PR evidence.
-
-See [Batch completion summaries](batch-completion-summaries.md) for the reusable format.
-
-## Stage 2.16: Lifecycle label definition check
-
-Stage 2.16 checks whether the recommended lifecycle labels can be created through the available tooling.
-
-The current connector can apply and remove labels on issues and pull requests, but does not expose repository-label creation. The missing lifecycle labels therefore remain recommended-only until created through GitHub UI or a repository-label creation API/tool.
-
-See [Manual lifecycle labels](labels.md) for the current label state and creation blocker.
-
-## Stage 2.17: Compact safe tool-operation evidence
-
-Stage 2.17 adds a compact evidence format for routine low-risk safe tool-operation checks.
-
-It preserves the full pre-mutation check for high-risk or ambiguous operations while allowing concise evidence for routine comments and documentation updates. This remains a manual safety protocol and does not add automation or weaken mutation controls.
-
-See [Safe tool operations](tool-operations.md) for the compact and full formats.
-
-## Future work
-
-Future stages may explore:
-
-- richer documentation examples;
-- lightweight release documentation;
-- carefully bounded Codex execution triggers; and
-- stronger review evidence gates.
-
-These items are future possibilities, not implemented capabilities.
-
-## Non-goals for the current baseline
-
-The current baseline does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic label transitions, automatic workflow linting, automatic post-merge verification, automated fact checking, GitHub auto-merge configuration, branch protection changes, required status checks for agent work or application code.
-
-Any future automation should be introduced through its own execution contract, implementation plan, validation evidence and human review.
+Any future automation must be introduced through its own bounded planning and execution contracts, validation evidence and human review.
