@@ -1,0 +1,119 @@
+{
+  "schema_version": "delivery-graph/v1",
+  "nodes": [
+    {
+      "id": "stage-1",
+      "type": "stage",
+      "title": "Stage 1 — Manual execution-contract foundation",
+      "summary": "Established the manual issue-contract, evidence-pack and human-approval baseline.",
+      "status": "completed",
+      "path": "planning/delivery/stage-01-manual-execution-contract-foundation.md"
+    },
+    {
+      "id": "pr-2",
+      "type": "pull_request",
+      "title": "PR #2 — Stage 1 foundation",
+      "summary": "Implemented the first execution-contract IssueOps baseline.",
+      "url": "https://github.com/8ft0-ai/IssueOps/pull/2"
+    },
+    {
+      "id": "release-v0-1",
+      "type": "release",
+      "title": "v0.1.0 baseline",
+      "summary": "Recorded the stable manual Stage 1 baseline.",
+      "path": "docs/releases/stage-1.md"
+    },
+    {
+      "id": "lesson-safe-operation",
+      "type": "lesson",
+      "title": "Safe actuation needs its own gate",
+      "summary": "A correct contract and plan do not prevent an agent from invoking the wrong mutating tool."
+    },
+    {
+      "id": "problem-fragmented-model",
+      "type": "problem",
+      "title": "Fragmented and lightly evidenced operating model",
+      "summary": "Stage 1 guidance was usable but not yet canonical, published or repository-validated."
+    },
+    {
+      "id": "stage-2",
+      "type": "stage",
+      "title": "Stage 2 — Published and hardened operating model",
+      "summary": "Published, consolidated, dogfooded and repository-validated the IssueOps protocol.",
+      "status": "completed",
+      "path": "planning/delivery/stage-02-operating-model-hardening.md"
+    },
+    {
+      "id": "artifact-docs-site",
+      "type": "artifact",
+      "title": "Canonical MkDocs documentation",
+      "summary": "Created the public documentation and GitHub Pages delivery surface.",
+      "path": "docs/index.md"
+    },
+    {
+      "id": "artifact-operating-protocol",
+      "type": "artifact",
+      "title": "Canonical IssueOps operating protocol",
+      "summary": "Consolidated the lifecycle from readiness through post-merge verification.",
+      "path": "docs/issueops-protocol.md"
+    },
+    {
+      "id": "pr-60",
+      "type": "pull_request",
+      "title": "PR #60 — Full-protocol dogfood",
+      "summary": "Exercised the complete Stage 2 protocol and retained circuit-breaker evidence.",
+      "url": "https://github.com/8ft0-ai/IssueOps/pull/60"
+    },
+    {
+      "id": "pr-61",
+      "type": "pull_request",
+      "title": "PR #61 — Repository-native validation",
+      "summary": "Added automatic PR validation and separated it from production deployment.",
+      "url": "https://github.com/8ft0-ai/IssueOps/pull/61"
+    },
+    {
+      "id": "release-v0-2",
+      "type": "release",
+      "title": "v0.2.0 recommended baseline",
+      "summary": "Recorded the published and hardened Stage 2 baseline.",
+      "path": "docs/releases/stage-2.md"
+    },
+    {
+      "id": "boundary-human-authority",
+      "type": "boundary",
+      "title": "Human contract and merge authority",
+      "summary": "Humans retain authority over scope changes, evidence acceptance, merge and publication."
+    },
+    {
+      "id": "boundary-bounded-automation",
+      "type": "boundary",
+      "title": "Automation remains bounded",
+      "summary": "The baseline does not authorise automatic agent execution, lifecycle transitions or auto-merge."
+    },
+    {
+      "id": "decision-stage-3",
+      "type": "decision",
+      "title": "Stage 3 requires deliberate shaping",
+      "summary": "Choose one evidence-based automation boundary and approve its roadmap before execution issues."
+    }
+  ],
+  "edges": [
+    {"from": "stage-1", "to": "pr-2", "type": "implemented_by"},
+    {"from": "stage-1", "to": "release-v0-1", "type": "produced"},
+    {"from": "stage-1", "to": "lesson-safe-operation", "type": "revealed_problem"},
+    {"from": "stage-1", "to": "problem-fragmented-model", "type": "revealed_problem"},
+    {"from": "stage-1", "to": "stage-2", "type": "enabled"},
+    {"from": "problem-fragmented-model", "to": "stage-2", "type": "resolved_by"},
+    {"from": "lesson-safe-operation", "to": "stage-2", "type": "carried_forward_to"},
+    {"from": "stage-2", "to": "artifact-docs-site", "type": "produced"},
+    {"from": "stage-2", "to": "artifact-operating-protocol", "type": "produced"},
+    {"from": "stage-2", "to": "pr-60", "type": "proved_by"},
+    {"from": "stage-2", "to": "pr-61", "type": "validated_by"},
+    {"from": "stage-2", "to": "release-v0-2", "type": "produced"},
+    {"from": "stage-1", "to": "boundary-human-authority", "type": "preserved"},
+    {"from": "stage-2", "to": "boundary-human-authority", "type": "preserved"},
+    {"from": "stage-2", "to": "boundary-bounded-automation", "type": "preserved"},
+    {"from": "stage-2", "to": "decision-stage-3", "type": "carried_forward_to"},
+    {"from": "boundary-bounded-automation", "to": "decision-stage-3", "type": "motivated"}
+  ]
+}
