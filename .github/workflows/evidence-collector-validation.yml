@@ -1,0 +1,39 @@
+name: Validate GitHub evidence collector
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/collect_pr_evidence.py"
+      - "scripts/evidence_pack.py"
+      - "tests/test_collect_pr_evidence.py"
+      - "tests/test_evidence_pack.py"
+      - ".github/workflows/collect-evidence-pack.yml"
+      - ".github/workflows/evidence-collector-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate read-only GitHub collection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run collector tests
+        run: python -m unittest discover -s tests -p 'test_collect_pr_evidence.py' -v
+
+      - name: Run evidence-pack core tests
+        run: python -m unittest discover -s tests -p 'test_evidence_pack.py' -v
+
+      - name: Compile collector and core
+        run: python -m py_compile scripts/collect_pr_evidence.py scripts/evidence_pack.py
