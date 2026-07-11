@@ -56,9 +56,11 @@ The Stage 2 baseline is documented in the [`v0.2.0` release recommendation](rele
 
 ## Stage 3 — Read-only evidence-pack assistance
 
-Status: approved; implementation not started.
+Status: delivering; deterministic schema and local renderer in progress.
 
 Stage 3 selected one bounded automation capability through [planning issue #75](https://github.com/8ft0-ai/IssueOps/issues/75): manually invoked, read-only pull-request evidence collection and evidence-pack assistance.
+
+The first implementation slice defines the [`evidence-pack/v1` schema](evidence-pack-schema.md), deterministic validation and stable JSON and Markdown rendering. This core is local and standard-library only. It does not yet collect live GitHub data or publish generated evidence.
 
 The selected capability is intended to assemble a current, structured and provenance-linked evidence report for one pull request while preserving the written repository record and all human authority. It may report observed, contributor-reported, derived, pending, unavailable or conflicting evidence, but it may not:
 
@@ -73,9 +75,7 @@ The selected capability is intended to assemble a current, structured and proven
 
 The detailed approved roadmap is recorded in [`planning/roadmap/stage-03-read-only-evidence-pack-assistance.md`](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-03-read-only-evidence-pack-assistance.md).
 
-Approval establishes the outcome, no-write and no-decision authority boundary, safety model, proof gates and ordered delivery slices. It does not mean that the evidence collector has been implemented. Each implementation slice requires its own bounded execution-contract issue, readiness assessment, implementation plan, validation evidence and human review.
-
-Lifecycle assistance, post-merge verification automation, bounded execution triggering and auto-merge remain deferred and unauthorised.
+The later live GitHub integration, end-to-end dogfood and adopt/adapt/reject decision remain separate execution-contract slices. Lifecycle assistance, post-merge verification automation, bounded execution triggering and auto-merge remain deferred and unauthorised.
 
 ## Current exclusions
 
