@@ -4,7 +4,7 @@ Status: delivering.
 
 Record type: contemporaneous.
 
-Approved through [planning issue #75](https://github.com/8ft0-ai/IssueOps/issues/75) on 11 July 2026. Delivery began through [issue #78](https://github.com/8ft0-ai/IssueOps/issues/78), which implements the deterministic evidence schema and local renderer only. Live GitHub collection, dogfood and adoption remain later bounded slices.
+Approved through [planning issue #75](https://github.com/8ft0-ai/IssueOps/issues/75) on 11 July 2026. The deterministic evidence schema and local renderer were delivered through [issue #78](https://github.com/8ft0-ai/IssueOps/issues/78) and PR #79. Delivery continues through [issue #80](https://github.com/8ft0-ai/IssueOps/issues/80), which adds manually invoked, read-only GitHub collection for one pull request. Representative dogfood, measurement and adoption remain the final bounded slice.
 
 ## Problem statement
 
