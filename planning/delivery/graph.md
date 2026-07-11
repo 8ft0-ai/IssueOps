@@ -22,6 +22,10 @@ flowchart LR
   n_pr_73["PR #73 — Compact delivery graph\n(pull request)"]
   n_artifact_adoption_record["Planning-process adoption record\n(artifact)"]
   n_decision_stage_3["Stage 3 requires deliberate shaping\n(decision)"]
+  n_stage_3["Stage 3 — Read-only evidence-pack assistance\n(stage)"]
+  n_artifact_evidence_pack_v1["evidence-pack/v1\n(artifact)"]
+  n_pr_85["PR #85 — Stage 3 live dogfood and recovery\n(pull request)"]
+  n_decision_adapt_evidence_assistance["Adapt evidence-pack assistance before broader adoption\n(decision)"]
 
   n_stage_1 -->|implemented by| n_pr_2
   n_stage_1 -->|produced| n_release_v0_1
@@ -44,4 +48,10 @@ flowchart LR
   n_decision_planning_adoption -->|produced| n_artifact_adoption_record
   n_decision_planning_adoption -->|carried forward to| n_decision_stage_3
   n_boundary_bounded_automation -->|motivated| n_decision_stage_3
+  n_decision_stage_3 -->|enabled| n_stage_3
+  n_stage_3 -->|produced| n_artifact_evidence_pack_v1
+  n_stage_3 -->|proved by| n_pr_85
+  n_stage_3 -->|preserved| n_boundary_human_authority
+  n_stage_3 -->|preserved| n_boundary_bounded_automation
+  n_stage_3 -->|produced| n_decision_adapt_evidence_assistance
 ```
