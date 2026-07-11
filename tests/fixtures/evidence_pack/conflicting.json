@@ -1,0 +1,35 @@
+{
+  "schema_version": "evidence-pack/v1",
+  "target": {
+    "repository": "8ft0-ai/IssueOps",
+    "pull_request": 78,
+    "url": "https://github.com/8ft0-ai/IssueOps/pull/78"
+  },
+  "collection": {
+    "started_at": "2026-07-11T08:20:00Z",
+    "completed_at": "2026-07-11T08:20:05Z",
+    "head_sha_start": "dddddddddddddddddddddddddddddddddddddddd",
+    "head_sha_end": "dddddddddddddddddddddddddddddddddddddddd"
+  },
+  "evidence": [
+    {
+      "id": "validation.conflict",
+      "classification": "conflicting",
+      "summary": "The pull-request body reports success while the observed workflow conclusion is failure.",
+      "source_url": "https://github.com/8ft0-ai/IssueOps/pull/78"
+    },
+    {
+      "id": "workflow.result",
+      "classification": "repository-observed",
+      "summary": "The observed workflow conclusion is failure.",
+      "source_url": "https://github.com/8ft0-ai/IssueOps/actions/runs/30000000001"
+    },
+    {
+      "id": "pr.reported-result",
+      "classification": "contributor-reported",
+      "summary": "The pull-request body reports that validation passed.",
+      "source_url": "https://github.com/8ft0-ai/IssueOps/pull/78"
+    }
+  ],
+  "errors": []
+}
