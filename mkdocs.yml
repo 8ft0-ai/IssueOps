@@ -36,6 +36,7 @@ nav:
   - Validation:
       - Local MkDocs validation: local-validation.md
       - Repository-native validation: repository-native-validation.md
+      - Evidence-pack schema: evidence-pack-schema.md
       - Documentation currency checklist: documentation-currency.md
       - Workflow-change review checklist: workflow-changes.md
       - Change-type validation guidance: change-type-validation.md

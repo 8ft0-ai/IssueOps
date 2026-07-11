@@ -1,0 +1,33 @@
+{
+  "schema_version": "evidence-pack/v1",
+  "target": {
+    "repository": "8ft0-ai/IssueOps",
+    "pull_request": 78,
+    "url": "https://github.com/8ft0-ai/IssueOps/pull/78",
+    "linked_issue": 78
+  },
+  "collection": {
+    "started_at": "2026-07-11T08:00:00Z",
+    "completed_at": "2026-07-11T08:00:05Z",
+    "head_sha_start": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "head_sha_end": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "evidence": [
+    {
+      "id": "workflow.tests",
+      "classification": "pending",
+      "summary": "The evidence-pack validation workflow has not completed.",
+      "source_url": "https://github.com/8ft0-ai/IssueOps/actions/runs/30000000000",
+      "details": {
+        "status": "in_progress"
+      }
+    },
+    {
+      "id": "pr.changed-files",
+      "classification": "repository-observed",
+      "summary": "GitHub reports the current changed-file set.",
+      "source_url": "https://github.com/8ft0-ai/IssueOps/pull/78/files"
+    }
+  ],
+  "errors": []
+}

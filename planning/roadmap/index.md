@@ -27,8 +27,8 @@ Retrospective records must not claim that the complete planning structure existe
 
 ## Active and future stages
 
-- [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — approved contemporaneous roadmap.
+- [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — delivering from an approved contemporaneous roadmap.
 
-Stage 3 selects manually invoked, read-only pull-request evidence assistance as the first bounded automation capability. Approval defines the outcome, authority boundary, safety model, proof gates and ordered slices; it does not mean that the capability has been implemented.
+Stage 3 is implementing the deterministic evidence schema and local renderer first. Live GitHub collection, workflow invocation, dogfood and adoption remain later bounded slices and are not yet delivered.
 
 Each implementation slice requires its own bounded execution-contract issue, readiness assessment, implementation plan, validation evidence and human review.

@@ -1,0 +1,58 @@
+{
+  "schema_version": "evidence-pack/v1",
+  "target": {
+    "repository": "8ft0-ai/IssueOps",
+    "pull_request": 77,
+    "url": "https://github.com/8ft0-ai/IssueOps/pull/77",
+    "linked_issue": 76
+  },
+  "collection": {
+    "started_at": "2026-07-11T07:04:40Z",
+    "completed_at": "2026-07-11T07:05:52Z",
+    "head_sha_start": "43694eb9c7ae6fda81ea06ab1039529889aa9a8a",
+    "head_sha_end": "43694eb9c7ae6fda81ea06ab1039529889aa9a8a"
+  },
+  "evidence": [
+    {
+      "id": "scope.changed-files",
+      "classification": "derived",
+      "summary": "Three declared Markdown files changed.",
+      "derived_from": [
+        "pr.changed-files"
+      ],
+      "details": {
+        "count": 3
+      }
+    },
+    {
+      "id": "pr.asserted-validation",
+      "classification": "contributor-reported",
+      "summary": "The pull-request body reports that repository-native validation passed.",
+      "source_url": "https://github.com/8ft0-ai/IssueOps/pull/77",
+      "source_timestamp": "2026-07-11T07:05:37Z"
+    },
+    {
+      "id": "workflow.planning",
+      "classification": "repository-observed",
+      "summary": "The planning workflow completed successfully.",
+      "source_url": "https://github.com/8ft0-ai/IssueOps/actions/runs/29143886213",
+      "details": {
+        "conclusion": "success"
+      }
+    },
+    {
+      "id": "pr.changed-files",
+      "classification": "repository-observed",
+      "summary": "GitHub reports three changed files.",
+      "source_url": "https://github.com/8ft0-ai/IssueOps/pull/77/files",
+      "details": {
+        "files": [
+          "docs/roadmap.md",
+          "planning/roadmap/index.md",
+          "planning/roadmap/stage-03-read-only-evidence-pack-assistance.md"
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

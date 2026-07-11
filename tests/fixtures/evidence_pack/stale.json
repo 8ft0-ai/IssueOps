@@ -1,0 +1,23 @@
+{
+  "schema_version": "evidence-pack/v1",
+  "target": {
+    "repository": "8ft0-ai/IssueOps",
+    "pull_request": 78,
+    "url": "https://github.com/8ft0-ai/IssueOps/pull/78"
+  },
+  "collection": {
+    "started_at": "2026-07-11T08:10:00Z",
+    "completed_at": "2026-07-11T08:10:10Z",
+    "head_sha_start": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "head_sha_end": "cccccccccccccccccccccccccccccccccccccccc"
+  },
+  "evidence": [
+    {
+      "id": "pr.head",
+      "classification": "repository-observed",
+      "summary": "The pull-request head was observed during collection.",
+      "source_url": "https://github.com/8ft0-ai/IssueOps/pull/78"
+    }
+  ],
+  "errors": []
+}
