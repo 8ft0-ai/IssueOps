@@ -73,6 +73,23 @@ Representative live proof on PR #85 head `0d1d6c1a1ef063b9d422599efa400f5d2a9f1a
 
 The supporting dogfood detail is retained in `planning/closeout/stage-03-evidence-pack-dogfood.md`.
 
+## Objective validation summary
+
+Stage 3 achieved its stage-level objective: test one bounded automation capability through repository-native proof and reach an evidence-based adopt, adapt or reject decision without weakening IssueOps authority boundaries. It did not prove that the current implementation satisfies every gate required for broader adoption.
+
+| Objective | Strongest evidence | Result |
+| --- | --- | --- |
+| Generate a structured, current evidence report for one pull request | PR #85 produced deterministic JSON and Markdown reports for the same stable head before and after validation completion | **Achieved** |
+| Preserve direct provenance and distinguish assertions from observations | Both reports retained source links and separated contributor-reported content from repository-observed state | **Achieved** |
+| Represent incomplete and final validation honestly | The pending run was `incomplete`; the final run was `complete`; the skipped Pages job remained an observation rather than approval advice | **Achieved** |
+| Fail closed when evidence is stale, missing or unsafe | Repository-native tests covered moving-head, partial API failure, inaccessible targets, conflicting linkage and bounded pagination | **Achieved** |
+| Reduce repetitive evidence assembly | Mechanical collection reduced seven manual source groups to one generated report per snapshot, but human inspection and interpretation remained necessary | **Partially achieved** |
+| Preserve human decision and repository authority | Live permissions were read-only, the client used `GET` requests only, and collection produced no repository mutations or approval decisions | **Achieved** |
+| Provide a complete execution-contract review view | PR #85's execution-contract issues were omitted because no closing keyword was present; unresolved review-thread state was also absent | **Not fully achieved** |
+| Reach an evidence-based adoption decision | The close-out records **Adapt**, with the implementation retained for controlled use and broader adoption deferred pending targeted improvements | **Achieved** |
+
+The **Adapt** decision follows directly from this assessment: the bounded capability is useful and safe enough to retain, but explicit non-closing contract linkage and invocation ergonomics must improve before broader adoption.
+
 ## Intended versus actual delivery
 
 The implementation remained within the approved read-only boundary and followed the four ordered slices.
