@@ -1,0 +1,43 @@
+name: Validate evidence-pack core
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/evidence_pack.py"
+      - "tests/test_evidence_pack.py"
+      - "tests/fixtures/evidence_pack/**"
+      - ".github/workflows/evidence-pack-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate evidence-pack schema and rendering
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run evidence-pack tests
+        run: python -m unittest discover -s tests -p 'test_evidence_pack.py' -v
+
+      - name: Render complete fixture as canonical JSON
+        run: python scripts/evidence_pack.py tests/fixtures/evidence_pack/complete.json --format json > /tmp/evidence-pack.json
+
+      - name: Confirm incomplete fixture returns the bounded non-complete exit code
+        shell: bash
+        run: |
+          set +e
+          python scripts/evidence_pack.py tests/fixtures/evidence_pack/pending.json --format markdown > /tmp/evidence-pack.md
+          status=$?
+          set -e
+          test "$status" -eq 2
