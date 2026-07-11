@@ -1,0 +1,79 @@
+name: Collect pull-request evidence pack
+
+on:
+  workflow_dispatch:
+    inputs:
+      pull_request:
+        description: Pull-request number in this repository
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+  checks: read
+  actions: read
+
+jobs:
+  collect:
+    name: Collect read-only evidence
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate pull-request input
+        shell: bash
+        env:
+          PULL_REQUEST: ${{ inputs.pull_request }}
+        run: |
+          if [[ ! "$PULL_REQUEST" =~ ^[1-9][0-9]*$ ]]; then
+            echo "pull_request must be a positive integer" >&2
+            exit 1
+          fi
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Collect evidence
+        id: collect
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PULL_REQUEST: ${{ inputs.pull_request }}
+          OUTPUT_DIR: ${{ runner.temp }}/evidence-pack
+        run: |
+          set +e
+          python scripts/collect_pr_evidence.py \
+            "$GITHUB_REPOSITORY" \
+            "$PULL_REQUEST" \
+            --output-dir "$OUTPUT_DIR"
+          status=$?
+          set -e
+          echo "collector_exit=$status" >> "$GITHUB_OUTPUT"
+          if [[ "$status" -eq 1 ]]; then
+            exit 1
+          fi
+          if [[ "$status" -ne 0 && "$status" -ne 2 ]]; then
+            echo "unexpected collector exit code: $status" >&2
+            exit 1
+          fi
+
+      - name: Add generated report to run summary
+        if: steps.collect.outputs.collector_exit != '1'
+        shell: bash
+        run: cat "${{ runner.temp }}/evidence-pack/evidence-pack.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload generated evidence pack
+        if: steps.collect.outputs.collector_exit != '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-pack-pr-${{ inputs.pull_request }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/evidence-pack/evidence-pack.json
+            ${{ runner.temp }}/evidence-pack/evidence-pack.md
+          if-no-files-found: error
+          retention-days: 7
