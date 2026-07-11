@@ -25,10 +25,12 @@ superseded
 
 Retrospective records must not claim that the complete planning structure existed before delivery.
 
-## Active and future stages
+## Completed contemporaneous stages
 
-- [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — delivering from an approved contemporaneous roadmap.
+- [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — completed with an **Adapt** decision.
 
-Stage 3 now includes the deterministic evidence schema, local renderer and manually invoked read-only GitHub collection for one pull request. Representative dogfood, effort comparison, authority-boundary audit and the adopt/adapt/reject decision remain the final bounded slice.
+Stage 3 delivered the deterministic evidence schema, local renderer and manually invoked read-only GitHub collection for one pull request. Live pending-to-final dogfood proved the core safety and usefulness, while missing non-closing issue linkage and manual-dispatch friction prevented unconditional adoption.
 
-Each implementation slice requires its own bounded execution-contract issue, readiness assessment, implementation plan, validation evidence and human review.
+## Future stages
+
+No future stage is approved. Any next activity must begin as a planning question and must not infer authority for lifecycle automation, execution triggering, auto-merge or repository-setting changes from the Stage 3 close-out.
