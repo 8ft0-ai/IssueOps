@@ -122,29 +122,171 @@
       "type": "decision",
       "title": "Stage 3 requires deliberate shaping",
       "summary": "Choose one evidence-based automation boundary and approve its roadmap before execution issues."
+    },
+    {
+      "id": "stage-3",
+      "type": "stage",
+      "title": "Stage 3 — Read-only evidence-pack assistance",
+      "summary": "Delivered and dogfooded bounded read-only PR evidence assistance; closed with an Adapt decision.",
+      "status": "completed",
+      "path": "planning/delivery/stage-03-read-only-evidence-pack-assistance.md"
+    },
+    {
+      "id": "artifact-evidence-pack-v1",
+      "type": "artifact",
+      "title": "evidence-pack/v1",
+      "summary": "Provides deterministic evidence classification, provenance, rendering and fail-closed status semantics.",
+      "path": "docs/evidence-pack-schema.md"
+    },
+    {
+      "id": "pr-85",
+      "type": "pull_request",
+      "title": "PR #85 — Stage 3 live dogfood and recovery",
+      "summary": "Proved pending-to-final reporting, read-only authority and the recovery from a premature close-out merge.",
+      "url": "https://github.com/8ft0-ai/IssueOps/pull/85"
+    },
+    {
+      "id": "decision-adapt-evidence-assistance",
+      "type": "decision",
+      "title": "Adapt evidence-pack assistance before broader adoption",
+      "summary": "Retain controlled read-only use while separately planning non-closing issue linkage and simpler invocation."
     }
   ],
   "edges": [
-    {"from": "stage-1", "to": "pr-2", "type": "implemented_by"},
-    {"from": "stage-1", "to": "release-v0-1", "type": "produced"},
-    {"from": "stage-1", "to": "lesson-safe-operation", "type": "revealed_problem"},
-    {"from": "stage-1", "to": "problem-fragmented-model", "type": "revealed_problem"},
-    {"from": "stage-1", "to": "stage-2", "type": "enabled"},
-    {"from": "problem-fragmented-model", "to": "stage-2", "type": "resolved_by"},
-    {"from": "lesson-safe-operation", "to": "stage-2", "type": "carried_forward_to"},
-    {"from": "stage-2", "to": "artifact-docs-site", "type": "produced"},
-    {"from": "stage-2", "to": "artifact-operating-protocol", "type": "produced"},
-    {"from": "stage-2", "to": "pr-60", "type": "proved_by"},
-    {"from": "stage-2", "to": "pr-61", "type": "validated_by"},
-    {"from": "stage-2", "to": "release-v0-2", "type": "produced"},
-    {"from": "stage-1", "to": "boundary-human-authority", "type": "preserved"},
-    {"from": "stage-2", "to": "boundary-human-authority", "type": "preserved"},
-    {"from": "stage-2", "to": "boundary-bounded-automation", "type": "preserved"},
-    {"from": "stage-2", "to": "decision-planning-adoption", "type": "motivated"},
-    {"from": "decision-planning-adoption", "to": "pr-70", "type": "implemented_by"},
-    {"from": "decision-planning-adoption", "to": "pr-73", "type": "validated_by"},
-    {"from": "decision-planning-adoption", "to": "artifact-adoption-record", "type": "produced"},
-    {"from": "decision-planning-adoption", "to": "decision-stage-3", "type": "carried_forward_to"},
-    {"from": "boundary-bounded-automation", "to": "decision-stage-3", "type": "motivated"}
+    {
+      "from": "stage-1",
+      "to": "pr-2",
+      "type": "implemented_by"
+    },
+    {
+      "from": "stage-1",
+      "to": "release-v0-1",
+      "type": "produced"
+    },
+    {
+      "from": "stage-1",
+      "to": "lesson-safe-operation",
+      "type": "revealed_problem"
+    },
+    {
+      "from": "stage-1",
+      "to": "problem-fragmented-model",
+      "type": "revealed_problem"
+    },
+    {
+      "from": "stage-1",
+      "to": "stage-2",
+      "type": "enabled"
+    },
+    {
+      "from": "problem-fragmented-model",
+      "to": "stage-2",
+      "type": "resolved_by"
+    },
+    {
+      "from": "lesson-safe-operation",
+      "to": "stage-2",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "stage-2",
+      "to": "artifact-docs-site",
+      "type": "produced"
+    },
+    {
+      "from": "stage-2",
+      "to": "artifact-operating-protocol",
+      "type": "produced"
+    },
+    {
+      "from": "stage-2",
+      "to": "pr-60",
+      "type": "proved_by"
+    },
+    {
+      "from": "stage-2",
+      "to": "pr-61",
+      "type": "validated_by"
+    },
+    {
+      "from": "stage-2",
+      "to": "release-v0-2",
+      "type": "produced"
+    },
+    {
+      "from": "stage-1",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-2",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-2",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-2",
+      "to": "decision-planning-adoption",
+      "type": "motivated"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "pr-70",
+      "type": "implemented_by"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "pr-73",
+      "type": "validated_by"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "artifact-adoption-record",
+      "type": "produced"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "decision-stage-3",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "boundary-bounded-automation",
+      "to": "decision-stage-3",
+      "type": "motivated"
+    },
+    {
+      "from": "decision-stage-3",
+      "to": "stage-3",
+      "type": "enabled"
+    },
+    {
+      "from": "stage-3",
+      "to": "artifact-evidence-pack-v1",
+      "type": "produced"
+    },
+    {
+      "from": "stage-3",
+      "to": "pr-85",
+      "type": "proved_by"
+    },
+    {
+      "from": "stage-3",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-3",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-3",
+      "to": "decision-adapt-evidence-assistance",
+      "type": "produced"
+    }
   ]
 }
