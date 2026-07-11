@@ -1,10 +1,10 @@
 # Stage 3 — Read-only evidence-pack assistance
 
-Status: approved.
+Status: delivering.
 
 Record type: contemporaneous.
 
-Approved through [planning issue #75](https://github.com/8ft0-ai/IssueOps/issues/75) on 11 July 2026. This record defines approved Stage 3 intent and boundaries; it does not claim that the capability has been implemented.
+Approved through [planning issue #75](https://github.com/8ft0-ai/IssueOps/issues/75) on 11 July 2026. Delivery began through [issue #78](https://github.com/8ft0-ai/IssueOps/issues/78), which implements the deterministic evidence schema and local renderer only. Live GitHub collection, dogfood and adoption remain later bounded slices.
 
 ## Problem statement
 
