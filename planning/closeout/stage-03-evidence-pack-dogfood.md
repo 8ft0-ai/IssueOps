@@ -4,222 +4,210 @@ Status: pending evidence.
 
 Record type: contemporaneous close-out worklog.
 
-This worklog supports [issue #82](https://github.com/8ft0-ai/IssueOps/issues/82) and [PR #83](https://github.com/8ft0-ai/IssueOps/pull/83). The canonical `planning/delivery/` directory accepts completed delivery records only, so a final Stage 3 delivery record must not be created there until the required live collector runs and comparison evidence support completion.
+This worklog supports [Issue #82](https://github.com/8ft0-ai/IssueOps/issues/82), the prematurely merged [PR #83](https://github.com/8ft0-ai/IssueOps/pull/83), and recovery [Issue #84](https://github.com/8ft0-ai/IssueOps/issues/84).
+
+The canonical `planning/delivery/` directory accepts completed delivery records only. A final Stage 3 delivery record must not be created there until the required live collector runs, comparison evidence and adoption decision exist.
+
+## Current state
+
+Stage 3 remains **delivering**. The first three ordered slices are merged, but representative live dogfood and the adopt/adapt/reject decision remain incomplete.
+
+No roadmap, delivery-log or graph entry currently claims that Stage 3 is complete.
 
 ## Original documented intent
 
-Stage 3 was shaped through [planning issue #75](https://github.com/8ft0-ai/IssueOps/issues/75) and recorded in `planning/roadmap/stage-03-read-only-evidence-pack-assistance.md`.
+Stage 3 was shaped through [planning issue #75](https://github.com/8ft0-ai/IssueOps/issues/75) and the approved roadmap at `planning/roadmap/stage-03-read-only-evidence-pack-assistance.md`.
 
-The approved outcome was to prove that a manually invoked, read-only capability could assemble a current, structured and provenance-linked evidence report for one pull request while:
+The intended outcome is to prove that a manually invoked, read-only capability can assemble a current, provenance-linked evidence report for one pull request while:
 
-- preserving the written issue and pull-request record as authority;
+- preserving written repository evidence as the authority;
 - separating repository-observed facts from contributor assertions;
 - representing pending, unavailable, conflicting and stale evidence honestly;
 - making no repository mutation or approval decision; and
-- leaving evidence interpretation, merge and publication authority with a human.
+- leaving interpretation, merge and publication authority with a human.
 
-The roadmap defined four ordered slices: formalise the roadmap, define the deterministic core, add manual GitHub integration, then dogfood, measure and close out.
-
-## Retrospective interpretation
-
-Not applicable yet. Stage 3 was planned contemporaneously and remains open while live proof is pending.
-
-The final delivery record may later explain material differences between the approved roadmap and actual delivery, but it must not rewrite the original intent to match the outcome.
-
-## What shipped
+## Delivered implementation
 
 The first three ordered slices are merged:
 
-### Approved roadmap
+- [Issue #76](https://github.com/8ft0-ai/IssueOps/issues/76) / [PR #77](https://github.com/8ft0-ai/IssueOps/pull/77) — approved roadmap and authority boundary.
+- [Issue #78](https://github.com/8ft0-ai/IssueOps/issues/78) / [PR #79](https://github.com/8ft0-ai/IssueOps/pull/79) — `evidence-pack/v1`, deterministic JSON and Markdown rendering, classifications, provenance validation and tests.
+- [Issue #80](https://github.com/8ft0-ai/IssueOps/issues/80) / [PR #81](https://github.com/8ft0-ai/IssueOps/pull/81) — standard-library GitHub REST collector and manual `workflow_dispatch` for one pull request.
 
-- [Issue #76](https://github.com/8ft0-ai/IssueOps/issues/76) and [PR #77](https://github.com/8ft0-ai/IssueOps/pull/77) recorded the approved Stage 3 roadmap and authority boundary.
+The collector has read-only permissions, uses GitHub REST `GET` requests, publishes only to the individual run summary and run artefact, and makes no readiness, sufficiency, approval, merge or publication decision.
 
-### Deterministic evidence core
+Delivery of the implementation path is not proof that the capability should be adopted.
 
-- [Issue #78](https://github.com/8ft0-ai/IssueOps/issues/78) and [PR #79](https://github.com/8ft0-ai/IssueOps/pull/79) added `evidence-pack/v1`, deterministic JSON and Markdown rendering, explicit evidence classifications, collection-state semantics, fail-closed validation, fixtures, tests and read-only CI.
+## Premature merge incident
 
-### Manually invoked GitHub integration
+PR #83 was intentionally a draft, pending-evidence close-out target. It was merged before:
 
-- [Issue #80](https://github.com/8ft0-ai/IssueOps/issues/80) and [PR #81](https://github.com/8ft0-ai/IssueOps/pull/81) added a standard-library GitHub REST collector and a manual `workflow_dispatch` workflow for one pull request in the current repository.
-- The workflow has read permissions for contents, pull requests, issues, checks and actions.
-- Generated output is limited to the individual run summary and a seven-day JSON and Markdown artefact.
-- The collector has no GitHub mutation method and makes no readiness, evidence-sufficiency, approval, merge or publication decision.
+- a pending-state collector run existed;
+- a final-state collector run existed;
+- generated artefacts were inspected;
+- the assisted-versus-manual comparison was complete;
+- the live authority audit was complete; or
+- an adopt/adapt/reject decision was made.
 
-No adoption claim is made by this section. Delivery of an implementation path is not proof that the capability is useful enough to adopt.
+Its body contained `Closes #82`, so GitHub also auto-closed Issue #82 despite incomplete acceptance criteria. Issue #82 was reopened on 11 July 2026.
 
-## Linked issues and pull requests
+### Why no revert was required
 
-- [Planning issue #75](https://github.com/8ft0-ai/IssueOps/issues/75) — selected and approved the bounded capability.
-- [Issue #76](https://github.com/8ft0-ai/IssueOps/issues/76) / [PR #77](https://github.com/8ft0-ai/IssueOps/pull/77) — formalised the roadmap.
-- [Issue #78](https://github.com/8ft0-ai/IssueOps/issues/78) / [PR #79](https://github.com/8ft0-ai/IssueOps/pull/79) — deterministic evidence core.
-- [Issue #80](https://github.com/8ft0-ai/IssueOps/issues/80) / [PR #81](https://github.com/8ft0-ai/IssueOps/pull/81) — manually invoked read-only GitHub integration.
-- [Issue #82](https://github.com/8ft0-ai/IssueOps/issues/82) / [PR #83](https://github.com/8ft0-ai/IssueOps/pull/83) — dogfood, measurement and close-out contract.
+The merged change added only this worklog and explicitly retained `Status: pending evidence`. It did not:
 
-## Proof runs, checks and artefacts
+- mark Stage 3 complete;
+- create a completed delivery record;
+- record an adoption decision;
+- update the delivery log or graph; or
+- authorise broader automation.
 
-### Existing implementation proof
+Reverting it would remove accurate evidence without restoring the missing review gate. Recovery therefore uses a new bounded issue and replacement draft PR rather than a revert.
 
-Repository-native validation already proved the deterministic core and integration implementation:
+## Recovery path
 
-- PR #79 evidence-pack workflow run `29144625519` and final-head reruns proved the schema, rendering, classification, provenance and non-complete exit behaviour.
-- PR #81 collector workflow run `29145444610` proved fake-transport integration coverage, existing core compatibility and bytecode compilation.
+[Issue #84](https://github.com/8ft0-ai/IssueOps/issues/84) restores the open review and dogfood gate.
+
+The replacement PR created from `feature/84-recover-stage-3-closeout` is the new representative target. Its number and stable head SHA will be recorded here before live collection.
+
+The replacement PR must remain draft until both live reports are inspected and its pre-approval groundedness review no longer recommends `Do not approve yet`.
+
+## Existing implementation proof
+
+Repository-native checks already prove the deterministic core and bounded integration:
+
+- PR #79 evidence workflow run `29144625519` and final-head reruns covered schema, rendering, classifications and non-complete exit behaviour.
+- PR #81 collector workflow run `29145444610` passed collector integration tests, existing core tests and compilation.
 - PR #81 planning workflow run `29145444585` passed planning, graph and freshness validation.
-- PR #81 documentation workflow run `29145444592` passed strict MkDocs build and artefact upload while production deployment was skipped.
-- An earlier PR #81 collector run `29145258244` exposed relative pagination-error provenance. The implementation was corrected to retain the absolute API page URL before approval.
+- PR #81 documentation workflow run `29145444592` passed strict MkDocs build and artefact upload; production deployment was skipped.
+- Earlier PR #81 run `29145258244` exposed relative pagination-error provenance, which was fixed before approval.
 
-### Close-out PR validation observations
+## PR #83 observations
 
 Initial PR #83 head: `ccb18f35b10f148aaed0b591b3471ab0c20ea680`.
 
-- Documentation workflow run `29145873760` completed successfully.
-- Planning workflow run `29145873768` failed because a pending record had been placed under `planning/delivery/`, where repository validation requires every delivery record to have `Status: completed`.
-- The failure was treated as a control working as designed. The pending content was moved to this close-out worklog; no completion status was fabricated.
+- Documentation run `29145873760` passed.
+- Planning run `29145873768` failed because a pending record was placed under `planning/delivery/`, where validation permits completed records only.
+- The pending content was moved to `planning/closeout/` rather than fabricating completion.
+- Corrected planning run `29145939973` passed planning, graph and freshness checks.
+- Corrected documentation run `29145939972` passed strict build and artefact upload; production deployment was skipped.
 
-### Required live dogfood — pending
+The failure was a repository control working as designed.
 
-The representative close-out pull request must be collected twice on the same stable final head:
+## Manual evidence baseline
 
-| Snapshot | Required state | Workflow run | Artefact | Report status | Inspection |
+The bounded manual snapshot used seven source groups:
+
+1. Issue #82 contract.
+2. Readiness, plan and safe-operation comments.
+3. PR metadata and evidence body.
+4. Changed-file scope.
+5. Workflow runs and conclusions.
+6. Reviews and unresolved review threads.
+7. Failure logs and validator source.
+
+The observation ran from approximately `2026-07-11T08:17:16Z` to `2026-07-11T08:20:21Z`, about **3 minutes 5 seconds**, excluding implementation time.
+
+The manual path found one changed file, no reviews or unresolved threads, the initial planning failure, its repository-rule cause and the corrected successful validation state. No bounded field omission or transcription error was identified, but multiple reads and human source interpretation were required.
+
+## Required live dogfood
+
+The replacement PR must be collected twice on the same stable head:
+
+| Snapshot | Required workflow state | Collector run | Artefact | Report status | Inspection |
 | --- | --- | --- | --- | --- | --- |
-| Pending snapshot | At least one relevant PR workflow pending or incomplete | Pending | Pending | Expected `incomplete` when pending evidence exists | Pending |
-| Final snapshot | Relevant PR workflows in final state | Pending | Pending | To be observed | Pending |
+| Pending snapshot | At least one relevant PR workflow queued or running | Pending | Pending | Expected `incomplete` when pending evidence is present | Pending |
+| Final snapshot | Relevant PR workflows completed | Pending | Pending | To be observed | Pending |
 
-The worklog must capture the workflow-run URL and ID, artefact name and ID, target head SHA, report status and direct provenance links. A successful Actions run means only that collection and report production completed safely.
+For each run, retain:
 
-### Required report inspection — pending
+- workflow run URL and ID;
+- artefact name and ID;
+- target pull request and head SHA;
+- report collection status; and
+- direct provenance links.
 
-For each live report, verify:
+A successful Actions run means only that collection and report production completed safely.
 
-- [ ] the target repository, pull request, linked issue and head SHA are correct;
-- [ ] repository-observed and contributor-reported evidence are separated;
+## Required report inspection
+
+For both reports verify:
+
+- [ ] repository, pull request, linked issue and head SHA are correct;
+- [ ] repository-observed and contributor-reported evidence remain separated;
 - [ ] pending evidence is not inferred as success;
-- [ ] final check and workflow conclusions are represented as observations rather than recommendations;
-- [ ] changed-file scope and workflow sources have direct links;
-- [ ] generated and human-decision warnings are prominent;
-- [ ] no issue, pull-request, review, label, branch, file, merge or repository-setting mutation occurred; and
-- [ ] the two reports show the validation-state change without rewriting the pull request.
+- [ ] final conclusions remain observations rather than recommendations;
+- [ ] changed-file and workflow sources have direct links;
+- [ ] generated and human-decision warnings remain prominent;
+- [ ] no issue, PR, review, label, branch, file, merge or setting mutation occurred; and
+- [ ] the state transition is visible without rewriting the target PR.
 
-## Manual versus assisted evidence assembly
-
-Use the same required fields for both paths: issue contract, readiness and plan, PR metadata and body, changed files, head SHA, workflow/check state, reviews, caveats and source links.
-
-### Manual baseline observation
-
-The first manual snapshot used separate connector reads for:
-
-1. the issue contract;
-2. readiness, plan and safe-operation comments;
-3. PR metadata and evidence body;
-4. changed-file scope;
-5. workflow runs and conclusions;
-6. submitted reviews and unresolved review threads; and
-7. the planning-validation failure logs and validator source.
-
-The snapshot identified one changed file, no reviews or review threads, a successful documentation build, and a planning failure caused by the pending delivery-record location. The manual path required reconciling multiple API responses and then inspecting validator source to explain the failure.
+## Manual versus assisted comparison
 
 | Measure | Manual path | Assisted path |
 | --- | --- | --- |
 | Steps performed | Seven source groups plus interpretation | Pending live collector runs |
-| Bounded elapsed effort | Started at `2026-07-11T08:17:16Z`; completion time to be recorded after the revised-head snapshot | Pending live collector runs |
-| Omitted fields | None identified in the bounded baseline | Pending comparison |
-| Incorrectly transcribed fields | None identified; source reconciliation was manual | Pending comparison |
-| Human interpretation still required | Yes — the validator failure required source-code interpretation | Pending observation |
-| Review quality weakened | Not assessed until assisted output exists | Pending decision |
+| Bounded elapsed effort | About 3 minutes 5 seconds | Pending |
+| Omitted fields | None identified in bounded baseline | Pending |
+| Incorrect transcription | None identified; reconciliation was manual | Pending |
+| Human interpretation required | Yes | Pending |
+| Review quality weakened | Not yet assessed | Pending |
 
-The comparison must not invent precision. A bounded wall-clock observation or a clearly stated step-count comparison is acceptable when exact timing is unavailable.
+The comparison must not invent precision. The generated report cannot replace substantive interpretation of validation or contract satisfaction.
 
-## Safe-failure and recovery evidence
+## Safe-failure evidence
 
-Repository-native tests currently cover:
+Repository-native tests cover:
 
-- inaccessible or unresolved target failure before report construction;
-- partial API failure after target resolution producing an incomplete report;
-- excessive pagination producing a bounded collection error;
-- conflicting same-repository issue references producing conflicting evidence;
-- validly empty comments, reviews, checks and workflow runs;
-- pending checks and jobs producing incomplete evidence;
-- final failed checks remaining repository-observed facts;
-- a moving head activating the stale-head circuit breaker; and
-- local output limited to the specified report directory.
+- inaccessible target failure before report construction;
+- partial API failure producing incomplete evidence;
+- excessive pagination producing a bounded error;
+- conflicting linked issues producing conflicting evidence;
+- validly empty evidence surfaces;
+- pending checks and jobs;
+- final failed checks remaining observed facts;
+- moving-head stale protection; and
+- output limited to the selected local directory.
 
-Live dogfood must confirm the default-branch workflow can run and produce retrievable artefacts. It need not reproduce every deterministic failure fixture through live destructive or artificial repository changes.
+Live dogfood must still prove that the default-branch workflow produces retrievable run-scoped artefacts.
 
 ## Authority-boundary audit
 
-### Preliminary implementation evidence
+Preliminary implementation evidence:
 
-- [x] Collection trigger is manual only.
-- [x] Workflow permissions are read-only: `contents`, `pull-requests`, `issues`, `checks` and `actions`.
-- [x] The collector uses GitHub REST `GET` requests only.
-- [x] Generated output is limited to the run summary and run artefact.
-- [x] The collector has no issue, PR, review, label, branch, commit, file, merge, deployment, release or settings mutation method.
-- [x] Collection status is distinct from approval, contract satisfaction and merge recommendation.
-- [x] Human-decision warnings are part of the deterministic output.
+- [x] invocation is manual only;
+- [x] permissions are read-only: contents, pull requests, issues, checks and actions;
+- [x] the client uses REST `GET` requests only;
+- [x] output is limited to run summary and artefact;
+- [x] no GitHub mutation method exists in the collector;
+- [x] collection status is distinct from approval and merge advice; and
+- [x] human-decision warnings are rendered.
 
-### Live audit — pending
+Live audit remains pending:
 
-- [ ] run permissions match the declared workflow permissions;
-- [ ] output appears only in the selected workflow run and artefact;
-- [ ] the target issue and pull request remain unchanged by collection;
-- [ ] no credential or sensitive log content appears in the report; and
-- [ ] repeated collection creates separate run-scoped artefacts without duplicate repository actions.
+- [ ] actual run permissions match declarations;
+- [ ] output appears only in run-scoped locations;
+- [ ] target issue and PR remain unchanged by collection;
+- [ ] no credential or sensitive log content appears; and
+- [ ] repeated runs create separate artefacts without duplicate repository actions.
 
-## Intended versus actual delivery
+## Limitations and lessons
 
-Pending close-out evidence.
+Current limitations:
 
-Known observations so far:
+- workflow dispatch requires an environment with Actions write authority;
+- unresolved inline review-thread state is not collected;
+- page and workflow-run collection are bounded and fail incomplete beyond limits;
+- run artefacts are retained for seven days; and
+- generated evidence cannot decide substantive sufficiency.
 
-- The stage remained within the approved one-repository, one-pull-request, read-only boundary.
-- Implementation was split into the approved ordered slices rather than combining schema, API integration and adoption proof.
-- Repository-native testing exposed and corrected one provenance defect before live dogfood.
-- Repository validation prevented an incomplete delivery record from entering the completed-record directory.
-- Unresolved review-thread collection and workflow-log inspection remain outside scope as planned.
+The premature merge adds a process lesson: a draft marker and `Do not approve yet` recommendation are advisory unless repository merge controls or human operating discipline enforce them. No repository-setting change is authorised by this recovery issue, but the incident must inform the final adoption decision.
 
-## Observed limitations and friction
-
-Current known limitations:
-
-- Live workflow dispatch must occur from an environment with Actions write authority; the connected toolset used for this close-out can inspect but not dispatch workflows.
-- The collector does not include unresolved inline review-thread state.
-- Workflow job collection is bounded to the newest twenty runs and page collection is bounded to twenty pages; exceeding a bound produces an incomplete report.
-- A generated report reduces collection work but cannot decide whether evidence is sufficient or interpret the substantive quality of a change.
-- Run artefacts are ephemeral and currently retained for seven days, so the durable delivery record must preserve the relevant identifiers and findings rather than depend on permanent artefact availability.
-
-Additional friction and unintended consequences remain pending live use.
-
-## Boundaries preserved
-
-Stage 3 has not authorised:
-
-- automatic pull-request or scheduled invocation;
-- automatic issue readiness or implementation-plan approval;
-- lifecycle transitions or label changes;
-- remediation classification;
-- approval or merge recommendations;
-- auto-merge or repository-setting changes;
-- autonomous publication or deployment decisions;
-- cross-repository collection; or
-- a broader agent-orchestration platform.
-
-Written repository evidence remains canonical and human review remains required.
-
-## Decisions and lessons
+## Decision
 
 Decision: **pending live dogfood**.
 
-No adopt, adapt or reject recommendation is valid until the two live reports, manual comparison and live authority audit are recorded.
-
-Preliminary lessons:
-
-- Separating evidence semantics from API collection made failure behaviour testable before granting live read access.
-- Collection completeness and approval readiness must remain separate concepts.
-- Provenance requirements should fail closed; the pagination-source defect found in PR #81 demonstrates why.
-- Completed delivery records should not be used as temporary workspaces; the failed initial PR #83 planning run confirmed that the repository enforces this distinction.
-- A read-only capability can still create governance risk if generated output is mistaken for a decision, so warnings and classified evidence remain material controls.
+No adopt, adapt or reject recommendation is valid until both live reports, the comparison and live authority audit are complete.
 
 ## Implications for the next stage
 
-Pending close-out decision.
-
-No Stage 4 implementation issue or speculative automation backlog should be created from this worklog. If Stage 3 is adopted or adapted, the next activity is a planning question about whether evidence from broader use justifies advisory lifecycle visibility, bounded post-merge reporting or no further automation.
+No Stage 4 issue or speculative automation backlog should be created from this worklog. Any next activity must begin as a new planning question after Stage 3 close-out.
