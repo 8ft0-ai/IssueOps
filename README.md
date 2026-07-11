@@ -10,7 +10,9 @@ The issue defines the problem, expected outcome, scope, non-goals, acceptance cr
 
 ## Current baseline
 
-Stage 1 established the manual execution-contract model. Stage 2 hardened that foundation into the current operating protocol through dependency-aware readiness, safe tool-operation controls, change-specific validation, review remediation, compact evidence formats, bounded delegated batch mode, repository-native pull-request validation and published canonical documentation.
+Stage 1 established the manual execution-contract model. Stage 2 hardened that foundation into the current recommended stable operating protocol through dependency-aware readiness, safe tool-operation controls, change-specific validation, review remediation, compact evidence formats, bounded delegated batch mode, repository-native pull-request validation and published canonical documentation.
+
+Stage 3 added an experimental, manually invoked and read-only pull-request evidence collector. It is retained for controlled evaluation with an **Adapt** decision and is not yet the recommended operational baseline.
 
 The core loop remains human-controlled:
 
@@ -32,5 +34,6 @@ Start with [`docs/issueops-protocol.md`](docs/issueops-protocol.md) for the cano
 
 - [`v0.1.0`](docs/releases/stage-1.md) — Stage 1 manual execution-contract IssueOps.
 - [`v0.2.0` recommended baseline](docs/releases/stage-2.md) — Stage 2 published and hardened operating model.
+- [Proposed `v0.3.0-alpha.1` experimental prerelease](docs/releases/stage-3-alpha.md) — Stage 3 read-only evidence-pack assistance for controlled evaluation.
 
-Stage 2 remains deliberately bounded. It does not provide automatic agent execution, automatic lifecycle transitions, required status checks, branch protection changes, auto-merge or automatic publication. The documented lifecycle labels also remain advisory and were not created because repository-level label creation was unavailable through the connected tooling.
+The stable baseline remains deliberately bounded. It does not provide automatic agent execution, automatic lifecycle transitions, required status checks, branch protection changes, auto-merge or automatic publication. The Stage 3 alpha does not expand those authority boundaries and does not represent routine operational adoption.

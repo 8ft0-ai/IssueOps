@@ -33,6 +33,7 @@ nav:
       - Publishing: publishing.md
       - Stage 1 release notes: releases/stage-1.md
       - Stage 2 release notes: releases/stage-2.md
+      - Stage 3 alpha prerelease notes: releases/stage-3-alpha.md
   - Validation:
       - Local MkDocs validation: local-validation.md
       - Repository-native validation: repository-native-validation.md
