@@ -27,4 +27,8 @@ Retrospective records must not claim that the complete planning structure existe
 
 ## Active and future stages
 
-No Stage 3 roadmap is approved. Stage 3 execution issues must not be created until a shaping issue produces a reviewed roadmap with explicit outcome, autonomy boundaries and acceptance gates.
+- [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — approved contemporaneous roadmap.
+
+Stage 3 selects manually invoked, read-only pull-request evidence assistance as the first bounded automation capability. Approval defines the outcome, authority boundary, safety model, proof gates and ordered slices; it does not mean that the capability has been implemented.
+
+Each implementation slice requires its own bounded execution-contract issue, readiness assessment, implementation plan, validation evidence and human review.

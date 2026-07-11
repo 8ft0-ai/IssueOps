@@ -54,23 +54,28 @@ Written issue and pull-request evidence remains canonical. No workflow depends o
 
 The Stage 2 baseline is documented in the [`v0.2.0` release recommendation](releases/stage-2.md).
 
-## Stage 3 — Deliberate automation shaping
+## Stage 3 — Read-only evidence-pack assistance
 
-Status: not started.
+Status: approved; implementation not started.
 
-Stage 3 must begin with a reviewed shaping and planning decision. It should identify which bounded automation would reduce genuine friction without weakening:
+Stage 3 selected one bounded automation capability through [planning issue #75](https://github.com/8ft0-ai/IssueOps/issues/75): manually invoked, read-only pull-request evidence collection and evidence-pack assistance.
 
-- issue-contract authority;
-- explicit implementation planning;
-- safe repository operations;
-- evidence quality;
-- human contract verification;
-- merge and publication authority; or
-- honest handling of incomplete validation.
+The selected capability is intended to assemble a current, structured and provenance-linked evidence report for one pull request while preserving the written repository record and all human authority. It may report observed, contributor-reported, derived, pending, unavailable or conflicting evidence, but it may not:
 
-Potential areas include bounded execution triggers, evidence collection and lifecycle assistance. These are candidate planning topics, not implemented or authorised capabilities.
+- decide issue readiness or approve implementation plans;
+- post or edit issue or pull-request content;
+- change labels or lifecycle state;
+- create branches, commits, issues or pull requests;
+- classify material remediation;
+- recommend or perform merge;
+- approve publication or deployment; or
+- infer success from missing, skipped, pending or contradictory evidence.
 
-No Stage 3 execution backlog should be created until its outcome, autonomy boundary, acceptance evidence and non-goals are reviewed and approved.
+The detailed approved roadmap is recorded in [`planning/roadmap/stage-03-read-only-evidence-pack-assistance.md`](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-03-read-only-evidence-pack-assistance.md).
+
+Approval establishes the outcome, no-write and no-decision authority boundary, safety model, proof gates and ordered delivery slices. It does not mean that the evidence collector has been implemented. Each implementation slice requires its own bounded execution-contract issue, readiness assessment, implementation plan, validation evidence and human review.
+
+Lifecycle assistance, post-merge verification automation, bounded execution triggering and auto-merge remain deferred and unauthorised.
 
 ## Current exclusions
 
