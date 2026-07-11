@@ -73,6 +73,15 @@ class EvidencePackTests(unittest.TestCase):
         self.assertIn("## Pending evidence", report.render_markdown())
         self.assertEqual("incomplete", json.loads(report.render_json())["status"])
 
+    def test_unavailable_evidence_is_incomplete(self) -> None:
+        data = load_fixture("pending.json")
+        data["evidence"][0]["classification"] = "unavailable"
+        data["evidence"][0]["summary"] = "The workflow evidence surface could not be accessed."
+
+        report = evidence_pack.parse_report(data)
+        self.assertEqual(evidence_pack.ReportStatus.INCOMPLETE, report.status)
+        self.assertIn("## Unavailable evidence", report.render_markdown())
+
     def test_collection_error_is_incomplete(self) -> None:
         data = load_fixture("complete.json")
         data["errors"] = [
@@ -158,7 +167,7 @@ class EvidencePackTests(unittest.TestCase):
         with self.assertRaisesRegex(evidence_pack.EvidenceValidationError, "unsupported fields"):
             evidence_pack.parse_report(data)
 
-    def test_cli_exit_codes_distinguish_complete_incomplete_and_invalid(self) -> None:
+    def test_cli_exit_codes_distinguish_complete_non_complete_and_invalid(self) -> None:
         stdout = io.StringIO()
         with contextlib.redirect_stdout(stdout):
             complete_code = evidence_pack.main(
@@ -167,13 +176,19 @@ class EvidencePackTests(unittest.TestCase):
         self.assertEqual(0, complete_code)
         self.assertEqual("complete", json.loads(stdout.getvalue())["status"])
 
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            incomplete_code = evidence_pack.main(
-                [str(FIXTURE_ROOT / "pending.json"), "--format", "json"]
-            )
-        self.assertEqual(2, incomplete_code)
-        self.assertEqual("incomplete", json.loads(stdout.getvalue())["status"])
+        for fixture, expected_status in (
+            ("pending.json", "incomplete"),
+            ("stale.json", "stale"),
+            ("conflicting.json", "conflicting"),
+        ):
+            with self.subTest(fixture=fixture):
+                stdout = io.StringIO()
+                with contextlib.redirect_stdout(stdout):
+                    code = evidence_pack.main(
+                        [str(FIXTURE_ROOT / fixture), "--format", "json"]
+                    )
+                self.assertEqual(2, code)
+                self.assertEqual(expected_status, json.loads(stdout.getvalue())["status"])
 
         with tempfile.TemporaryDirectory() as temp_dir:
             invalid_path = Path(temp_dir) / "invalid.json"
