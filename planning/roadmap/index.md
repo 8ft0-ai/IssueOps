@@ -29,6 +29,6 @@ Retrospective records must not claim that the complete planning structure existe
 
 - [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — delivering from an approved contemporaneous roadmap.
 
-Stage 3 is implementing the deterministic evidence schema and local renderer first. Live GitHub collection, workflow invocation, dogfood and adoption remain later bounded slices and are not yet delivered.
+Stage 3 now includes the deterministic evidence schema, local renderer and manually invoked read-only GitHub collection for one pull request. Representative dogfood, effort comparison, authority-boundary audit and the adopt/adapt/reject decision remain the final bounded slice.
 
 Each implementation slice requires its own bounded execution-contract issue, readiness assessment, implementation plan, validation evidence and human review.
