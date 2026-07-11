@@ -34,6 +34,6 @@ Start with [`docs/issueops-protocol.md`](docs/issueops-protocol.md) for the cano
 
 - [`v0.1.0`](docs/releases/stage-1.md) — Stage 1 manual execution-contract IssueOps.
 - [`v0.2.0` recommended baseline](docs/releases/stage-2.md) — Stage 2 published and hardened operating model.
-- [`v0.3.0-alpha.1` experimental prerelease](docs/releases/stage-3-alpha.md) — Stage 3 read-only evidence-pack assistance for controlled evaluation.
+- [Proposed `v0.3.0-alpha.1` experimental prerelease](docs/releases/stage-3-alpha.md) — Stage 3 read-only evidence-pack assistance for controlled evaluation.
 
 The stable baseline remains deliberately bounded. It does not provide automatic agent execution, automatic lifecycle transitions, required status checks, branch protection changes, auto-merge or automatic publication. The Stage 3 alpha does not expand those authority boundaries and does not represent routine operational adoption.
