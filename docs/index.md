@@ -4,7 +4,7 @@
 
 IssueOps is an experiment in making agentic coding safer and easier to review by turning the GitHub issue into an execution contract. The issue defines the work. The branch contains the implementation. The pull request becomes the evidence pack that a human can verify before deciding whether to merge.
 
-The repository starts deliberately small. Stage 1 established the manual workflow, while Stage 2 hardened it into the current operating protocol with clearer readiness, dependency, validation, remediation and evidence controls.
+The repository starts deliberately small. Stage 1 established the manual workflow, Stage 2 hardened it into the current recommended operating protocol with clearer readiness, dependency, validation, remediation and evidence controls, and Stage 3 tested read-only evidence-pack assistance as an experimental alpha capability.
 
 ## The thesis
 
@@ -59,4 +59,6 @@ The GitHub wiki remains useful, but it has a different role. It is for project m
 
 ## Current baseline
 
-The first baseline is [Stage 1: Manual Execution-Contract IssueOps](releases/stage-1.md), released as `v0.1.0`. Stage 2 extends that baseline through the current manual operating protocol; it does not add automatic Codex execution, auto-merge, branch protection changes, required checks or application code.
+The recommended stable baseline is [Stage 2 — Published and Hardened IssueOps Operating Model](releases/stage-2.md), released as `v0.2.0`.
+
+[Stage 3 Alpha — Read-only Evidence-pack Assistance](releases/stage-3-alpha.md), proposed as `v0.3.0-alpha.1`, is an experimental prerelease snapshot for controlled evaluation. It does not replace the stable baseline, does not establish routine operational adoption and does not expand human-controlled approval or merge authority.
