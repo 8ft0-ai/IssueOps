@@ -105,32 +105,59 @@ class GitHubClient:
             payload = self.get(path, page_params)
             if item_key is None:
                 if not isinstance(payload, list):
-                    raise GitHubAPIError(path, None, "paginated response must be an array")
+                    raise GitHubAPIError(
+                        self.absolute_url(path, page_params),
+                        None,
+                        "paginated response must be an array",
+                    )
                 items = payload
             else:
                 if not isinstance(payload, Mapping) or not isinstance(payload.get(item_key), list):
-                    raise GitHubAPIError(path, None, f"paginated response must contain array field {item_key!r}")
+                    raise GitHubAPIError(
+                        self.absolute_url(path, page_params),
+                        None,
+                        f"paginated response must contain array field {item_key!r}",
+                    )
                 items = payload[item_key]
                 raw_total = payload.get("total_count")
                 if raw_total is not None:
                     if not isinstance(raw_total, int) or isinstance(raw_total, bool) or raw_total < 0:
-                        raise GitHubAPIError(path, None, "total_count must be a non-negative integer")
+                        raise GitHubAPIError(
+                            self.absolute_url(path, page_params),
+                            None,
+                            "total_count must be a non-negative integer",
+                        )
                     if declared_total is None:
                         declared_total = raw_total
                     elif declared_total != raw_total:
-                        raise GitHubAPIError(path, None, "total_count changed during pagination")
+                        raise GitHubAPIError(
+                            self.absolute_url(path, page_params),
+                            None,
+                            "total_count changed during pagination",
+                        )
             if len(items) > PER_PAGE:
-                raise GitHubAPIError(path, None, f"page returned more than {PER_PAGE} items")
+                raise GitHubAPIError(
+                    self.absolute_url(path, page_params),
+                    None,
+                    f"page returned more than {PER_PAGE} items",
+                )
             collected.extend(items)
             if len(items) < PER_PAGE:
                 if declared_total is not None and len(collected) < declared_total:
                     raise GitHubAPIError(
-                        path,
+                        self.absolute_url(path, page_params),
                         None,
                         f"pagination ended after {len(collected)} of {declared_total} declared items",
                     )
                 return collected
-        raise GitHubAPIError(path, None, f"pagination exceeded the {self.max_pages}-page safety limit")
+        raise GitHubAPIError(
+            self.absolute_url(
+                path,
+                {**dict(params or {}), "per_page": PER_PAGE, "page": self.max_pages},
+            ),
+            None,
+            f"pagination exceeded the {self.max_pages}-page safety limit",
+        )
 
     @staticmethod
     def _urllib_transport(url: str, headers: Mapping[str, str]) -> tuple[Mapping[str, str], Any]:
@@ -268,7 +295,9 @@ def collect_report(
         try:
             issue = _require_mapping(client.get(issue_path), "linked issue")
             issue_url = _require_string(issue.get("html_url"), "linked issue html_url")
-            issue_body, issue_body_truncated = _excerpt(issue.get("body") if isinstance(issue.get("body"), str) else "")
+            issue_body, issue_body_truncated = _excerpt(
+                issue.get("body") if isinstance(issue.get("body"), str) else ""
+            )
             evidence.append(
                 {
                     "id": "issue.contract",
@@ -284,8 +313,17 @@ def collect_report(
                     },
                 }
             )
-        except GitHubAPIError as exc:
-            _api_error(errors, "issue.contract", exc)
+        except (GitHubAPIError, CollectionFailure) as exc:
+            if isinstance(exc, GitHubAPIError):
+                _api_error(errors, "issue.contract", exc)
+            else:
+                errors.append(
+                    {
+                        "code": "issue.contract",
+                        "message": str(exc),
+                        "source_url": client.absolute_url(issue_path),
+                    }
+                )
 
     def collect_list(
         code: str,
@@ -304,7 +342,11 @@ def collect_report(
     files = collect_list("pr.files", files_path)
     if files is not None:
         valid_files = [item for item in files if isinstance(item, Mapping)]
-        filenames = sorted(str(item.get("filename")) for item in valid_files if isinstance(item.get("filename"), str))
+        filenames = sorted(
+            str(item.get("filename"))
+            for item in valid_files
+            if isinstance(item.get("filename"), str)
+        )
         evidence.append(
             {
                 "id": "pr.changed-files",
@@ -313,21 +355,32 @@ def collect_report(
                 "source_url": f"{pr_url}/files",
                 "details": {
                     "count": len(valid_files),
-                    "additions": sum(item.get("additions", 0) for item in valid_files if isinstance(item.get("additions"), int)),
-                    "deletions": sum(item.get("deletions", 0) for item in valid_files if isinstance(item.get("deletions"), int)),
+                    "additions": sum(
+                        item.get("additions", 0)
+                        for item in valid_files
+                        if isinstance(item.get("additions"), int)
+                    ),
+                    "deletions": sum(
+                        item.get("deletions", 0)
+                        for item in valid_files
+                        if isinstance(item.get("deletions"), int)
+                    ),
                     "filenames": filenames[:100],
                     "filenames_truncated": len(filenames) > 100,
                 },
             }
         )
 
-    comments = collect_list("pr.comments", f"/repos/{repository}/issues/{pull_request}/comments")
+    comments = collect_list(
+        "pr.comments", f"/repos/{repository}/issues/{pull_request}/comments"
+    )
     if comments is not None:
         valid_comments = [item for item in comments if isinstance(item, Mapping)]
         authors = Counter(
             str(item.get("user", {}).get("login"))
             for item in valid_comments
-            if isinstance(item.get("user"), Mapping) and isinstance(item.get("user", {}).get("login"), str)
+            if isinstance(item.get("user"), Mapping)
+            and isinstance(item.get("user", {}).get("login"), str)
         )
         evidence.append(
             {
@@ -335,21 +388,31 @@ def collect_report(
                 "classification": "repository-observed",
                 "summary": f"GitHub returned {len(valid_comments)} pull-request conversation comments.",
                 "source_url": pr_url,
-                "details": {"count": len(valid_comments), "authors": dict(sorted(authors.items()))},
+                "details": {
+                    "count": len(valid_comments),
+                    "authors": dict(sorted(authors.items())),
+                },
             }
         )
 
-    reviews = collect_list("pr.reviews", f"/repos/{repository}/pulls/{pull_request}/reviews")
+    reviews = collect_list(
+        "pr.reviews", f"/repos/{repository}/pulls/{pull_request}/reviews"
+    )
     if reviews is not None:
         valid_reviews = [item for item in reviews if isinstance(item, Mapping)]
-        states = Counter(str(item.get("state", "unknown")).lower() for item in valid_reviews)
+        states = Counter(
+            str(item.get("state", "unknown")).lower() for item in valid_reviews
+        )
         evidence.append(
             {
                 "id": "pr.reviews",
                 "classification": "repository-observed",
                 "summary": f"GitHub returned {len(valid_reviews)} submitted pull-request reviews.",
                 "source_url": f"{pr_url}/reviews",
-                "details": {"count": len(valid_reviews), "states": dict(sorted(states.items()))},
+                "details": {
+                    "count": len(valid_reviews),
+                    "states": dict(sorted(states.items())),
+                },
             }
         )
 
@@ -370,20 +433,35 @@ def collect_report(
                     "details": {"count": 0},
                 }
             )
-        for check in sorted(valid_checks, key=lambda item: (str(item.get("name", "")), int(item.get("id", 0)))):
+        for check in sorted(
+            valid_checks,
+            key=lambda item: (str(item.get("name", "")), int(item.get("id", 0))),
+        ):
             check_id = int(check.get("id", 0))
             status = str(check.get("status", "unknown"))
             conclusion = check.get("conclusion")
-            classification = "pending" if status != "completed" else "repository-observed"
-            source_url = check.get("html_url") if isinstance(check.get("html_url"), str) else f"{pr_url}/checks"
+            classification = (
+                "pending" if status != "completed" else "repository-observed"
+            )
+            source_url = (
+                check.get("html_url")
+                if isinstance(check.get("html_url"), str)
+                else f"{pr_url}/checks"
+            )
             evidence.append(
                 {
                     "id": f"check.{check_id}",
                     "classification": classification,
                     "summary": f"Check {check.get('name') or check_id} is {status} with conclusion {conclusion!r}.",
                     "source_url": source_url,
-                    "source_timestamp": _source_timestamp(check.get("completed_at") or check.get("started_at")),
-                    "details": {"name": check.get("name"), "status": status, "conclusion": conclusion},
+                    "source_timestamp": _source_timestamp(
+                        check.get("completed_at") or check.get("started_at")
+                    ),
+                    "details": {
+                        "name": check.get("name"),
+                        "status": status,
+                        "conclusion": conclusion,
+                    },
                 }
             )
 
@@ -406,7 +484,11 @@ def collect_report(
                     ),
                 }
             )
-            valid_runs = sorted(valid_runs, key=lambda item: int(item.get("id", 0)), reverse=True)[:MAX_WORKFLOW_RUNS]
+            valid_runs = sorted(
+                valid_runs,
+                key=lambda item: int(item.get("id", 0)),
+                reverse=True,
+            )[:MAX_WORKFLOW_RUNS]
         if not valid_runs:
             evidence.append(
                 {
@@ -431,23 +513,40 @@ def collect_report(
             if jobs is not None:
                 for job in sorted(
                     (item for item in jobs if isinstance(item, Mapping)),
-                    key=lambda item: (str(item.get("name", "")), int(item.get("id", 0))),
+                    key=lambda item: (
+                        str(item.get("name", "")),
+                        int(item.get("id", 0)),
+                    ),
                 ):
                     job_status = str(job.get("status", "unknown"))
                     if job_status != "completed":
                         pending_job = True
                     job_details.append(
-                        {"name": job.get("name"), "status": job_status, "conclusion": job.get("conclusion")}
+                        {
+                            "name": job.get("name"),
+                            "status": job_status,
+                            "conclusion": job.get("conclusion"),
+                        }
                     )
-            classification = "pending" if status != "completed" or pending_job else "repository-observed"
-            run_url = run.get("html_url") if isinstance(run.get("html_url"), str) else f"{pr_url}/checks"
+            classification = (
+                "pending"
+                if status != "completed" or pending_job
+                else "repository-observed"
+            )
+            run_url = (
+                run.get("html_url")
+                if isinstance(run.get("html_url"), str)
+                else f"{pr_url}/checks"
+            )
             evidence.append(
                 {
                     "id": f"workflow.{run_id}",
                     "classification": classification,
                     "summary": f"Workflow {run.get('name') or run_id} is {status} with conclusion {conclusion!r}.",
                     "source_url": run_url,
-                    "source_timestamp": _source_timestamp(run.get("updated_at") or run.get("run_started_at")),
+                    "source_timestamp": _source_timestamp(
+                        run.get("updated_at") or run.get("run_started_at")
+                    ),
                     "details": {
                         "name": run.get("name"),
                         "event": run.get("event"),
@@ -463,12 +562,20 @@ def collect_report(
     try:
         final_pr = _require_mapping(client.get(pr_path), "final pull request")
         final_head = _require_mapping(final_pr.get("head"), "final pull request head")
-        head_sha_end = _require_string(final_head.get("sha"), "final pull request head SHA")
+        head_sha_end = _require_string(
+            final_head.get("sha"), "final pull request head SHA"
+        )
     except (GitHubAPIError, CollectionFailure) as exc:
         if isinstance(exc, GitHubAPIError):
             _api_error(errors, "pr.final-head", exc)
         else:
-            errors.append({"code": "pr.final-head", "message": str(exc), "source_url": pr_url})
+            errors.append(
+                {
+                    "code": "pr.final-head",
+                    "message": str(exc),
+                    "source_url": pr_url,
+                }
+            )
 
     raw_report = {
         "schema_version": evidence_pack.SCHEMA_VERSION,
@@ -490,27 +597,49 @@ def collect_report(
     try:
         return evidence_pack.parse_report(raw_report)
     except evidence_pack.EvidenceValidationError as exc:
-        raise CollectionFailure(f"collected evidence did not satisfy evidence-pack/v1: {exc}") from exc
+        raise CollectionFailure(
+            f"collected evidence did not satisfy evidence-pack/v1: {exc}"
+        ) from exc
 
 
 def write_report(report: evidence_pack.EvidenceReport, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
-    (output_dir / "evidence-pack.json").write_text(report.render_json(), encoding="utf-8")
-    (output_dir / "evidence-pack.md").write_text(report.render_markdown(), encoding="utf-8")
+    (output_dir / "evidence-pack.json").write_text(
+        report.render_json(), encoding="utf-8"
+    )
+    (output_dir / "evidence-pack.md").write_text(
+        report.render_markdown(), encoding="utf-8"
+    )
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("repository", help="target repository in owner/name form")
-    parser.add_argument("pull_request", type=int, help="positive pull-request number")
-    parser.add_argument("--api-url", default=os.environ.get("GITHUB_API_URL", "https://api.github.com"))
-    parser.add_argument("--token-env", default="GITHUB_TOKEN", help="environment variable containing the token")
-    parser.add_argument("--output-dir", default="evidence-pack-output", help="directory for generated reports")
+    parser.add_argument(
+        "pull_request", type=int, help="positive pull-request number"
+    )
+    parser.add_argument(
+        "--api-url",
+        default=os.environ.get("GITHUB_API_URL", "https://api.github.com"),
+    )
+    parser.add_argument(
+        "--token-env",
+        default="GITHUB_TOKEN",
+        help="environment variable containing the token",
+    )
+    parser.add_argument(
+        "--output-dir",
+        default="evidence-pack-output",
+        help="directory for generated reports",
+    )
     args = parser.parse_args(argv)
 
     token = os.environ.get(args.token_env, "")
     if not token:
-        print(f"Evidence collection failed: environment variable {args.token_env!r} is not set", file=sys.stderr)
+        print(
+            f"Evidence collection failed: environment variable {args.token_env!r} is not set",
+            file=sys.stderr,
+        )
         return 1
     try:
         client = GitHubClient(token, api_url=args.api_url)
