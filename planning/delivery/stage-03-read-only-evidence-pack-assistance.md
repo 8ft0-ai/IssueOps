@@ -90,6 +90,12 @@ Stage 3 achieved its stage-level objective: test one bounded automation capabili
 
 The **Adapt** decision follows directly from this assessment: the bounded capability is useful and safe enough to retain, but explicit non-closing contract linkage and invocation ergonomics must improve before broader adoption.
 
+## Post-close operational observation
+
+The first ordinary follow-up after Stage 3, [PR #87](https://github.com/8ft0-ai/IssueOps/pull/87), recorded planning and documentation validation directly in its pull-request evidence but did not use a generated collector run or evidence-pack artefact as its primary mechanical evidence source.
+
+This shows that Stage 3 proved technical operation, safety and controlled usefulness, but did not establish routine operational adoption in the normal IssueOps review loop. The observation strengthens rather than changes the **Adapt** decision: operationalisation belongs to a separately shaped future stage and must retain the read-only, human-decision boundary unless new evidence justifies a different authority model.
+
 ## Intended versus actual delivery
 
 The implementation remained within the approved read-only boundary and followed the four ordered slices.
