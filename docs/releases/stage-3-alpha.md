@@ -29,7 +29,7 @@ Stage 3 closed with decision **Adapt**. The collector proved that repository-nat
 
 ## Experimental proof
 
-Live dogfood against PR #85 captured two reports for the same stable pull-request head:
+Live dogfood against [PR #85](https://github.com/8ft0-ai/IssueOps/pull/85) captured two reports for the same stable pull-request head:
 
 - a pending report marked `incomplete` while relevant validation was still running; and
 - a final report marked `complete` after validation finished.
@@ -49,7 +49,7 @@ The experiment reduced repeated mechanical evidence gathering, but human inspect
 - Collection remains bounded by configured pagination and workflow-run limits.
 - Generated evidence still requires human assessment of scope, risk, sufficiency and contract fulfilment.
 
-The first ordinary follow-up after Stage 3, PR #87, used manually assembled validation evidence rather than the collector as its primary mechanical evidence source. This demonstrated that technical operation and controlled usefulness were proved, but routine operational adoption was not.
+The first ordinary follow-up after Stage 3, [PR #87](https://github.com/8ft0-ai/IssueOps/pull/87), used manually assembled validation evidence rather than the collector as its primary mechanical evidence source. This demonstrated that technical operation and controlled usefulness were proved, but routine operational adoption was not.
 
 ## Authority boundaries retained
 
