@@ -2,7 +2,7 @@
 
 Stage 3 introduces an experimental, read-only evidence model for assembling pull-request review facts without transferring approval authority.
 
-The current increment defines the deterministic core only. It does **not** connect to GitHub, collect live pull-request data, post comments, update a pull-request body, change lifecycle state, recommend merge or authorise publication.
+The deterministic core validates and renders `evidence-pack/v1` input. The current integration adds manually invoked collection from one pull request in the current GitHub repository. It does **not** post comments, update pull-request or issue content, change lifecycle state, recommend merge or authorise publication.
 
 ## Authority boundary
 
@@ -89,11 +89,13 @@ otherwise               -> complete
 
 `complete` means only that the supplied evidence document is structurally valid, the head SHA remained stable, and no pending, unavailable, conflicting or collection-error state was represented. It is not an approval decision.
 
+A completed workflow run means that collection and report production completed safely. The report status remains the source of truth for whether the collected view is complete, incomplete, conflicting or stale.
+
 ## Stale-head circuit breaker
 
 The collection input records the pull-request head SHA at the beginning and end. If they differ, the output status is `stale` and the Markdown report displays a circuit-breaker warning.
 
-The core does not silently combine evidence from different pull-request heads.
+The collector does not silently combine evidence from different pull-request heads.
 
 ## Deterministic output
 
@@ -123,27 +125,76 @@ Collection errors contain:
 
 Any collection error makes the report incomplete. Error messages must not include credentials or sensitive data.
 
-## Local CLI
+## Manual GitHub collection
 
-The core is a local standard-library command:
+The manual workflow is `Collect pull-request evidence pack` under GitHub Actions. It accepts one positive pull-request number and always targets the repository in which the workflow runs.
+
+The workflow grants read access only to:
+
+```text
+contents
+pull requests
+issues
+checks
+actions
+```
+
+The collector uses GitHub REST `GET` requests to read:
+
+- pull-request metadata and contributor-reported body content;
+- changed files and aggregate additions and deletions;
+- one unambiguous same-repository closing issue reference;
+- pull-request conversation comments;
+- submitted reviews;
+- check runs for the resolved head SHA;
+- pull-request workflow runs and their job outcomes; and
+- the final pull-request head SHA.
+
+Validly empty comments, reviews, checks or workflow runs are recorded as observed absence. Pending checks or jobs produce pending evidence. Final failed checks remain repository-observed facts and do not become merge advice.
+
+Multiple same-repository closing references produce conflicting evidence rather than silently selecting an execution contract.
+
+Pagination uses 100-item pages and stops after a bounded safety limit. Missing pages, malformed responses or an exceeded limit become collection errors and prevent a complete result.
+
+The generated files are:
+
+```text
+evidence-pack.json
+evidence-pack.md
+```
+
+The Markdown report is appended to the individual workflow run summary and both files are uploaded as a run artefact retained for seven days. The workflow does not write to the issue, pull request, repository files or settings.
+
+Collector exit codes are:
+
+| Exit code | Meaning |
+| --- | --- |
+| `0` | A valid report with collection status `complete` was produced |
+| `2` | A valid report with collection status `incomplete`, `conflicting` or `stale` was produced and remains available for review |
+| `1` | The target could not be resolved safely, authentication failed, input was invalid or report production failed |
+
+Exit code `2` still permits run-summary and artefact publication. Exit code `1` fails the workflow.
+
+## Local commands
+
+Validate or render supplied structured input:
 
 ```bash
 python scripts/evidence_pack.py input.json --format markdown
 python scripts/evidence_pack.py input.json --format json
 ```
 
-Use `-` or omit the input path to read JSON from standard input.
+Collect one live pull request locally with an appropriately scoped token:
 
-Exit codes are:
+```bash
+GITHUB_TOKEN=... python scripts/collect_pr_evidence.py \
+  owner/repository \
+  123 \
+  --output-dir evidence-pack-output
+```
 
-| Exit code | Meaning |
-| --- | --- |
-| `0` | Valid input with collection status `complete` |
-| `2` | Valid input with collection status `incomplete`, `conflicting` or `stale` |
-| `1` | Invalid JSON, schema violation or input read failure |
-
-The command performs no network access and has no GitHub write path. Output is written to standard output only.
+The collector writes only to the specified local output directory. It has no GitHub mutation method.
 
 ## Current limitation
 
-The current core validates and renders supplied structured evidence. Live GitHub collection, pagination, least-privilege workflow invocation and run artefact production belong to a later bounded execution-contract issue and are not yet implemented.
+Manual live collection is implemented, but representative before-and-after dogfood, effort comparison, authority-boundary audit and the Stage 3 adopt/adapt/reject decision remain pending. Unresolved review-thread state and full workflow-log inspection are outside the current integration boundary.
