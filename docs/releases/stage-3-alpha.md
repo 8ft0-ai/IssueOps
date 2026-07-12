@@ -12,7 +12,7 @@ Stage 3 proved manually invoked, read-only pull-request evidence collection and 
 
 - [Stage 3 delivery record](https://github.com/8ft0-ai/IssueOps/blob/main/planning/delivery/stage-03-read-only-evidence-pack-assistance.md)
 - [Stage 3 roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-03-read-only-evidence-pack-assistance.md)
-- [Historical evidence index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md#proposed-v030-alpha1--stage-3-experimental-snapshot)
+- [Historical evidence index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md)
 
 The exact former alpha page remains available at the verified [pre-migration snapshot](https://github.com/8ft0-ai/IssueOps/blob/318d4b4f7c9490365033ff8363d42cd940d6b900/docs/releases/stage-3-alpha.md).
 
