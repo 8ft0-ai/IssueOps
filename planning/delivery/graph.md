@@ -26,6 +26,11 @@ flowchart LR
   n_artifact_evidence_pack_v1["evidence-pack/v1\n(artifact)"]
   n_pr_85["PR #85 — Stage 3 live dogfood and recovery\n(pull request)"]
   n_decision_adapt_evidence_assistance["Adapt evidence-pack assistance before broader adoption\n(decision)"]
+  n_problem_mixed_documentation["Reader journeys obscured by mixed documentation\n(problem)"]
+  n_stage_4["Stage 4 — Diátaxis documentation architecture\n(stage)"]
+  n_artifact_diataxis_docs["Diátaxis-aligned IssueOps documentation\n(artifact)"]
+  n_decision_adopt_diataxis["Adopt the Diátaxis documentation architecture\n(decision)"]
+  n_issue_90["Issue #90 — Shape operational evidence assistance\n(issue)"]
 
   n_stage_1 -->|implemented by| n_pr_2
   n_stage_1 -->|produced| n_release_v0_1
@@ -54,4 +59,14 @@ flowchart LR
   n_stage_3 -->|preserved| n_boundary_human_authority
   n_stage_3 -->|preserved| n_boundary_bounded_automation
   n_stage_3 -->|produced| n_decision_adapt_evidence_assistance
+  n_artifact_docs_site -->|revealed problem| n_problem_mixed_documentation
+  n_artifact_operating_protocol -->|revealed problem| n_problem_mixed_documentation
+  n_problem_mixed_documentation -->|resolved by| n_stage_4
+  n_decision_planning_adoption -->|enabled| n_stage_4
+  n_stage_4 -->|produced| n_artifact_diataxis_docs
+  n_stage_4 -->|preserved| n_boundary_human_authority
+  n_stage_4 -->|preserved| n_boundary_bounded_automation
+  n_stage_4 -->|produced| n_decision_adopt_diataxis
+  n_decision_adapt_evidence_assistance -->|carried forward to| n_issue_90
+  n_decision_adopt_diataxis -->|carried forward to| n_issue_90
 ```
