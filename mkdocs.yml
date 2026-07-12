@@ -11,6 +11,7 @@ nav:
   - Home: index.md
   - Tutorials:
       - Overview: tutorials/index.md
+      - Complete your first IssueOps change: tutorials/first-issueops-change.md
   - How-to guides:
       - Overview: how-to/index.md
       - Follow the operating protocol: issueops-protocol.md
