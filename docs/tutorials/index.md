@@ -24,10 +24,16 @@ It teaches only capabilities already implemented in IssueOps. It does not introd
 
 ## After the tutorial
 
-Repeat the first planning tasks independently with:
+Repeat the planning tasks independently with:
 
 - [Write an executable issue contract](../how-to/write-executable-issue.md);
 - [Check readiness and dependencies](../how-to/check-readiness-and-dependencies.md); and
 - [Prepare an implementation plan](../how-to/prepare-implementation-plan.md).
 
-Use [Reference](../reference/index.md) for exact fields and formats, and [Explanation](../explanation/index.md) for the reasoning behind the controls.
+Repeat the pull-request tasks with:
+
+- [Prepare a pull-request evidence pack](../how-to/prepare-pr-evidence-pack.md);
+- [Review a pull request against its contract](../how-to/review-pr-against-contract.md); and
+- [Remediate pull-request review feedback](../how-to/remediate-review-feedback.md).
+
+Use [Reference](../reference/index.md) for exact fields, evidence requirements, templates, decisions and blockers, and [Explanation](../explanation/index.md) for the reasoning behind the controls.
