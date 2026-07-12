@@ -2,15 +2,9 @@
 
 Tutorials help a first-time contributor learn IssueOps by completing a controlled experience. They minimise choices, explain what should be visible after each step and link to reference material instead of trying to define every rule.
 
-## Current learning path
+## Start here
 
-The full first-change tutorial is the next approved Stage 4 slice. Until it is published, use the established [IssueOps operating protocol](../issueops-protocol.md) together with the [documentation-only execution-contract example](../examples/execution-contract-example.md).
-
-That route is current and safe, but it remains a protocol plus reference example rather than a complete tutorial. It expects the contributor to choose and connect several steps independently.
-
-## What the first tutorial will cover
-
-The first tutorial will guide one small documentation-only change through:
+[Complete your first small IssueOps change](first-issueops-change.md) guides one documentation-only exercise through:
 
 ```text
 execution contract
@@ -24,8 +18,10 @@ execution contract
   -> merge and post-merge verification
 ```
 
-It will use only capabilities already implemented in this repository. It will not introduce automatic execution, automatic review or automatic merge authority.
+The tutorial uses a personal fork or authorised training repository so the full loop can be completed without adding exercise artefacts to the canonical project. It states the expected outcome at every major step and stops safely when permissions or validation are unavailable.
 
-## Need to complete a task now?
+It teaches only capabilities already implemented in IssueOps. It does not introduce automatic execution, automatic review or automatic merge authority.
 
-Use the [How-to guides](../how-to/index.md) for current procedures, or the [Reference](../reference/index.md) section for exact rules and formats.
+## After the tutorial
+
+Use the [How-to guides](../how-to/index.md) when you need to repeat a task independently, the [Reference](../reference/index.md) section for exact rules and formats, and [Explanation](../explanation/index.md) for the reasoning behind the controls.

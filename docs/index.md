@@ -10,9 +10,9 @@ The repository starts deliberately small. Stage 1 established the manual workflo
 
 ### Learn IssueOps
 
-Use [Tutorials](tutorials/index.md) when you want a controlled learning experience with expected outcomes at each step.
+Start with [Complete your first small IssueOps change](tutorials/first-issueops-change.md). It guides one documentation-only exercise from an executable issue through human-controlled merge and post-merge verification, with a visible expected outcome at every major step.
 
-The full first-change tutorial is the next approved Stage 4 slice. Until it is published, the Tutorials page directs you to the current protocol and documentation-only example without presenting them as a completed tutorial.
+Use the [Tutorials](tutorials/index.md) landing page for the learning-path boundary and next steps.
 
 ### Complete a task
 
