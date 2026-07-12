@@ -2,7 +2,7 @@
 
 This directory is the management control surface for IssueOps.
 
-It is separate from `docs/` on purpose. Public contributor and operating guidance belongs in `docs/`. Stage planning, delivery reconstruction, close-out evidence and causal delivery records belong in `planning/`.
+It is separate from `docs/` on purpose. Public contributor and operating guidance belongs in `docs/`. Stage planning, delivery reconstruction, close-out evidence, historical project evidence and causal delivery records belong in `planning/`.
 
 GitHub issues, pull requests, reviews, commits and workflow runs remain the canonical detailed audit trail. Planning files provide a curated navigation and management layer over that history.
 
@@ -12,22 +12,26 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 planning/README.md                 -> operating rules
 planning/roadmap/index.md          -> intended stage outcomes and boundaries
 planning/delivery/index.md         -> completed delivery evidence
+planning/evidence/index.md         -> historical snapshots and compatibility decisions
 planning/delivery-log.md           -> concise chronological ledger
 planning/delivery/graph.md         -> generated causal navigation
 ```
 
-## Planning versus delivery
+## Planning, delivery and evidence
 
 ```text
 planning/roadmap/                  -> forward-looking intent, boundaries and acceptance gates
 planning/delivery/*.md             -> what actually shipped, what proved it and what was learned
+planning/evidence/                 -> curated links to immutable historical project records
 planning/delivery-log.md           -> short chronological summary
 planning/delivery/delivery.yaml    -> compact causal graph metadata
 planning/delivery/graph.md         -> generated Mermaid navigation
-GitHub history                     -> detailed execution and review evidence
+GitHub history                     -> exact source records and detailed execution evidence
 ```
 
-A roadmap specification must not become the completed delivery narrative. A delivery record must not rewrite what was intended before the work began.
+A roadmap specification must not become the completed delivery narrative. A delivery record must not rewrite what was intended before the work began. A historical evidence index must link immutable records rather than copying them into current user guidance.
+
+See the [historical evidence index](evidence/index.md) for former roadmap, release, contributor-review and delivery-history pages whose public `docs/` paths are retained only as compatibility surfaces.
 
 ## Stage-pack operating model
 
@@ -60,12 +64,13 @@ The planning model is adopted for future multi-issue stages.
 
 The adoption applies proportionately. A stage pack is the default only when work crosses issue boundaries, changes authority or governance, requires an end-to-end proof, or needs an explicit close-out decision. It is not a mandatory wrapper for ordinary bounded work.
 
-The adopted model keeps four questions separate:
+The adopted model keeps five questions separate:
 
 ```text
 What did we intend?       -> roadmap record
 What actually shipped?    -> delivery record
 What proved it?           -> linked GitHub and workflow evidence
+What exact history remains? -> immutable record linked from planning/evidence
 Why did that lead onward? -> compact delivery graph
 ```
 

@@ -8,18 +8,16 @@ Explanation pages help maintainers and interested readers understand why IssueOp
 - [Why evidence is not approval](pr-evidence-and-approval.md) — why evidence presence, contract satisfaction and the human approval decision remain separate.
 - [Why repository-native validation is preferred](repository-native-validation-model.md) — what direct evidence proves, when fallback is limited and why pending checks remain visible.
 - [Documentation architecture](documentation-architecture.md) — how Tutorials, How-to, Reference and Explanation divide responsibility, and why project records remain outside that tree.
-- [Delegated batch mode](../delegated-batch-mode.md) — why bounded owner delegation can reduce routine confirmation without removing validation and merge gates. This page remains mixed with operating rules until a later split.
+- [Delegated batch mode](../delegated-batch-mode.md) — why bounded owner delegation can reduce routine confirmation without removing validation and merge gates.
 - [Site and wiki boundaries](../site-vs-wiki.md) — why canonical documentation and project memory have different authority.
 
 ## Project direction and history
 
-Project records are not a fifth Diátaxis documentation mode. They remain in their canonical repository locations and are linked when context is useful:
+Project records are not a fifth Diátaxis mode and are not duplicated into Explanation. Use their canonical repository locations:
 
-- [Approved Stage 4 roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-04-diataxis-documentation-architecture.md)
-- [Planning control surface](https://github.com/8ft0-ai/IssueOps/tree/main/planning)
-- [Public roadmap compatibility page](../roadmap.md)
-- [Stage 1 release notes](../releases/stage-1.md)
-- [Stage 2 stable release notes](../releases/stage-2.md)
-- [Stage 3 experimental alpha notes](../releases/stage-3-alpha.md)
+- [Planning control surface](https://github.com/8ft0-ai/IssueOps/blob/main/planning/README.md)
+- [Roadmap index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/index.md)
+- [Delivery records](https://github.com/8ft0-ai/IssueOps/blob/main/planning/delivery/index.md)
+- [Historical evidence and compatibility decisions](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md)
 
-These links preserve access to intent, delivery evidence and historical baselines without turning project history into current task or normative guidance.
+Compatibility pages preserve existing public URLs but do not become alternative sources of project intent, delivery evidence or history.
