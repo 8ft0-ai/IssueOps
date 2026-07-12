@@ -14,7 +14,6 @@ nav:
   - How-to guides:
       - Overview: how-to/index.md
       - Follow the operating protocol: issueops-protocol.md
-      - Complete a delegated batch: delegated-batch-mode.md
       - Prepare a batch completion summary: batch-completion-summaries.md
       - Perform safe tool operations: tool-operations.md
       - Validate MkDocs locally: local-validation.md
