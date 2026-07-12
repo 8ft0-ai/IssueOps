@@ -17,21 +17,26 @@ nav:
       - Write an executable issue: how-to/write-executable-issue.md
       - Check readiness and dependencies: how-to/check-readiness-and-dependencies.md
       - Prepare an implementation plan: how-to/prepare-implementation-plan.md
+      - Prepare a PR evidence pack: how-to/prepare-pr-evidence-pack.md
+      - Review a PR against its contract: how-to/review-pr-against-contract.md
+      - Remediate review feedback: how-to/remediate-review-feedback.md
       - Follow the operating protocol: issueops-protocol.md
       - Prepare a batch completion summary: batch-completion-summaries.md
       - Perform safe tool operations: tool-operations.md
       - Validate MkDocs locally: local-validation.md
       - Publish and verify the site: publishing.md
-      - Verify a PR against its contract: contract-verification.md
-      - Remediate review feedback: review-remediation.md
   - Reference:
       - Overview: reference/index.md
       - Execution-contract entry: execution-contracts.md
       - Execution-contract fields: reference/execution-contract-fields.md
       - Readiness and dependency formats: reference/readiness-and-dependency-formats.md
       - Implementation-plan format: reference/implementation-plan-format.md
-      - Pull requests as evidence packs: pr-evidence-packs.md
-      - PR evidence templates: pr-evidence-templates.md
+      - PR evidence entry: pr-evidence-packs.md
+      - PR evidence requirements: reference/pr-evidence-requirements.md
+      - PR evidence templates: reference/pr-evidence-templates.md
+      - Review decisions and merge blockers: reference/review-decisions-and-merge-blockers.md
+      - Contract verification entry: contract-verification.md
+      - Review remediation entry: review-remediation.md
       - Manual lifecycle labels: labels.md
       - Examples:
           - Overview: examples/README.md
@@ -45,6 +50,7 @@ nav:
   - Explanation:
       - Overview: explanation/index.md
       - Why the issue is the execution contract: explanation/execution-contract-model.md
+      - Why evidence is not approval: explanation/pr-evidence-and-approval.md
       - Documentation architecture: explanation/documentation-architecture.md
       - Delegated authority and batch mode: delegated-batch-mode.md
       - Site and wiki boundaries: site-vs-wiki.md
