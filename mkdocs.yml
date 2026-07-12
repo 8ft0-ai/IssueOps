@@ -17,20 +17,28 @@ nav:
       - Write an executable issue: how-to/write-executable-issue.md
       - Check readiness and dependencies: how-to/check-readiness-and-dependencies.md
       - Prepare an implementation plan: how-to/prepare-implementation-plan.md
+      - Perform a safe repository mutation: how-to/perform-safe-repository-mutation.md
+      - Validate a documentation change: how-to/validate-documentation-change.md
+      - Validate a workflow change: how-to/validate-workflow-change.md
+      - Publish and verify the site: how-to/publish-and-verify-documentation-site.md
       - Prepare a PR evidence pack: how-to/prepare-pr-evidence-pack.md
       - Review a PR against its contract: how-to/review-pr-against-contract.md
       - Remediate review feedback: how-to/remediate-review-feedback.md
       - Follow the operating protocol: issueops-protocol.md
       - Prepare a batch completion summary: batch-completion-summaries.md
-      - Perform safe tool operations: tool-operations.md
-      - Validate MkDocs locally: local-validation.md
-      - Publish and verify the site: publishing.md
   - Reference:
       - Overview: reference/index.md
       - Execution-contract entry: execution-contracts.md
       - Execution-contract fields: reference/execution-contract-fields.md
       - Readiness and dependency formats: reference/readiness-and-dependency-formats.md
       - Implementation-plan format: reference/implementation-plan-format.md
+      - Operation permissions and evidence: reference/operation-permissions-and-evidence.md
+      - Validation by change type: reference/validation-by-change-type.md
+      - Validation status and fallback policy: reference/validation-status-and-fallback-policy.md
+      - Safe-operation entry: tool-operations.md
+      - Local validation entry: local-validation.md
+      - Repository-native validation entry: repository-native-validation.md
+      - Publishing entry: publishing.md
       - PR evidence entry: pr-evidence-packs.md
       - PR evidence requirements: reference/pr-evidence-requirements.md
       - PR evidence templates: reference/pr-evidence-templates.md
@@ -42,15 +50,14 @@ nav:
           - Overview: examples/README.md
           - Execution contract example: examples/execution-contract-example.md
           - Contract verification example: examples/contract-verification-example.md
-      - Change-type validation: change-type-validation.md
-      - Repository-native validation: repository-native-validation.md
-      - Evidence-pack schema: evidence-pack-schema.md
       - Documentation currency checklist: documentation-currency.md
       - Workflow-change review checklist: workflow-changes.md
+      - Evidence-pack schema: evidence-pack-schema.md
   - Explanation:
       - Overview: explanation/index.md
       - Why the issue is the execution contract: explanation/execution-contract-model.md
       - Why evidence is not approval: explanation/pr-evidence-and-approval.md
+      - Why repository-native validation is preferred: explanation/repository-native-validation-model.md
       - Documentation architecture: explanation/documentation-architecture.md
       - Delegated authority and batch mode: delegated-batch-mode.md
       - Site and wiki boundaries: site-vs-wiki.md

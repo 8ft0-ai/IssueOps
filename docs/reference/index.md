@@ -22,9 +22,10 @@ Reference pages define exact IssueOps rules, formats, fields, classifications an
 
 ## Operations and validation
 
-- [Safe tool operations](../tool-operations.md) — current phase permissions, prohibited operations and evidence formats, also classified as a task guide until later separation.
-- [Change-type validation guidance](../change-type-validation.md) — validation expectations matched to changed behaviour.
-- [Repository-native validation](../repository-native-validation.md) — source-of-truth and representative-fallback rules.
+- [Operation permissions and evidence](operation-permissions-and-evidence.md) — phase permissions, forbidden side effects, evidence formats and circuit breaker.
+- [Validation by change type](validation-by-change-type.md) — canonical documentation, workflow, publishing, process, application and planning matrix.
+- [Validation status and fallback policy](validation-status-and-fallback-policy.md) — repository-native evidence, representative fallback, pending checks and post-merge verification.
+- [Safe-operation compatibility entry](../tool-operations.md) — stable route for earlier operation links.
 - [Documentation currency checklist](../documentation-currency.md) — checks for stale or contradictory guidance.
 - [Workflow-change review checklist](../workflow-changes.md) — exact review checks for workflow mutations.
 - [`evidence-pack/v1` schema](../evidence-pack-schema.md) — collector data model, statuses and limitations.

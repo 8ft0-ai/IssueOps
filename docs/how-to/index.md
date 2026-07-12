@@ -8,6 +8,13 @@ How-to guides help an active contributor or agent operator complete a specific t
 - [Check readiness and dependencies](check-readiness-and-dependencies.md) — refresh repository state, record the safe starting point and stop when the issue is blocked.
 - [Prepare an implementation plan](prepare-implementation-plan.md) — make the intended branch, files, sequence, validation and exclusions visible before branch creation.
 
+## Operate and validate safely
+
+- [Perform a safe repository mutation](perform-safe-repository-mutation.md) — match the phase, target, tool and expected side effect before every write.
+- [Validate a documentation change](validate-documentation-change.md) — read back content, check links and currency, run the strict build and inspect material rendered paths.
+- [Validate a workflow change](validate-workflow-change.md) — review triggers, permissions, dependencies, settings and pre/post-merge evidence.
+- [Publish and verify the documentation site](publish-and-verify-documentation-site.md) — validate the artefact, observe the merged Pages workflow and inspect the public site.
+
 ## Prepare, review and remediate pull requests
 
 - [Prepare a pull-request evidence pack](prepare-pr-evidence-pack.md) — describe the final scope, validation, caveats and groundedness review accurately.
@@ -20,14 +27,6 @@ How-to guides help an active contributor or agent operator complete a specific t
 - [Complete a delegated batch](../delegated-batch-mode.md) — eligibility and operating gates for explicitly authorised multi-issue delivery. This page remains mixed with authority explanation until a later split.
 - [Prepare a batch completion summary](../batch-completion-summaries.md) — record delivered, pending, blocked, skipped and deferred work.
 
-## Operate and validate safely
-
-- [Perform safe tool operations](../tool-operations.md) — current procedure and evidence formats for repository mutations. This page remains mixed with exact phase rules until a later split.
-- [Validate MkDocs locally](../local-validation.md) — build the documentation site in a local environment.
-- [Choose validation by change type](../change-type-validation.md) — select checks that match the behaviour changed.
-- [Use repository-native validation](../repository-native-validation.md) — prefer repository workflows and record representative fallbacks honestly.
-- [Publish and verify the documentation site](../publishing.md) — current maintainer procedure, with historical evidence still present until a later split.
-
 ## Exact rules and formats
 
-Use [Reference](../reference/index.md) when you need contract fields, templates, review decisions, merge blockers, labels, validation requirements, checklists or schema definitions.
+Use [Reference](../reference/index.md) when you need contract fields, operation permissions, validation matrices, evidence templates, review decisions, merge blockers, labels, checklists or schema definitions.
