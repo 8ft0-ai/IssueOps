@@ -1,186 +1,71 @@
 # IssueOps operating protocol
 
-This page defines the canonical operating protocol for this repository's manual IssueOps workflow.
+This page is the authoritative lifecycle and gate map for the repository's manual IssueOps workflow. It explains how an executable issue becomes a bounded repository change, how the pull request carries evidence and how a human decides whether the change may merge.
 
-The protocol is an execution contract for the process itself. It describes how an issue becomes a bounded repository change, how the pull request becomes the evidence pack and how a human reviewer decides whether the change should merge.
+Use the focused documentation for detail:
 
-This protocol is deliberately manual. It does not add automatic Codex execution, auto-merge, branch protection, required status checks or application code. Any future automation should be introduced through its own issue contract, implementation plan, validation evidence and human review.
+- [Tutorials](tutorials/index.md) teach the workflow through a guided experience.
+- [How-to guides](how-to/index.md) explain how to complete a specific task.
+- [Reference](reference/index.md) defines exact fields, formats, permissions, validation rules and decision vocabulary.
+- [Explanation](explanation/index.md) describes the model, rationale and authority boundaries.
+
+This protocol is deliberately manual. It does not authorise automatic agent execution, automatic lifecycle transitions, required status checks, branch-protection changes, auto-merge configuration or autonomous approval and publication decisions. Any such change requires its own planning and execution contracts, validation evidence and human review.
 
 ## Protocol boundary
 
-The protocol applies to repository changes made through GitHub issues and pull requests.
+The protocol applies to repository changes implemented through GitHub issues, branches and pull requests.
 
-It is designed for agent-assisted implementation, especially with Codex, where the repository needs visible controls around intent, scope, validation and review.
-
-The source of truth is the repository record:
+The repository record is the source of truth:
 
 - the issue defines the execution contract;
-- the readiness comment records whether the contract is executable;
-- the implementation-plan comment records the proposed path;
-- the branch contains the implementation;
+- the readiness comment records whether the contract is executable and identifies a safe starting point;
+- the implementation-plan comment records the proposed execution path;
+- the feature branch contains the implementation;
 - the pull request carries the evidence pack;
-- the review records contract verification; and
-- the merge records the human acceptance decision.
+- review records contract verification and remediation; and
+- merge records the human acceptance decision.
 
-Labels may help make lifecycle state easier to scan, but they do not replace the repository record. See [Manual lifecycle labels](labels.md) for the lightweight label model.
+Labels are optional visibility aids and never replace written evidence. See [Manual lifecycle labels](labels.md).
 
 ## Lifecycle
 
 ### 1. Create or select an issue contract
 
-Every change starts with a GitHub issue.
+Every implementation change starts with a GitHub issue that is specific enough to execute without inventing missing product, engineering or repository-policy intent.
 
-The issue should state the problem, expected outcome, scope, non-goals, acceptance criteria, validation evidence expected and change risk. If the issue does not contain enough information for a contributor or agent to implement safely, implementation should not begin.
+At minimum, the contract defines the problem, expected outcome, scope, non-goals, acceptance criteria, expected validation evidence and change risk. Conditional fields and agent instructions should be included when the work requires them.
 
-See [Execution contracts](execution-contracts.md) for the required contract shape.
+Use [Write an executable issue contract](how-to/write-executable-issue.md) for the task and [Execution-contract fields](reference/execution-contract-fields.md) for the exact requirements.
 
 ### 2. Check readiness before implementation
 
-Before a branch is created, the issue should receive a readiness comment.
+Before creating a branch, refresh relevant repository state and post a readiness decision.
 
-The readiness comment should confirm that:
+The readiness check must confirm that:
 
-- the expected outcome is clear;
-- the boundaries are explicit;
+- the expected outcome and boundaries are clear;
 - the acceptance criteria are reviewable;
-- the validation evidence is clear;
+- validation expectations are explicit;
 - the work is small enough to review safely;
-- dependencies or ordering constraints have been checked;
-- a safe starting point has been identified; and
-- the issue can be implemented without inventing missing intent.
+- dependencies and ordering constraints have been checked;
+- a safe base branch or commit has been identified; and
+- implementation can proceed without guessing.
 
-If the issue is unclear or a blocking dependency is not satisfied, the correct action is to post a clarification or blocked-dependency comment, not to create a branch.
+If the contract is unclear or a blocking dependency is unsatisfied, post a clarification or blocked-dependency comment and do not create a branch.
 
-#### Dependency check format
-
-Use a dependency check when posting readiness:
-
-```md
-## Dependency check
-
-Required prior work:
-
-- Issue/PR/release:
-- Required state:
-- Current state:
-
-Safe starting point:
-
-- Base branch or commit:
-- Reason this is safe:
-
-Decision:
-
-- Ready to implement / blocked pending dependency / clarification required.
-```
-
-The dependency check is still manual. It records what was checked; it does not automate dependency detection or enforce branch creation.
-
-#### Readiness examples
-
-No dependency:
-
-```md
-## Dependency check
-
-Required prior work:
-
-- Issue/PR/release: None identified.
-- Required state: Not applicable.
-- Current state: Not applicable.
-
-Safe starting point:
-
-- Base branch or commit: `main`.
-- Reason this is safe: The issue is documentation-only and does not depend on another pending change.
-
-Decision:
-
-- Ready to implement.
-```
-
-Dependency satisfied:
-
-```md
-## Dependency check
-
-Required prior work:
-
-- Issue/PR/release: PR #32.
-- Required state: Merged to `main`.
-- Current state: Closed and merged.
-
-Safe starting point:
-
-- Base branch or commit: `main` after PR #32 merge.
-- Reason this is safe: The required protocol page now exists on `main`.
-
-Decision:
-
-- Ready to implement.
-```
-
-Dependency not yet satisfied:
-
-```md
-## Dependency check
-
-Required prior work:
-
-- Issue/PR/release: PR #32.
-- Required state: Merged to `main`.
-- Current state: Open and still under review.
-
-Safe starting point:
-
-- Base branch or commit: None yet.
-- Reason this is safe: Not applicable until PR #32 merges.
-
-Decision:
-
-- Blocked pending dependency. Do not create a feature branch yet.
-```
-
-Repository setting or environment dependency:
-
-```md
-## Dependency check
-
-Required prior work:
-
-- Issue/PR/release: Repository Pages source setting.
-- Required state: Pages source configured for GitHub Actions.
-- Current state: Manual repository setting not confirmed in code.
-
-Safe starting point:
-
-- Base branch or commit: `main`.
-- Reason this is safe: Code changes can proceed, but the PR must record the manual setting as pending validation.
-
-Decision:
-
-- Ready to implement with explicit pending repository-setting validation.
-```
+Use [Check readiness and dependencies](how-to/check-readiness-and-dependencies.md) for the procedure and [Readiness and dependency formats](reference/readiness-and-dependency-formats.md) for the exact comment structures and decisions.
 
 ### 3. Post the implementation plan
 
-If the issue is ready, post an implementation-plan comment before changing files.
+When the issue is ready, post the implementation plan before creating the branch or changing files.
 
-The plan should record:
+The plan must make the proposed branch, safe starting point, likely files or areas, implementation sequence, validation, assumptions, caveats and explicit exclusions visible before execution begins.
 
-- the proposed branch name;
-- the safe starting point identified during readiness;
-- the files or documentation areas expected to change;
-- the intended sequence of work;
-- the validation to perform;
-- any assumptions or caveats; and
-- the work explicitly left out.
-
-This makes the execution path visible before implementation starts.
+Use [Prepare an implementation plan](how-to/prepare-implementation-plan.md) and the [Implementation-plan format](reference/implementation-plan-format.md).
 
 ### 4. Create one branch per issue
 
-Create one feature branch from `main` for the issue only after readiness and dependency state have been recorded.
+Create one feature branch for the issue from the recorded safe starting point.
 
 Preferred branch format:
 
@@ -188,199 +73,129 @@ Preferred branch format:
 feature/<issue-number>-short-description
 ```
 
-Do not commit directly to `main` unless the repository owner explicitly asks for a hotfix or bootstrap exception.
+Do not commit directly to `main` unless the repository owner explicitly authorises a hotfix or bootstrap exception. Dependent work must begin from the final merged state of its prerequisite work rather than from a stale parallel branch.
 
 ### 5. Check tool operations before mutation
 
-Before any mutating repository operation, perform the safe tool-operation check.
+Before every mutating repository operation, verify the current phase, intended operation, exact tool, target, expected side effect and forbidden side effects.
 
-At minimum, identify:
+If the tool or target does not match the intended operation, stop before making the call. If an unintended mutation occurs, stop further writes except for minimum remediation, report the event and do not resume normal execution without appropriate authority.
 
-- current phase;
-- intended operation;
-- selected tool;
-- target repository object;
-- expected side effect; and
-- forbidden side effects.
-
-If the selected tool does not match the intended operation, stop before making the call.
-
-See [Safe tool operations](tool-operations.md) for the detailed protocol.
+Use [Perform a safe repository mutation](how-to/perform-safe-repository-mutation.md) for the procedure and [Operation permissions and evidence](reference/operation-permissions-and-evidence.md) for phase permissions, evidence formats and the circuit breaker.
 
 ### 6. Implement only the contract
 
-The implementation should make the smallest change that satisfies the issue.
+Make the smallest coherent change that satisfies the issue.
 
-Do not add unrelated refactoring, broad rewrites, speculative future-stage automation, branch protection, auto-merge, new workflows or application code unless the issue explicitly asks for them.
+Do not add unrelated refactoring, speculative improvements, future-stage work, new automation, permission changes, branch-protection changes, repository-setting changes or application code unless the contract explicitly includes them.
 
-When the issue is incomplete, contradictory or impossible to validate in the current environment, surface the caveat rather than silently guessing.
+When the issue becomes contradictory, incomplete or unsafe to validate, surface the caveat and stop or narrow the work rather than silently expanding intent.
 
 ### 7. Validate and record evidence
 
-Validation should match the change type and the issue contract.
+Validation must match the change type, risk and acceptance criteria. Record what actually ran, what did not run and what remains pending.
 
-Use [Change-type validation guidance](change-type-validation.md) to select the relevant evidence for documentation, workflow, publishing, process-label and future application-code changes.
+Required principles:
 
-For documentation changes, useful pre-merge evidence includes:
+- prefer repository-native evidence when available;
+- never mark an unavailable or unrun check complete;
+- distinguish pre-merge validation from legitimate post-merge verification;
+- treat failing required validation as a merge blocker;
+- apply documentation-currency checks when factual repository claims change; and
+- rerun affected validation after material remediation.
 
-- changed files read back from the branch;
-- MkDocs navigation checked;
-- internal links checked by inspection or build output;
-- `mkdocs build --strict` run with the pinned documentation dependency;
-- documentation currency checked when releases, roadmap stages, PRs, workflows, labels, repository settings or automation are mentioned; and
-- confirmation that no unrelated automation or application code was introduced.
-
-Pre-merge validation is evidence available before the merge decision. Post-merge verification is evidence that can only be collected after merge, deployment, release or environment-specific configuration.
-
-If validation cannot be completed before merge, record it honestly as post-merge verification or not performed. Do not mark validation complete unless it actually ran.
-
-Use this validation status format in PR evidence when a change has both pre-merge and post-merge checks:
-
-```md
-## Validation status
-
-Pre-merge validation completed:
-
-- [x] Files read back from branch
-- [x] Local build/test completed
-- [x] Scope checked against issue
-
-Post-merge verification required:
-
-- [ ] Workflow run observed
-- [ ] Deployment URL checked
-- [ ] Repository setting confirmed
-
-Merge decision:
-
-- Safe to merge with post-merge verification pending / do not merge yet.
-```
-
-See [Local MkDocs validation](local-validation.md) for the current documentation-site validation path.
+Use [Validation by change type](reference/validation-by-change-type.md) to select required evidence and [Validation status and fallback policy](reference/validation-status-and-fallback-policy.md) to classify repository-native, representative, pending and post-merge evidence. Task-specific procedures are available for [documentation changes](how-to/validate-documentation-change.md), [workflow changes](how-to/validate-workflow-change.md) and [publishing](how-to/publish-and-verify-documentation-site.md).
 
 ### 8. Open the pull request as the evidence pack
 
-The pull request should allow a reviewer to verify the change against the issue without relying on chat history or memory.
+Open a draft pull request while implementation, validation or evidence remains incomplete.
 
-The PR should include:
+The final evidence pack must allow a reviewer to compare the pull request with the issue without relying on chat history or memory. It records:
 
-- the linked issue contract;
-- what changed;
-- what was deliberately excluded;
+- the linked execution contract;
+- what changed and what was deliberately excluded;
 - how the acceptance criteria were satisfied;
-- pre-merge validation performed;
-- validation not performed or still pending;
-- post-merge verification required, if any;
+- validation completed, unavailable or pending;
+- post-merge verification, if any;
 - assumptions, risks and caveats; and
-- a pre-approval groundedness review.
+- a groundedness review answering whether the PR did what was needed and only what was asked.
 
-A PR can be mergeable while post-merge verification is still pending, but only when the issue contract allows it, available validation is not failing, the remaining checks are explicitly named and the reviewer accepts the residual risk.
-
-See [Pull requests as evidence packs](pr-evidence-packs.md) for evidence-pack guidance.
+Use [Prepare a pull-request evidence pack](how-to/prepare-pr-evidence-pack.md), [Pull-request evidence requirements](reference/pr-evidence-requirements.md) and [PR evidence templates](reference/pr-evidence-templates.md).
 
 ### 9. Review against the contract
 
-Human review should compare the PR evidence pack with the issue contract.
+Review compares the final pull-request state and evidence with the issue contract. It is not merely a judgement of whether the diff looks reasonable in isolation.
 
-The reviewer should ask:
+The reviewer must determine:
 
 1. Did the pull request do what was needed?
 2. Did the pull request only do what was asked?
 
-The review should check issue alignment, scope control, pre-merge validation evidence, post-merge verification needs, risks and caveats.
+Review must consider issue alignment, scope control, validation, remaining checks, risks and caveats. Use one final recommendation:
 
-Use one final recommendation:
+- **Approve**
+- **Approve after minor fixes**
+- **Do not approve yet**
 
-- Approve
-- Approve after minor fixes
-- Do not approve yet
+Required validation failures, incomplete implementation, unresolved material findings, misleading evidence and scope drift block approval and merge.
 
-Pending validation should block merge when it affects whether the implementation satisfies the issue, when available validation is failing, when the remaining check is required before a safe merge decision, or when the PR would be misleading without the result.
-
-Post-merge verification can be acceptable when the implementation is complete, available validation is not failing, the remaining check cannot run until after merge or deployment, and the PR clearly records the required follow-up.
-
-See [Contract verification](contract-verification.md) for the review model.
+Use [Review a pull request against its contract](how-to/review-pr-against-contract.md) and [Review decisions and merge blockers](reference/review-decisions-and-merge-blockers.md).
 
 ### 10. Remediate review feedback inside the contract
 
-When review feedback is received, use the [PR review remediation protocol](review-remediation.md).
+Collect pull-request conversation comments, submitted reviews and inline review threads. Classify each finding before changing files.
 
-At minimum:
+Required fixes must be addressed within the contract. Optional improvements may be applied only when they remain small and in scope. Clarification must be resolved before acting, and out-of-scope work must be deferred or separately authorised.
 
-- collect PR conversation comments, submitted reviews and inline review threads;
-- classify each item as required fix, optional improvement, clarification needed or out of scope;
-- apply required fixes within the existing contract;
-- avoid broadening the work unless the repository owner explicitly approves the scope change or a new issue is created;
-- read changed files back and rerun affected validation;
-- reply to addressed comments;
-- resolve review threads only when the fix is present and validation is not failing; and
-- update the PR body or post clearly labelled remediation evidence when remediation materially changes validation, risk, scope, assumptions, caveats or remaining checks.
+After material remediation, read changed files back, rerun affected validation, refresh the evidence pack, reply to findings and resolve threads only when the fix is present and validation is not failing.
+
+Use [Remediate pull-request review feedback](how-to/remediate-review-feedback.md) and [Review decisions and merge blockers](reference/review-decisions-and-merge-blockers.md).
 
 ### 11. Merge only after human approval
 
-The agent can implement the contract and prepare the evidence pack, but a human owns the approval and merge decision.
+The agent may implement the contract and prepare evidence, but a human owns approval and merge authority.
 
-Do not merge while required pre-merge validation is failing, the implementation is incomplete, the scope has drifted or the PR does not satisfy the issue contract.
+Do not merge while required validation is failing, the implementation is incomplete, material review findings remain unresolved, the evidence pack is stale or the change does not satisfy the issue contract.
 
-If post-merge verification remains, the merge decision should explicitly accept that residual check and identify how it will be recorded.
+Explicit owner-authorised delegated batch mode may remove routine per-PR confirmation, but it does not remove readiness, validation, groundedness, review or merge-qualification gates. See [Delegated batch mode](delegated-batch-mode.md).
 
 ### 12. Track post-merge verification when needed
 
-Some work cannot be fully validated before merge. Publishing, release and environment-specific changes may need post-merge verification.
+Some evidence can only be collected after merge, deployment, release or environment-specific configuration.
 
-When that happens, the PR should distinguish:
+When post-merge verification is legitimate, the PR must identify the exact remaining checks and the reviewer must explicitly accept the residual risk. After merge, record the result on the pull request, issue or appropriate project record. Do not silently treat a pending check as complete.
 
-- validation completed before merge;
-- validation that remains pending after merge;
-- the specific post-merge checks required; and
-- whether a follow-up issue or label is needed to keep the check visible.
-
-Post-merge verification should be recorded rather than ignored. It may be recorded in a follow-up issue, a PR comment after merge, or a manual project note, depending on the work and the repository owner's preference.
-
-This protocol does not automate post-merge checks. A label such as `post-merge/verification-needed` may be useful once the repository label exists; see [Manual lifecycle labels](labels.md).
+Use [Validation status and fallback policy](reference/validation-status-and-fallback-policy.md) for the boundary and [Publish and verify the documentation site](how-to/publish-and-verify-documentation-site.md) for the documentation publishing path.
 
 ## Compact checklist
 
-Use this checklist before asking for review:
+Use this lifecycle checklist before requesting final review:
 
-- [ ] Issue contract is clear and bounded.
-- [ ] Readiness comment is posted.
-- [ ] Dependency check records required prior work, current state, safe starting point and decision.
-- [ ] Implementation-plan comment is posted.
-- [ ] Feature branch follows `feature/<issue-number>-short-description`.
-- [ ] Safe tool-operation checks were used before repository mutations.
-- [ ] Implementation stays inside scope and non-goals.
-- [ ] Changed files were read back from the branch.
-- [ ] Change-type validation guidance was applied.
-- [ ] Documentation currency was checked when the PR changes factual docs claims.
-- [ ] Label changes were recorded as created, updated, removed or recommended-only where applicable.
-- [ ] Pre-merge validation was completed or clearly recorded as not performed.
-- [ ] Post-merge verification needs are explicitly recorded if they exist.
-- [ ] Pull request explains changed scope, exclusions, validation and caveats.
-- [ ] Pre-approval groundedness review answers whether the PR did what was needed and only what was asked.
-- [ ] Merge recommendation distinguishes blocking validation from acceptable post-merge verification.
+- [ ] The issue contract is clear, bounded and reviewable.
+- [ ] Readiness, dependencies and the safe starting point are recorded.
+- [ ] The implementation plan was posted before branch creation.
+- [ ] One issue-scoped feature branch was used.
+- [ ] Safe-operation checks preceded repository mutations.
+- [ ] The implementation stayed inside scope and non-goals.
+- [ ] Changed files were read back.
+- [ ] Validation matched the change type and actually ran as recorded.
+- [ ] Pre-merge and post-merge evidence are distinguished honestly.
+- [ ] The pull request records scope, exclusions, evidence and caveats.
+- [ ] Review considered the final head and all material findings.
+- [ ] The groundedness review answers both contract questions.
+- [ ] The final recommendation is supported by evidence.
+- [ ] Merge occurs only under human approval or explicit bounded owner delegation after all gates pass.
+- [ ] Required post-merge verification is recorded and completed.
 
-## Relationship to existing docs
+## Relationship to focused documentation
 
-This page is the canonical process overview. The focused pages remain the detailed references:
+This page owns the lifecycle sequence, mandatory gates and authority boundary. It does not own exhaustive procedures, reusable templates, validation matrices or conceptual rationale.
 
-- [Agentic IssueOps workflow](issueops.md) explains the Stage 1 workflow baseline.
-- [Execution contracts](execution-contracts.md) explains how to write agent-ready issues.
-- [Pull requests as evidence packs](pr-evidence-packs.md) explains PR evidence expectations.
-- [Contract verification](contract-verification.md) explains human review.
-- [PR review remediation](review-remediation.md) explains how to classify and address review feedback.
-- [Manual lifecycle labels](labels.md) explains advisory label usage.
-- [Safe tool operations](tool-operations.md) explains repository mutation safety.
-- [Local MkDocs validation](local-validation.md) explains documentation-site validation.
-- [Documentation currency checklist](documentation-currency.md) explains factual consistency checks for docs.
-- [Workflow-change review checklist](workflow-changes.md) explains workflow-specific review expectations.
-- [Change-type validation guidance](change-type-validation.md) explains definitions of done by change type.
-- [Publishing the documentation site](publishing.md) explains the GitHub Pages workflow and manual Pages setting.
+- [Tutorials](tutorials/index.md) provide guided learning.
+- [How-to guides](how-to/index.md) own task procedures.
+- [Reference](reference/index.md) owns normative fields, formats, permissions, evidence and decision rules.
+- [Explanation](explanation/index.md) owns rationale and trade-offs.
+- [Examples](examples/README.md) illustrate artefacts but are not normative.
+- [Planning records](https://github.com/8ft0-ai/IssueOps/blob/main/planning/README.md) preserve stage intent, delivery evidence and historical project records outside the substantive Diátaxis tree.
 
-## Current manual boundary
-
-The current baseline remains deliberately manual.
-
-It includes documentation, readiness checks, dependency checks, implementation plans, safe tool-operation checks, branch discipline, advisory lifecycle labels, evidence-pack PRs, review remediation guidance, material-remediation evidence updates, documentation currency checks, change-type validation guidance, pre-merge validation records, post-merge verification records and human review.
-
-It does not include automatic review bots, automatic dependency detection, automatic Codex execution, automatic label transitions, auto-merge, branch protection changes, required status checks for agent work, automatic post-merge verification, automated fact checking or application code.
+The central contract remains unchanged: the issue bounds the work, the pull request carries evidence and a human retains approval and merge authority.
