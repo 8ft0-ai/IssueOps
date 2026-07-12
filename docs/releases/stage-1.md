@@ -8,7 +8,7 @@ Stage 1 established the issue as the execution contract, the implementation plan
 
 - [Stage 1 delivery record](https://github.com/8ft0-ai/IssueOps/blob/main/planning/delivery/stage-01-manual-execution-contract-foundation.md)
 - [Stage 1 retrospective roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-01-manual-execution-contract-foundation.md)
-- [Historical evidence index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md#v010--stage-1-manual-baseline)
+- [Historical evidence index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md)
 
 The exact former release page remains available at the verified [pre-migration snapshot](https://github.com/8ft0-ai/IssueOps/blob/318d4b4f7c9490365033ff8363d42cd940d6b900/docs/releases/stage-1.md).
 
