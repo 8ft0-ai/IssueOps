@@ -1,69 +1,47 @@
 # Execution contracts
 
-An execution contract is a GitHub issue written so that an agent can implement safely and a human can review meaningfully. It is narrower than a product brief and more explicit than a task ticket.
+An execution contract is a GitHub issue written so that an agent or contributor can implement safely and a human can review meaningfully.
 
-The contract should tell Codex what problem to solve, which boundaries to respect, how the result will be judged and what evidence the pull request must provide. It should not rely on hidden context, chat history or assumptions that only the issue author understands.
+This stable page is now the entry point to focused IssueOps guidance. The underlying fields, readiness gates and authority model have not changed.
 
-## Why the issue is the contract
+## Choose what you need
 
-Agentic coding changes the risk profile of vague work. A human developer can often notice missing context, pause and ask clarifying questions. A coding agent may produce a plausible implementation before the missing intent is obvious.
+### Write or prepare the work
 
-For this repository, the issue is treated as the execution contract because it is visible, durable and reviewable. It can be checked before implementation starts, referenced from the branch and verified from the pull request.
+- [Write an executable issue contract](how-to/write-executable-issue.md)
+- [Check readiness and dependencies](how-to/check-readiness-and-dependencies.md)
+- [Prepare an implementation plan](how-to/prepare-implementation-plan.md)
 
-## Required contract shape
+### Check an exact rule or format
 
-A good execution contract includes:
+- [Execution-contract fields](reference/execution-contract-fields.md)
+- [Readiness and dependency formats](reference/readiness-and-dependency-formats.md)
+- [Implementation-plan format](reference/implementation-plan-format.md)
 
-| Section | Purpose |
-| --- | --- |
-| Problem | Explains why the change is needed. |
-| Expected outcome | Describes the state that should exist after the work is complete. |
-| Scope | Defines what the agent may change. |
-| Non-goals | Defines what the agent must not change or infer. |
-| Acceptance criteria | Makes success reviewable. |
-| Validation evidence expected | States what the pull request should prove. |
-| Change risk | Helps the reviewer apply the right level of scrutiny. |
-| Agent instructions | Gives specific implementation guidance and constraints. |
+### Understand the model
 
-The issue does not need to be long, but it does need to be executable. If the agent would need to invent product intent, architecture decisions or repository policy, the contract is not ready.
+- [Why the issue is the execution contract](explanation/execution-contract-model.md)
 
-## Readiness check
+### Inspect an example
 
-Before implementation starts, the issue should be checked for readiness. The check asks whether:
+- [Example documentation-only execution contract](examples/execution-contract-example.md)
 
-- the expected outcome is clear;
-- the boundaries are explicit;
-- the acceptance criteria can be reviewed;
-- the validation evidence is clear;
-- the work is small enough to review safely;
-- dependencies or ordering constraints are identified;
-- the dependency state is satisfied or explicitly recorded as pending; and
-- there is enough context for Codex to act without guessing.
+## What remains true
 
-If the answer is no, clarify the issue before creating a branch.
+- The issue is the durable source of implementation intent.
+- The issue must state the problem, expected outcome, scope, non-goals, acceptance criteria, validation evidence, risk and agent instructions.
+- Dependencies and roadmap relationships are explicit when they govern the work.
+- Readiness and dependency state are recorded before the implementation plan.
+- The implementation plan is posted before branch creation.
+- One feature branch contains one issue’s implementation.
+- The pull request carries evidence that a human verifies against the issue.
+- Evidence does not grant approval or merge authority.
+- When material intent is missing, clarify the contract rather than guessing.
 
-## Dependency-aware readiness
+The complete lifecycle remains in the [IssueOps operating protocol](issueops-protocol.md).
 
-A readiness comment should record dependency state before branch creation.
+## Compatibility note
 
-The dependency check should answer:
+Earlier versions of this page combined rationale, exact fields and task guidance. Stage 4 separated those reader needs while preserving this URL as the route into the current canonical pages.
 
-- Does this issue depend on a prior issue, pull request, release, repository setting or environment state?
-- What state is required for that dependency?
-- What state was observed before implementation?
-- Which branch or commit is safe to start from?
-- Is the decision ready to implement, blocked pending dependency or clarification required?
-
-Branches should not be created while a blocking dependency is unsatisfied. If a repository setting or environment dependency cannot be verified in code, the readiness comment and later PR evidence should record that explicitly.
-
-See [IssueOps operating protocol](issueops-protocol.md) for the standard dependency-check format and examples.
-
-## Relationship to Jira
-
-Jira can still hold the broader planning context. It can explain why the work matters, how it relates to other work, which initiative it supports and how people are coordinating around it.
-
-The GitHub issue has a different job. It should translate that planning context into a bounded repository change that an agent can execute and a reviewer can verify.
-
-## Example
-
-See the [example execution contract](examples/execution-contract-example.md) for a small documentation-only contract that shows the expected structure.
+Do not copy the old mixed structure into new documentation. Put exact requirements in Reference, task sequence in How-to and rationale in Explanation.

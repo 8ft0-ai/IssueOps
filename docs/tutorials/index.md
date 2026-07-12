@@ -24,4 +24,10 @@ It teaches only capabilities already implemented in IssueOps. It does not introd
 
 ## After the tutorial
 
-Use the [How-to guides](../how-to/index.md) when you need to repeat a task independently, the [Reference](../reference/index.md) section for exact rules and formats, and [Explanation](../explanation/index.md) for the reasoning behind the controls.
+Repeat the first planning tasks independently with:
+
+- [Write an executable issue contract](../how-to/write-executable-issue.md);
+- [Check readiness and dependencies](../how-to/check-readiness-and-dependencies.md); and
+- [Prepare an implementation plan](../how-to/prepare-implementation-plan.md).
+
+Use [Reference](../reference/index.md) for exact fields and formats, and [Explanation](../explanation/index.md) for the reasoning behind the controls.

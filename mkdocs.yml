@@ -14,6 +14,9 @@ nav:
       - Complete your first IssueOps change: tutorials/first-issueops-change.md
   - How-to guides:
       - Overview: how-to/index.md
+      - Write an executable issue: how-to/write-executable-issue.md
+      - Check readiness and dependencies: how-to/check-readiness-and-dependencies.md
+      - Prepare an implementation plan: how-to/prepare-implementation-plan.md
       - Follow the operating protocol: issueops-protocol.md
       - Prepare a batch completion summary: batch-completion-summaries.md
       - Perform safe tool operations: tool-operations.md
@@ -23,7 +26,10 @@ nav:
       - Remediate review feedback: review-remediation.md
   - Reference:
       - Overview: reference/index.md
-      - Execution contracts: execution-contracts.md
+      - Execution-contract entry: execution-contracts.md
+      - Execution-contract fields: reference/execution-contract-fields.md
+      - Readiness and dependency formats: reference/readiness-and-dependency-formats.md
+      - Implementation-plan format: reference/implementation-plan-format.md
       - Pull requests as evidence packs: pr-evidence-packs.md
       - PR evidence templates: pr-evidence-templates.md
       - Manual lifecycle labels: labels.md
@@ -38,6 +44,7 @@ nav:
       - Workflow-change review checklist: workflow-changes.md
   - Explanation:
       - Overview: explanation/index.md
+      - Why the issue is the execution contract: explanation/execution-contract-model.md
       - Documentation architecture: explanation/documentation-architecture.md
       - Delegated authority and batch mode: delegated-batch-mode.md
       - Site and wiki boundaries: site-vs-wiki.md

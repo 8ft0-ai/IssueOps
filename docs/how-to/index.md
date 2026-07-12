@@ -2,7 +2,11 @@
 
 How-to guides help an active contributor or agent operator complete a specific task. Start here when you understand the IssueOps model and need the shortest safe route to an outcome.
 
-The current pages below are classified by their primary task purpose. Some still contain explanation or detailed reference material; later Stage 4 slices will separate that content without changing the underlying rules.
+## Prepare an executable change
+
+- [Write an executable issue contract](write-executable-issue.md) — turn approved intent into one bounded, reviewable repository change.
+- [Check readiness and dependencies](check-readiness-and-dependencies.md) — refresh repository state, record the safe starting point and stop when the issue is blocked.
+- [Prepare an implementation plan](prepare-implementation-plan.md) — make the intended branch, files, sequence, validation and exclusions visible before branch creation.
 
 ## Run the IssueOps delivery loop
 
