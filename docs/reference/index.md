@@ -2,13 +2,14 @@
 
 Reference pages define exact IssueOps rules, formats, fields, classifications and validation requirements. Use this section when you need a precise answer rather than a guided procedure or conceptual explanation.
 
-The current pages retain their existing URLs. Several remain mixed-purpose during the incremental migration; where that is true, the classification below identifies the normative material they currently own.
+## Contracts and planning gates
 
-## Contracts and lifecycle
-
-- [Execution contracts](../execution-contracts.md) — required issue shape, readiness and dependency expectations.
+- [Execution-contract fields](execution-contract-fields.md) — canonical core and conditional issue fields.
+- [Readiness and dependency formats](readiness-and-dependency-formats.md) — exact comment formats, decisions and branch-start rules.
+- [Implementation-plan format](implementation-plan-format.md) — canonical plan structure and quality tests.
+- [Execution-contract compatibility entry](../execution-contracts.md) — stable route for earlier links.
 - [Manual lifecycle labels](../labels.md) — current label vocabulary and its non-authoritative role.
-- [IssueOps operating protocol](../issueops-protocol.md) — authoritative lifecycle and gate sequence until later focused reference pages replace its detailed formats.
+- [IssueOps operating protocol](../issueops-protocol.md) — authoritative lifecycle and gate sequence until final protocol simplification.
 
 ## Pull-request evidence and review
 
