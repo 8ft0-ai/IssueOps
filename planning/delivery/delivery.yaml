@@ -150,6 +150,40 @@
       "type": "decision",
       "title": "Adapt evidence-pack assistance before broader adoption",
       "summary": "Retain controlled read-only use while separately planning non-closing issue linkage and simpler invocation."
+    },
+    {
+      "id": "problem-mixed-documentation",
+      "type": "problem",
+      "title": "Reader journeys obscured by mixed documentation",
+      "summary": "Accurate guidance mixed learning, task, reference, explanation and project-history needs across component-based pages."
+    },
+    {
+      "id": "stage-4",
+      "type": "stage",
+      "title": "Stage 4 — Diátaxis documentation architecture",
+      "summary": "Organised user-facing guidance around four reader needs and preserved project records outside the substantive documentation tree.",
+      "status": "completed",
+      "path": "planning/delivery/stage-04-diataxis-documentation-architecture.md"
+    },
+    {
+      "id": "artifact-diataxis-docs",
+      "type": "artifact",
+      "title": "Diátaxis-aligned IssueOps documentation",
+      "summary": "Provides explicit Tutorial, How-to, Reference and Explanation journeys with a concise lifecycle protocol and compatibility boundaries.",
+      "path": "docs/index.md"
+    },
+    {
+      "id": "decision-adopt-diataxis",
+      "type": "decision",
+      "title": "Adopt the Diátaxis documentation architecture",
+      "summary": "Representative reader journeys, strict builds and link checks support adoption with temporary compatibility pages retained."
+    },
+    {
+      "id": "issue-90",
+      "type": "issue",
+      "title": "Issue #90 — Shape operational evidence assistance",
+      "summary": "Possible Stage 5 remains shaping-only and must use the adopted documentation ownership and project-record boundaries.",
+      "url": "https://github.com/8ft0-ai/IssueOps/issues/90"
     }
   ],
   "edges": [
@@ -287,6 +321,56 @@
       "from": "stage-3",
       "to": "decision-adapt-evidence-assistance",
       "type": "produced"
+    },
+    {
+      "from": "artifact-docs-site",
+      "to": "problem-mixed-documentation",
+      "type": "revealed_problem"
+    },
+    {
+      "from": "artifact-operating-protocol",
+      "to": "problem-mixed-documentation",
+      "type": "revealed_problem"
+    },
+    {
+      "from": "problem-mixed-documentation",
+      "to": "stage-4",
+      "type": "resolved_by"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "stage-4",
+      "type": "enabled"
+    },
+    {
+      "from": "stage-4",
+      "to": "artifact-diataxis-docs",
+      "type": "produced"
+    },
+    {
+      "from": "stage-4",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-4",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-4",
+      "to": "decision-adopt-diataxis",
+      "type": "produced"
+    },
+    {
+      "from": "decision-adapt-evidence-assistance",
+      "to": "issue-90",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "decision-adopt-diataxis",
+      "to": "issue-90",
+      "type": "carried_forward_to"
     }
   ]
 }

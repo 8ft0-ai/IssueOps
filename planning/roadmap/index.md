@@ -28,17 +28,18 @@ Retrospective records must not claim that the complete planning structure existe
 ## Completed contemporaneous stages
 
 - [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — completed with an **Adapt** decision.
+- [Stage 4 — Diátaxis documentation architecture](stage-04-diataxis-documentation-architecture.md) — completed with an **Adopt** decision; actual delivery is recorded in the [Stage 4 delivery record](../delivery/stage-04-diataxis-documentation-architecture.md).
 
-Stage 3 delivered the deterministic evidence schema, local renderer and manually invoked read-only GitHub collection for one pull request. Live pending-to-final dogfood proved the core safety and usefulness, while missing non-closing issue linkage and manual-dispatch friction prevented unconditional adoption.
+Stage 3 delivered deterministic read-only evidence collection and exposed the adaptation needs that issue #90 continues to shape.
+
+Stage 4 organised user-facing documentation around Tutorials, How-to guides, Reference and Explanation, preserved project records outside the substantive tree and retained all IssueOps authority boundaries.
 
 ## Active approved roadmap
 
-- [Stage 4 — Diátaxis documentation architecture](stage-04-diataxis-documentation-architecture.md) — approved through planning issue [#93](https://github.com/8ft0-ai/IssueOps/issues/93).
-
-Stage 4 will incrementally organise the user-facing documentation around tutorials, how-to guides, reference and explanation. Planning, delivery history, tests, scripts, workflows and implementation-adjacent material remain outside the substantive Diátaxis tree, and all existing IssueOps authority boundaries remain unchanged.
+No stage roadmap is currently approved for delivery.
 
 ## Future stages
 
-Issue [#90](https://github.com/8ft0-ai/IssueOps/issues/90) remains shaping-only for a possible Stage 5 — Operational evidence assistance. It has no implementation authority until independently reviewed and approved.
+Issue [#90](https://github.com/8ft0-ai/IssueOps/issues/90) remains shaping-only for a possible Stage 5 — Operational evidence assistance. It may use the adopted Stage 4 documentation architecture as a dependency, but it has no implementation authority until independently reviewed and approved.
 
 No roadmap authorises lifecycle automation, execution triggering, auto-merge, repository-setting changes or broader operational evidence assistance unless those capabilities are explicitly shaped, approved and delivered through their own execution contracts.
