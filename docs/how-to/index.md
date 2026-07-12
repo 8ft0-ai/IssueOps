@@ -8,6 +8,12 @@ How-to guides help an active contributor or agent operator complete a specific t
 - [Check readiness and dependencies](check-readiness-and-dependencies.md) — refresh repository state, record the safe starting point and stop when the issue is blocked.
 - [Prepare an implementation plan](prepare-implementation-plan.md) — make the intended branch, files, sequence, validation and exclusions visible before branch creation.
 
+## Prepare, review and remediate pull requests
+
+- [Prepare a pull-request evidence pack](prepare-pr-evidence-pack.md) — describe the final scope, validation, caveats and groundedness review accurately.
+- [Review a pull request against its contract](review-pr-against-contract.md) — verify evidence, contract satisfaction, scope and merge blockers separately.
+- [Remediate pull-request review feedback](remediate-review-feedback.md) — classify findings, apply scoped fixes, rerun validation and refresh evidence.
+
 ## Run the IssueOps delivery loop
 
 - [Follow the complete operating protocol](../issueops-protocol.md) — the current end-to-end procedure from issue readiness through post-merge verification.
@@ -22,11 +28,6 @@ How-to guides help an active contributor or agent operator complete a specific t
 - [Use repository-native validation](../repository-native-validation.md) — prefer repository workflows and record representative fallbacks honestly.
 - [Publish and verify the documentation site](../publishing.md) — current maintainer procedure, with historical evidence still present until a later split.
 
-## Prepare and review pull requests
-
-- [Verify a pull request against its contract](../contract-verification.md) — compare the final change and evidence with the execution contract.
-- [Remediate review feedback](../review-remediation.md) — classify findings, apply scoped fixes and rerun affected validation.
-
 ## Exact rules and formats
 
-Use [Reference](../reference/index.md) when you need contract fields, templates, labels, evidence requirements, checklists or schema definitions.
+Use [Reference](../reference/index.md) when you need contract fields, templates, review decisions, merge blockers, labels, validation requirements, checklists or schema definitions.
