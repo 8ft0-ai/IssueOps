@@ -1,41 +1,21 @@
 # Stage 1 baseline release
 
-Tag: `v0.1.0`
+`v0.1.0` records the Stage 1 manual execution-contract foundation.
 
-Release title: Stage 1: Manual Execution-Contract IssueOps
+Stage 1 established the issue as the execution contract, the implementation plan as the proposed execution path, the pull request as the evidence pack and human review as the approval and merge boundary.
 
-## Summary
+## Canonical project record
 
-This release establishes the Stage 1 manual IssueOps baseline for agentic coding with Codex.
+- [Stage 1 delivery record](https://github.com/8ft0-ai/IssueOps/blob/main/planning/delivery/stage-01-manual-execution-contract-foundation.md)
+- [Stage 1 retrospective roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-01-manual-execution-contract-foundation.md)
+- [Historical evidence index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md#v010--stage-1-manual-baseline)
 
-The release defines the issue as the execution contract, the pull request as the evidence pack and human review as contract verification. It also adds practical controls for safe repository operations and lightweight validation evidence before any automation is introduced.
+The exact former release page remains available at the verified [pre-migration snapshot](https://github.com/8ft0-ai/IssueOps/blob/318d4b4f7c9490365033ff8363d42cd940d6b900/docs/releases/stage-1.md).
 
-## Included
+## Current guidance
 
-- Execution-contract issue model.
-- Manual readiness review before implementation.
-- Manual implementation plan before file changes.
-- Safe tool-operation check before repository mutation.
-- One branch per issue.
-- Codex as contract-bound implementer.
-- Lightweight validation evidence for documentation and template changes.
-- Pull request evidence-pack template.
-- Contract verification before approval.
-- Example execution contracts and verification reviews.
-- Manual label model.
+Use the [documentation home](../index.md) for the current IssueOps learning, task, reference and explanation paths.
 
-## Excluded
+## Compatibility note
 
-- Automatic Codex execution.
-- GitHub Actions orchestration.
-- Required status checks.
-- Branch protection changes.
-- Auto-merge.
-- Application code.
-- Release automation.
-
-## Release status
-
-`v0.1.0` is the first manual execution-contract IssueOps baseline release.
-
-The release captures the Stage 1 manual workflow and its explicit exclusions. Later work should build on this baseline through separate issues, implementation plans, validation evidence and human review.
+This page preserves the former public release-notes URL. It is not a duplicate delivery record or a source of current operating procedure.
