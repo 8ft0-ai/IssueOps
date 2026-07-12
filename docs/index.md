@@ -40,7 +40,7 @@ Human review = contract verification
 Merge = human approval decision
 ```
 
-The complete current lifecycle remains in the [IssueOps operating protocol](issueops-protocol.md). Stage 4 will progressively reduce it to an authoritative lifecycle map after focused procedures and exact formats are established.
+The [IssueOps operating protocol](issueops-protocol.md) is the concise authoritative lifecycle and gate map. Focused How-to, Reference and Explanation pages own detailed procedures, exact formats and rationale.
 
 ## Project direction and history
 
