@@ -48,7 +48,7 @@ Delivery slices:
 - [#101 — Safe-operation and validation guidance](https://github.com/8ft0-ai/IssueOps/issues/101) / [PR #109](https://github.com/8ft0-ai/IssueOps/pull/109)
 - [#102 — Project-record boundary](https://github.com/8ft0-ai/IssueOps/issues/102) / [PR #110](https://github.com/8ft0-ai/IssueOps/pull/110)
 - [#103 — Canonical protocol simplification](https://github.com/8ft0-ai/IssueOps/issues/103) / [PR #111](https://github.com/8ft0-ai/IssueOps/pull/111)
-- [#104 — Usability proof and close-out](https://github.com/8ft0-ai/IssueOps/issues/104) / close-out pull request
+- [#104 — Usability proof and close-out](https://github.com/8ft0-ai/IssueOps/issues/104) / [PR #112](https://github.com/8ft0-ai/IssueOps/pull/112)
 
 ## Proof runs, checks and artefacts
 
@@ -68,7 +68,7 @@ The strongest user-facing proof before close-out was the final Stage 4 site arte
 
 Project-record boundary proof included successful planning run `29186264357`, documentation run `29186264391` and inspected Pages artefact `8258089424` for PR #110.
 
-The close-out pull request provides the final repository-native strict documentation build, planning validation, delivery-graph validation, graph regeneration and freshness evidence for the completed state.
+[PR #112](https://github.com/8ft0-ai/IssueOps/pull/112) provides the final repository-native strict documentation build, planning validation, delivery-graph validation, graph regeneration and freshness evidence for the completed state.
 
 ## Intended versus actual delivery
 
