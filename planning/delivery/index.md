@@ -23,6 +23,7 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 - [Stage 1 — Manual execution-contract foundation](stage-01-manual-execution-contract-foundation.md)
 - [Stage 2 — Published and hardened operating model](stage-02-operating-model-hardening.md)
 - [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — completed with an **Adapt** decision.
+- [Stage 4 — Diátaxis documentation architecture](stage-04-diataxis-documentation-architecture.md) — completed with an **Adopt** decision.
 - [Planning-process adoption](planning-process-adoption.md)
 
 ## Causal delivery graph
