@@ -2,7 +2,7 @@
 
 IssueOps develops the operating model in deliberate stages. Each stage must preserve the central contract: the issue bounds the work, the pull request carries evidence, and a human retains approval authority.
 
-This page is the concise public roadmap. Detailed stage intent, delivery evidence and close-out records live in the top-level `planning/` control surface. GitHub issues, pull requests, reviews, commits and workflow runs remain the canonical detailed audit trail.
+This page is the concise public roadmap. Detailed stage intent, delivery evidence and close-out records live in the top-level [`planning/`](https://github.com/8ft0-ai/IssueOps/tree/main/planning) control surface. GitHub issues, pull requests, reviews, commits and workflow runs remain the canonical detailed audit trail.
 
 ## Stage 1 — Manual execution-contract foundation
 
@@ -38,6 +38,24 @@ The capability is retained for controlled use, but broader adoption requires sep
 - generated evidence still requires human interpretation.
 
 Stage 3 did not authorise automatic invocation, lifecycle transitions, execution triggering, merge authority, auto-merge, repository-setting changes or cross-repository rollout.
+
+## Stage 4 — Diátaxis documentation architecture
+
+Status: approved.
+
+Stage 4 will incrementally organise the user-facing documentation around four explicit reader needs: tutorials, how-to guides, reference and explanation. It will add one reliable first-time-contributor tutorial, separate materially mixed guidance through bounded changes, preserve useful content and compatibility paths, and validate the result through contributor, reviewer and maintainer walkthroughs.
+
+The scope is deliberately narrower than a repository-wide documentation reorganisation. `planning/`, delivery records, tests, fixtures, scripts, workflows, generated artefacts and implementation-adjacent material remain outside the substantive Diátaxis content tree. Root-level repository entry files retain their existing roles, and project records may be linked without being duplicated into `docs/`.
+
+Stage 4 changes documentation architecture only. It does not change IssueOps lifecycle, validation, approval, merge or authority boundaries.
+
+The approved intent and proof gates are recorded in the [Stage 4 roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-04-diataxis-documentation-architecture.md).
+
+## Possible Stage 5 — Operational evidence assistance
+
+Status: shaping only.
+
+Issue [#90](https://github.com/8ft0-ai/IssueOps/issues/90) remains a planning question about adapting the Stage 3 collector for normal pull-request review. Stage 4 approval does not authorise that implementation. Any Stage 5 roadmap, execution issues or authority changes require independent review and approval.
 
 ## Current exclusions
 
