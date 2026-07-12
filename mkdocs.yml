@@ -9,38 +9,37 @@ theme:
 
 nav:
   - Home: index.md
-  - Operating model:
-      - IssueOps operating protocol: issueops-protocol.md
-      - Delegated batch mode: delegated-batch-mode.md
-      - Batch completion summaries: batch-completion-summaries.md
-      - Stage 1 workflow: issueops.md
+  - Tutorials:
+      - Overview: tutorials/index.md
+  - How-to guides:
+      - Overview: how-to/index.md
+      - Follow the operating protocol: issueops-protocol.md
+      - Prepare a batch completion summary: batch-completion-summaries.md
+      - Perform safe tool operations: tool-operations.md
+      - Validate MkDocs locally: local-validation.md
+      - Publish and verify the site: publishing.md
+      - Verify a PR against its contract: contract-verification.md
+      - Remediate review feedback: review-remediation.md
+  - Reference:
+      - Overview: reference/index.md
       - Execution contracts: execution-contracts.md
       - Pull requests as evidence packs: pr-evidence-packs.md
       - PR evidence templates: pr-evidence-templates.md
-      - Contract verification: contract-verification.md
-      - PR review remediation: review-remediation.md
-  - Manual controls:
-      - Manual labels: labels.md
-      - Safe tool operations: tool-operations.md
-  - Examples:
-      - Overview: examples/README.md
-      - Execution contract example: examples/execution-contract-example.md
-      - Contract verification example: examples/contract-verification-example.md
-  - Project record:
-      - Site and wiki boundaries: site-vs-wiki.md
-      - Roadmap: roadmap.md
-      - Stage 2 contributor usability review: contributor-usability-review.md
-      - Publishing: publishing.md
-      - Stage 1 release notes: releases/stage-1.md
-      - Stage 2 release notes: releases/stage-2.md
-      - Stage 3 alpha prerelease notes: releases/stage-3-alpha.md
-  - Validation:
-      - Local MkDocs validation: local-validation.md
+      - Manual lifecycle labels: labels.md
+      - Examples:
+          - Overview: examples/README.md
+          - Execution contract example: examples/execution-contract-example.md
+          - Contract verification example: examples/contract-verification-example.md
+      - Change-type validation: change-type-validation.md
       - Repository-native validation: repository-native-validation.md
       - Evidence-pack schema: evidence-pack-schema.md
       - Documentation currency checklist: documentation-currency.md
       - Workflow-change review checklist: workflow-changes.md
-      - Change-type validation guidance: change-type-validation.md
+  - Explanation:
+      - Overview: explanation/index.md
+      - Documentation architecture: explanation/documentation-architecture.md
+      - Delegated authority and batch mode: delegated-batch-mode.md
+      - Site and wiki boundaries: site-vs-wiki.md
 
 markdown_extensions:
   - toc:
