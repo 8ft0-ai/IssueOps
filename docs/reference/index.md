@@ -13,9 +13,11 @@ Reference pages define exact IssueOps rules, formats, fields, classifications an
 
 ## Pull-request evidence and review
 
-- [Pull requests as evidence packs](../pr-evidence-packs.md) — current evidence expectations and human-verification boundary.
-- [PR evidence templates](../pr-evidence-templates.md) — reusable compact and full evidence formats.
-- [Contract verification](../contract-verification.md) — current recommendation and verification rules, also classified as a task guide until later separation.
+- [Pull-request evidence requirements](pr-evidence-requirements.md) — canonical evidence-pack content and evidence-source distinctions.
+- [PR evidence templates](pr-evidence-templates.md) — full, documentation, workflow, publishing and remediation formats.
+- [Review decisions and merge blockers](review-decisions-and-merge-blockers.md) — recommendations, feedback classifications and conditions that block merge.
+- [PR evidence compatibility entry](../pr-evidence-packs.md) — stable route for earlier links.
+- [Contract-verification compatibility entry](../contract-verification.md) — stable route for earlier review links.
 - [Reference examples](../examples/README.md) — illustrative execution-contract and verification artefacts; examples are not normative.
 
 ## Operations and validation
