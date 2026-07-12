@@ -1,23 +1,25 @@
 # Example execution contract
 
-This example shows the expected shape of a small issue contract for agentic coding work.
+This example shows the expected shape of a small issue contract for agent-assisted work.
 
 It is intentionally documentation-only so the contract is easy to inspect. Real issues should use the same structure but replace the example content with the actual change request.
 
+This page is illustrative. The canonical field definitions and conditional requirements are in [Execution-contract fields](../reference/execution-contract-fields.md).
+
 ## Problem
 
-The repository has an agent operating guide, but new contributors may not immediately understand how to use the guide when preparing a Codex task.
+The repository has an agent operating guide, but new contributors may not immediately understand how to use the guide when preparing an agent task.
 
-We need a short documentation addition that explains how to decide whether an issue is ready for Codex implementation.
+We need a short documentation addition that explains how to decide whether an issue is ready for implementation.
 
 ## Expected outcome
 
-A contributor can read the documentation and understand the minimum information required before Codex should start implementation.
+A contributor can read the documentation and understand the minimum information required before an agent should start implementation.
 
 ## Scope
 
-- Add a short section to the agent operating guide explaining readiness for Codex.
-- Mention that Codex should not infer missing product intent.
+- Add a short section to the agent operating guide explaining readiness.
+- Mention that an agent should not infer missing product intent.
 - Link back to the execution-contract workflow.
 
 ## Non-goals
@@ -30,7 +32,7 @@ A contributor can read the documentation and understand the minimum information 
 
 ## Acceptance criteria
 
-- The new section explains what makes an issue ready for Codex.
+- The new section explains what makes an issue ready for implementation.
 - The section reinforces the execution-contract model.
 - The change is documentation-only.
 - The pull request records validation evidence and any caveats.
@@ -40,7 +42,7 @@ A contributor can read the documentation and understand the minimum information 
 The pull request should confirm:
 
 - the changed Markdown file was read back from the branch;
-- links were reviewed manually;
+- links were reviewed manually; and
 - no automation or application code was added.
 
 ## Change risk
@@ -49,6 +51,12 @@ Low.
 
 This is a small documentation-only change.
 
-## Instructions for Codex or other agents
+## Agent instructions
 
-Keep the change narrow. Do not redesign the workflow. Do not introduce Stage 2 concepts. If the existing documentation already covers the point clearly, say so in the pull request instead of duplicating content.
+Keep the change narrow. Do not redesign the workflow. Do not introduce future-stage concepts. If the existing documentation already covers the point clearly, say so in the pull request instead of duplicating content.
+
+## How to use the example
+
+- Compare its fields with the [canonical field reference](../reference/execution-contract-fields.md).
+- Use [Write an executable issue contract](../how-to/write-executable-issue.md) for the task procedure.
+- Run the [readiness and dependency check](../how-to/check-readiness-and-dependencies.md) before planning a branch.
