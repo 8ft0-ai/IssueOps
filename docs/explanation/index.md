@@ -6,6 +6,7 @@ Explanation pages help maintainers and interested readers understand why IssueOp
 
 - [Why the issue is the execution contract](execution-contract-model.md) — why durable repository intent bounds agent execution, how planning differs from implementation and why authority remains human.
 - [Why evidence is not approval](pr-evidence-and-approval.md) — why evidence presence, contract satisfaction and the human approval decision remain separate.
+- [Why repository-native validation is preferred](repository-native-validation-model.md) — what direct evidence proves, when fallback is limited and why pending checks remain visible.
 - [Documentation architecture](documentation-architecture.md) — how Tutorials, How-to, Reference and Explanation divide responsibility, and why project records remain outside that tree.
 - [Delegated batch mode](../delegated-batch-mode.md) — why bounded owner delegation can reduce routine confirmation without removing validation and merge gates. This page remains mixed with operating rules until a later split.
 - [Site and wiki boundaries](../site-vs-wiki.md) — why canonical documentation and project memory have different authority.
