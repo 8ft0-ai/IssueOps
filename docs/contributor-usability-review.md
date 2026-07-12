@@ -12,7 +12,7 @@ Use these canonical project records for maintained context:
 
 - [Stage 2 retrospective roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-02-operating-model-hardening.md)
 - [Stage 2 delivery record](https://github.com/8ft0-ai/IssueOps/blob/main/planning/delivery/stage-02-operating-model-hardening.md)
-- [Historical evidence index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md#stage-2-contributor-usability-review)
+- [Historical evidence index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md)
 
 The exact former review remains available at the verified [pre-migration snapshot](https://github.com/8ft0-ai/IssueOps/blob/318d4b4f7c9490365033ff8363d42cd940d6b900/docs/contributor-usability-review.md).
 
