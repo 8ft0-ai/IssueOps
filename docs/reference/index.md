@@ -9,7 +9,7 @@ Reference pages define exact IssueOps rules, formats, fields, classifications an
 - [Implementation-plan format](implementation-plan-format.md) — canonical plan structure and quality tests.
 - [Execution-contract compatibility entry](../execution-contracts.md) — stable route for earlier links.
 - [Manual lifecycle labels](../labels.md) — current label vocabulary and its non-authoritative role.
-- [IssueOps operating protocol](../issueops-protocol.md) — authoritative lifecycle and gate sequence until final protocol simplification.
+- [IssueOps operating protocol](../issueops-protocol.md) — concise authoritative lifecycle and gate sequence.
 
 ## Pull-request evidence and review
 
