@@ -1,77 +1,42 @@
 # Contract verification
 
-Contract verification is the human review step before approval. It asks whether the pull request fulfilled the issue contract and whether it stayed inside the contract boundaries.
+Contract verification is the human review step that compares the final pull request with its execution-contract issue.
 
-The review should not judge the pull request only as a standalone diff. It should compare the evidence pack with the issue that authorised the work.
+This stable page now routes review procedure and exact decision rules to focused guidance. Human approval and merge authority remain unchanged.
 
-## Review questions
+## Review the pull request
 
-The reviewer should check:
+- [Review a pull request against its contract](how-to/review-pr-against-contract.md)
+- [Remediate pull-request review feedback](how-to/remediate-review-feedback.md)
 
-- whether the expected outcome in the issue was delivered;
-- whether each acceptance criterion was addressed;
-- whether the stated non-goals were respected;
-- whether the pre-merge validation evidence is accurate;
-- whether any validation not performed is clearly recorded;
-- whether any post-merge verification is explicitly named; and
-- whether any scope drift, uncertainty or implementation risk remains.
+## Check exact decisions and blockers
 
-## Evidence to inspect
+- [Review decisions and merge blockers](reference/review-decisions-and-merge-blockers.md)
+- [Pull-request evidence requirements](reference/pr-evidence-requirements.md)
 
-For documentation-only work, the reviewer can usually inspect:
+## Understand the distinction
 
-- the changed Markdown files;
-- `mkdocs.yml` navigation;
-- internal documentation links;
-- release notes and example links; and
-- the absence of unrelated automation or application code changes.
+- [Why evidence is not approval](explanation/pr-evidence-and-approval.md)
 
-For later code changes, the reviewer should also inspect the repository’s normal test, build and runtime evidence.
+## What remains true
 
-## Pre-merge versus post-merge checks
+The reviewer asks:
 
-Pre-merge validation is evidence available before the merge decision. It should be complete enough to support review of the issue contract.
+1. Did the pull request do what was needed?
+2. Did the pull request only do what was asked?
 
-Post-merge verification is evidence that can only be collected after merge, deployment, release or environment-specific configuration. It must be recorded rather than ignored.
-
-Pending validation should block merge when:
-
-- it is needed to decide whether the implementation satisfies the issue;
-- available validation is failing;
-- the implementation is incomplete;
-- the remaining check is required before a safe merge decision; or
-- the PR would be misleading without the result.
-
-Post-merge verification can be acceptable when:
-
-- the implementation is complete;
-- available validation is not failing;
-- the remaining check cannot run until after merge or deployment;
-- the PR clearly records the remaining check; and
-- the reviewer explicitly accepts the residual risk.
-
-## Review remediation
-
-When review feedback requires changes, use the [PR review remediation protocol](review-remediation.md).
-
-The final review should consider the remediated PR state, including any updated validation evidence, scope changes, caveats or remaining checks.
-
-If remediation was material, check that the PR body or a clearly labelled remediation evidence comment reflects the final state. Reviewers should not have to reconstruct the final evidence from commits and review threads alone.
-
-Do not recommend approval if remediation is incomplete, available validation is failing, material remediation evidence is stale or the final PR no longer satisfies the issue contract.
-
-## Final recommendation
+The review considers issue alignment, acceptance criteria, non-goals, final scope, validation evidence, remaining checks, risks, caveats and unresolved review findings.
 
 Use one final recommendation:
 
-- Approve
-- Approve after minor fixes
-- Do not approve yet
+- `Approve`;
+- `Approve after minor fixes`; or
+- `Do not approve yet`.
 
-Approval should be grounded in evidence. If validation is incomplete in a way that prevents the reviewer from deciding whether the issue was satisfied, the recommendation should not be approval.
+Do not recommend approval when implementation is incomplete, required validation is failing or unavailable, scope has drifted, evidence is stale or a material finding remains unresolved.
 
-If the only remaining check is legitimate post-merge verification, the recommendation may be approval, but the review should say what still needs to be verified after merge.
+An agent-generated groundedness review is evidence for the reviewer. It is not independent human review and does not grant approval or merge authority.
 
-## Example
+## Compatibility note
 
-See the [example contract verification](examples/contract-verification-example.md) page for a small evidence-pack review.
+Earlier versions of this page combined procedure, blockers and recommendation definitions. Stage 4 separated those needs while preserving this URL as the contract-verification entry point.
