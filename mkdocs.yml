@@ -24,7 +24,7 @@ nav:
       - Prepare a PR evidence pack: how-to/prepare-pr-evidence-pack.md
       - Review a PR against its contract: how-to/review-pr-against-contract.md
       - Remediate review feedback: how-to/remediate-review-feedback.md
-      - Follow the operating protocol: issueops-protocol.md
+      - Operating protocol lifecycle map: issueops-protocol.md
       - Prepare a batch completion summary: batch-completion-summaries.md
   - Reference:
       - Overview: reference/index.md
