@@ -23,7 +23,7 @@ How-to guides help an active contributor or agent operator complete a specific t
 
 ## Run the IssueOps delivery loop
 
-- [Follow the complete operating protocol](../issueops-protocol.md) — the current end-to-end procedure from issue readiness through post-merge verification.
+- [Use the operating protocol lifecycle map](../issueops-protocol.md) — see the complete sequence of mandatory gates and follow links to the focused procedure for each step.
 - [Complete a delegated batch](../delegated-batch-mode.md) — eligibility and operating gates for explicitly authorised multi-issue delivery. This page remains mixed with authority explanation until a later split.
 - [Prepare a batch completion summary](../batch-completion-summaries.md) — record delivered, pending, blocked, skipped and deferred work.
 
