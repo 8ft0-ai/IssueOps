@@ -2,17 +2,29 @@
 
 **Jira for human planning. GitHub Issues for agent execution. Pull requests for proof.**
 
-IssueOps is an experiment in making agentic coding safer and easier to review by turning the GitHub issue into an execution contract. The issue defines the work. The branch contains the implementation. The pull request becomes the evidence pack that a human can verify before deciding whether to merge.
+IssueOps is an experiment in making agentic coding safer and easier to review by turning the GitHub issue into an execution contract. The issue defines the work. The branch contains the implementation. The pull request carries the evidence pack that a human verifies before deciding whether to merge.
 
-The repository starts deliberately small. Stage 1 established the manual workflow, Stage 2 hardened it into the current recommended operating protocol with clearer readiness, dependency, validation, remediation and evidence controls, and Stage 3 tested read-only evidence-pack assistance as an experimental alpha capability.
+The repository starts deliberately small. Stage 1 established the manual workflow, Stage 2 hardened it into the current recommended operating protocol, and Stage 3 tested read-only evidence-pack assistance as an experimental alpha capability. Stage 4 is reorganising the user-facing documentation around distinct reader needs without changing the operating or authority model.
 
-## The thesis
+## Choose your path
 
-Jira remains useful for human planning, prioritisation and portfolio context. It is where teams can discuss the broader problem, sequencing, dependencies and delivery intent.
+### Learn IssueOps
 
-GitHub Issues are better suited to the agent execution contract. A coding agent needs a bounded, reviewable instruction that says what to change, what not to change, how success will be assessed and what validation evidence is expected.
+Use [Tutorials](tutorials/index.md) when you want a controlled learning experience with expected outcomes at each step.
 
-Pull requests provide proof. A good pull request should not simply describe the diff. It should show whether the issue contract was fulfilled, whether the change stayed inside scope and what evidence supports the result.
+The full first-change tutorial is the next approved Stage 4 slice. Until it is published, the Tutorials page directs you to the current protocol and documentation-only example without presenting them as a completed tutorial.
+
+### Complete a task
+
+Use [How-to guides](how-to/index.md) when you need to perform a specific activity such as following the delivery loop, operating safely, validating a change, preparing review evidence or remediating feedback.
+
+### Check an exact rule
+
+Use [Reference](reference/index.md) for required contract fields, lifecycle rules, evidence formats, labels, validation requirements, checklists and schema definitions.
+
+### Understand the model
+
+Use [Explanation](explanation/index.md) for the IssueOps thesis, authority boundaries, delegated delivery, documentation architecture and the distinction between canonical guidance and project memory.
 
 ## The manual loop
 
@@ -21,44 +33,32 @@ Issue = execution contract
 Readiness check = contract check
 Implementation plan = proposed execution path
 Tool-operation check = safe actuation gate
-Codex = contract-bound implementer
+Agent = contract-bound implementer
 Validation check = evidence hygiene
 Pull request = evidence pack
 Human review = contract verification
 Merge = human approval decision
 ```
 
-## Where to start
+The complete current lifecycle remains in the [IssueOps operating protocol](issueops-protocol.md). Stage 4 will progressively separate its detailed procedures, exact formats and explanation into focused pages while preserving the protocol as the authoritative lifecycle map.
 
-Start with the [IssueOps operating protocol](issueops-protocol.md). It is the canonical process overview from issue readiness through planning, implementation, validation, review, merge and post-merge verification.
+## Project direction and history
 
-For a small, low-risk change, use this path:
+Project records remain outside the substantive Tutorials, How-to, Reference and Explanation tree. They are still available when you need intent, delivery evidence or historical context:
 
-1. Confirm the issue is executable and record readiness and dependencies.
-2. Post the implementation plan before creating the feature branch.
-3. Use the [compact safe-operation evidence](tool-operations.md#compact-evidence-format) for routine mutations, or the full format when risk or ambiguity is higher.
-4. Select validation through [change-type validation guidance](change-type-validation.md), preferring [repository-native validation](repository-native-validation.md).
-5. Start the PR evidence pack from the relevant [compact PR evidence template](pr-evidence-templates.md), while retaining any full evidence required by the issue or risk level.
-6. Complete [contract verification](contract-verification.md), remediate substantive feedback and record post-merge checks only when genuinely required.
+- [Approved Stage 4 roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-04-diataxis-documentation-architecture.md)
+- [Planning control surface](https://github.com/8ft0-ai/IssueOps/tree/main/planning)
+- [Public roadmap compatibility page](roadmap.md)
+- [Stage 1 release notes](releases/stage-1.md)
+- [Stage 2 stable release notes](releases/stage-2.md)
+- [Stage 3 experimental alpha notes](releases/stage-3-alpha.md)
 
-The focused pages remain supporting references rather than separate process entry points:
-
-- [Execution contracts](execution-contracts.md) for what belongs in an agent-ready issue.
-- [Pull requests as evidence packs](pr-evidence-packs.md) for full review-evidence expectations.
-- [Safe tool operations](tool-operations.md) for routine and higher-risk mutation checks.
-- [PR review remediation](review-remediation.md) for handling feedback after review.
-- [Examples](examples/README.md) for reference execution-contract and verification artefacts.
-
-See the [Stage 2 contributor usability review](contributor-usability-review.md) for the walkthrough and the reasoning behind this front-door path.
-
-## Canonical docs and project memory
-
-This MkDocs site is the canonical public documentation surface. It should contain the curated project thesis, workflow, controls, examples, release notes and roadmap.
-
-The GitHub wiki remains useful, but it has a different role. It is for project memory, working notes, broader research, draft material and reports that are not yet part of the canonical documentation set. The distinction is explained in [Site and wiki boundaries](site-vs-wiki.md).
+The [documentation architecture](explanation/documentation-architecture.md) explains why project records are linked rather than treated as a fifth documentation mode.
 
 ## Current baseline
 
 The recommended stable baseline is [Stage 2 — Published and Hardened IssueOps Operating Model](releases/stage-2.md), released as `v0.2.0`.
 
-[Stage 3 Alpha — Read-only Evidence-pack Assistance](releases/stage-3-alpha.md), proposed as `v0.3.0-alpha.1`, is an experimental prerelease snapshot for controlled evaluation. It does not replace the stable baseline, does not establish routine operational adoption and does not expand human-controlled approval or merge authority.
+[Stage 3 Alpha — Read-only Evidence-pack Assistance](releases/stage-3-alpha.md), proposed as `v0.3.0-alpha.1`, is an experimental prerelease snapshot for controlled evaluation. It does not replace the stable baseline, establish routine operational adoption or expand human-controlled approval or merge authority.
+
+Stage 4 changes documentation architecture only. It does not authorise automatic execution, lifecycle transitions, review decisions, merge authority, repository-setting changes or operational evidence-assistance implementation.
