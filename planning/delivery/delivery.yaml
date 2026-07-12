@@ -187,42 +187,190 @@
     }
   ],
   "edges": [
-    {"from": "stage-1", "to": "pr-2", "type": "implemented_by"},
-    {"from": "stage-1", "to": "release-v0-1", "type": "produced"},
-    {"from": "stage-1", "to": "lesson-safe-operation", "type": "revealed_problem"},
-    {"from": "stage-1", "to": "problem-fragmented-model", "type": "revealed_problem"},
-    {"from": "stage-1", "to": "stage-2", "type": "enabled"},
-    {"from": "problem-fragmented-model", "to": "stage-2", "type": "resolved_by"},
-    {"from": "lesson-safe-operation", "to": "stage-2", "type": "carried_forward_to"},
-    {"from": "stage-2", "to": "artifact-docs-site", "type": "produced"},
-    {"from": "stage-2", "to": "artifact-operating-protocol", "type": "produced"},
-    {"from": "stage-2", "to": "pr-60", "type": "proved_by"},
-    {"from": "stage-2", "to": "pr-61", "type": "validated_by"},
-    {"from": "stage-2", "to": "release-v0-2", "type": "produced"},
-    {"from": "stage-1", "to": "boundary-human-authority", "type": "preserved"},
-    {"from": "stage-2", "to": "boundary-human-authority", "type": "preserved"},
-    {"from": "stage-2", "to": "boundary-bounded-automation", "type": "preserved"},
-    {"from": "stage-2", "to": "decision-planning-adoption", "type": "motivated"},
-    {"from": "decision-planning-adoption", "to": "pr-70", "type": "implemented_by"},
-    {"from": "decision-planning-adoption", "to": "pr-73", "type": "validated_by"},
-    {"from": "decision-planning-adoption", "to": "artifact-adoption-record", "type": "produced"},
-    {"from": "decision-planning-adoption", "to": "decision-stage-3", "type": "carried_forward_to"},
-    {"from": "boundary-bounded-automation", "to": "decision-stage-3", "type": "motivated"},
-    {"from": "decision-stage-3", "to": "stage-3", "type": "enabled"},
-    {"from": "stage-3", "to": "artifact-evidence-pack-v1", "type": "produced"},
-    {"from": "stage-3", "to": "pr-85", "type": "proved_by"},
-    {"from": "stage-3", "to": "boundary-human-authority", "type": "preserved"},
-    {"from": "stage-3", "to": "boundary-bounded-automation", "type": "preserved"},
-    {"from": "stage-3", "to": "decision-adapt-evidence-assistance", "type": "produced"},
-    {"from": "artifact-docs-site", "to": "problem-mixed-documentation", "type": "revealed_problem"},
-    {"from": "artifact-operating-protocol", "to": "problem-mixed-documentation", "type": "revealed_problem"},
-    {"from": "problem-mixed-documentation", "to": "stage-4", "type": "resolved_by"},
-    {"from": "decision-planning-adoption", "to": "stage-4", "type": "enabled"},
-    {"from": "stage-4", "to": "artifact-diataxis-docs", "type": "produced"},
-    {"from": "stage-4", "to": "boundary-human-authority", "type": "preserved"},
-    {"from": "stage-4", "to": "boundary-bounded-automation", "type": "preserved"},
-    {"from": "stage-4", "to": "decision-adopt-diataxis", "type": "produced"},
-    {"from": "decision-adapt-evidence-assistance", "to": "issue-90", "type": "carried_forward_to"},
-    {"from": "decision-adopt-diataxis", "to": "issue-90", "type": "carried_forward_to"}
+    {
+      "from": "stage-1",
+      "to": "pr-2",
+      "type": "implemented_by"
+    },
+    {
+      "from": "stage-1",
+      "to": "release-v0-1",
+      "type": "produced"
+    },
+    {
+      "from": "stage-1",
+      "to": "lesson-safe-operation",
+      "type": "revealed_problem"
+    },
+    {
+      "from": "stage-1",
+      "to": "problem-fragmented-model",
+      "type": "revealed_problem"
+    },
+    {
+      "from": "stage-1",
+      "to": "stage-2",
+      "type": "enabled"
+    },
+    {
+      "from": "problem-fragmented-model",
+      "to": "stage-2",
+      "type": "resolved_by"
+    },
+    {
+      "from": "lesson-safe-operation",
+      "to": "stage-2",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "stage-2",
+      "to": "artifact-docs-site",
+      "type": "produced"
+    },
+    {
+      "from": "stage-2",
+      "to": "artifact-operating-protocol",
+      "type": "produced"
+    },
+    {
+      "from": "stage-2",
+      "to": "pr-60",
+      "type": "proved_by"
+    },
+    {
+      "from": "stage-2",
+      "to": "pr-61",
+      "type": "validated_by"
+    },
+    {
+      "from": "stage-2",
+      "to": "release-v0-2",
+      "type": "produced"
+    },
+    {
+      "from": "stage-1",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-2",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-2",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-2",
+      "to": "decision-planning-adoption",
+      "type": "motivated"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "pr-70",
+      "type": "implemented_by"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "pr-73",
+      "type": "validated_by"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "artifact-adoption-record",
+      "type": "produced"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "decision-stage-3",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "boundary-bounded-automation",
+      "to": "decision-stage-3",
+      "type": "motivated"
+    },
+    {
+      "from": "decision-stage-3",
+      "to": "stage-3",
+      "type": "enabled"
+    },
+    {
+      "from": "stage-3",
+      "to": "artifact-evidence-pack-v1",
+      "type": "produced"
+    },
+    {
+      "from": "stage-3",
+      "to": "pr-85",
+      "type": "proved_by"
+    },
+    {
+      "from": "stage-3",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-3",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-3",
+      "to": "decision-adapt-evidence-assistance",
+      "type": "produced"
+    },
+    {
+      "from": "artifact-docs-site",
+      "to": "problem-mixed-documentation",
+      "type": "revealed_problem"
+    },
+    {
+      "from": "artifact-operating-protocol",
+      "to": "problem-mixed-documentation",
+      "type": "revealed_problem"
+    },
+    {
+      "from": "problem-mixed-documentation",
+      "to": "stage-4",
+      "type": "resolved_by"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "stage-4",
+      "type": "enabled"
+    },
+    {
+      "from": "stage-4",
+      "to": "artifact-diataxis-docs",
+      "type": "produced"
+    },
+    {
+      "from": "stage-4",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-4",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-4",
+      "to": "decision-adopt-diataxis",
+      "type": "produced"
+    },
+    {
+      "from": "decision-adapt-evidence-assistance",
+      "to": "issue-90",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "decision-adopt-diataxis",
+      "to": "issue-90",
+      "type": "carried_forward_to"
+    }
   ]
 }
