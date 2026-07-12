@@ -6,7 +6,7 @@ The plan records the proposed execution path. It is evidence of intended impleme
 
 ## Standard format
 
-```md
+````md
 ## Implementation plan
 
 Proposed branch:
@@ -59,7 +59,7 @@ Caveats:
 Explicit exclusions:
 
 - ...
-```
+````
 
 Use `Not applicable` or `None` rather than omitting a heading when its absence could create ambiguity.
 
