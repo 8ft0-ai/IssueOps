@@ -8,7 +8,7 @@ Stage 2 published and hardened the manual execution-contract model with dependen
 
 - [Stage 2 delivery record](https://github.com/8ft0-ai/IssueOps/blob/main/planning/delivery/stage-02-operating-model-hardening.md)
 - [Stage 2 retrospective roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-02-operating-model-hardening.md)
-- [Historical evidence index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md#v020--recommended-stable-baseline)
+- [Historical evidence index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/evidence/index.md)
 
 The exact former release page remains available at the verified [pre-migration snapshot](https://github.com/8ft0-ai/IssueOps/blob/318d4b4f7c9490365033ff8363d42cd940d6b900/docs/releases/stage-2.md).
 
