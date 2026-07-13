@@ -8,11 +8,13 @@ The goal is to identify effective local owners for the manual IssueOps controls,
 
 Apply instructions in this order:
 
-1. explicit target-repository owner authority;
+1. explicit target-repository owner authority and repository policies;
 2. target-repository agent and contributor instructions;
-3. target-repository issue, validation, review and merge conventions;
-4. the locally approved bootstrap execution contract; and
+3. the locally approved bootstrap execution contract, within those higher-level constraints;
+4. existing target-repository issue, validation, review and merge conventions not explicitly adapted by that contract; and
 5. the remote IssueOps bootstrap method.
+
+The local execution contract may authorise a bounded adaptation of an existing convention, but it cannot override repository-owner authority, protected policies or instructions outside its scope.
 
 If remote guidance conflicts with explicit local instructions or authority, stop and surface the conflict. Do not silently override the target repository.
 
