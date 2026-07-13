@@ -4,6 +4,14 @@ This directory is the adaptable source area for **IssueOps Bootstrap 0.1**.
 
 It exists to help an unfamiliar agent assess an existing repository, preserve its conventions, select the lightest sufficient adoption posture and prepare the first local bootstrap execution contract. It is not an installer, a second IssueOps protocol or remote authority to mutate another repository.
 
+## Pack contents
+
+- [Repository assessment and adoption-posture form](repository-assessment.md) — records read-only evidence, local capability mapping, posture selection and the proposed first write.
+- [Convention-mapping guidance](convention-mapping.md) — maps IssueOps controls to existing repository owners before new artefacts are proposed.
+- [Local bootstrap execution-contract template](bootstrap-issue-template.md) — prepares the first locally governed issue after assessment and explicit owner permission.
+
+Start from the root [bootstrap entry point](../BOOTSTRAP.md).
+
 ## Implemented baseline
 
 The bootstrap exports only the implemented manual IssueOps baseline:
@@ -51,7 +59,7 @@ The target repository's local issue, instructions, validation rules and human au
 
 ## Adoption postures
 
-The later entry point and assessment material must select one posture.
+The entry point and assessment material select one posture.
 
 ### Already compatible
 
@@ -100,7 +108,7 @@ These surfaces link to one another rather than copying complete content. If a pr
 
 ## Smallest coherent pack
 
-Version 0.1 should begin with only the source material needed to:
+Version 0.1 contains only the source material needed to:
 
 1. assess the repository without mutation;
 2. select and justify one adoption posture;
@@ -113,7 +121,7 @@ Separate agent-rule, issue-form, pull-request or stage templates should be added
 
 Adoption records must distinguish:
 
-- **Current recommended entry point:** the mutable `main` version of `BOOTSTRAP.md` after it exists.
+- **Current recommended entry point:** the mutable `main` version of `BOOTSTRAP.md`.
 - **Pinned reproducible entry point:** an immutable commit URL for the exact `BOOTSTRAP.md` used by the target repository.
 - **Specification identity:** `IssueOps Bootstrap 0.1` and the implemented baseline it represents.
 
@@ -136,4 +144,4 @@ Use the focused sources rather than duplicating their rules:
 
 The approved roadmap is [Portable IssueOps bootstrap and adoption](../planning/roadmap/portable-issueops-bootstrap-and-adoption.md).
 
-The root entry point, adaptable assessment material and local issue source are delivered by dependent work. External pilot execution remains separately governed and requires an exact target repository, stable branch, permitted scope and merge authority before any target-repository access or mutation.
+Human adoption guidance and exact normative bootstrap requirements are delivered separately under the adopted documentation architecture. External pilot execution remains separately governed and requires an exact target repository, stable branch, permitted scope and merge authority before any target-repository access or mutation.
