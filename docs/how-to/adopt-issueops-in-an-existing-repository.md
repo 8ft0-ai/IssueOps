@@ -2,7 +2,7 @@
 
 Use this guide when you own or maintain an existing repository and want an unfamiliar AI agent to assess and adopt the implemented manual IssueOps model without replacing compatible local conventions or gaining unchecked authority.
 
-Start from the root [IssueOps bootstrap entry point](../../BOOTSTRAP.md). For exact posture, permission, version and evidence rules, use [IssueOps bootstrap requirements](../reference/issueops-bootstrap-requirements.md).
+Start from the root [IssueOps bootstrap entry point](https://github.com/8ft0-ai/IssueOps/blob/main/BOOTSTRAP.md). For exact posture, permission, version and evidence rules, use [IssueOps bootstrap requirements](../reference/issueops-bootstrap-requirements.md).
 
 ## 1. Choose a real target and a bounded objective
 
@@ -66,7 +66,7 @@ to assess and bootstrap IssueOps for <owner/repository>.
 Begin with read-only assessment. Preserve existing repository conventions, select the lightest sufficient adoption posture and do not perform any write except creation of one local bootstrap issue when explicitly authorised.
 ```
 
-The agent should use the [repository assessment form](../../bootstrap/repository-assessment.md) and [convention-mapping guidance](../../bootstrap/convention-mapping.md).
+The agent should use the [repository assessment form](https://github.com/8ft0-ai/IssueOps/blob/main/bootstrap/repository-assessment.md) and [convention-mapping guidance](https://github.com/8ft0-ai/IssueOps/blob/main/bootstrap/convention-mapping.md).
 
 Do not add a larger prompt that quietly supplies the answers the bootstrap is meant to discover.
 
@@ -126,7 +126,7 @@ When changes are needed, verify that each proposed artefact:
 
 ## 8. Review and authorise the local bootstrap issue
 
-Use the [local bootstrap issue template](../../bootstrap/bootstrap-issue-template.md) to prepare the execution contract.
+Use the [local bootstrap issue template](https://github.com/8ft0-ai/IssueOps/blob/main/bootstrap/bootstrap-issue-template.md) to prepare the execution contract.
 
 Before authorising issue creation, confirm that it records:
 
