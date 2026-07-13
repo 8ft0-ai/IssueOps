@@ -14,6 +14,7 @@ nav:
       - Complete your first IssueOps change: tutorials/first-issueops-change.md
   - How-to guides:
       - Overview: how-to/index.md
+      - Adopt IssueOps in an existing repository: how-to/adopt-issueops-in-an-existing-repository.md
       - Write an executable issue: how-to/write-executable-issue.md
       - Check readiness and dependencies: how-to/check-readiness-and-dependencies.md
       - Prepare an implementation plan: how-to/prepare-implementation-plan.md
@@ -28,6 +29,7 @@ nav:
       - Prepare a batch completion summary: batch-completion-summaries.md
   - Reference:
       - Overview: reference/index.md
+      - IssueOps bootstrap requirements: reference/issueops-bootstrap-requirements.md
       - Execution-contract entry: execution-contracts.md
       - Execution-contract fields: reference/execution-contract-fields.md
       - Readiness and dependency formats: reference/readiness-and-dependency-formats.md

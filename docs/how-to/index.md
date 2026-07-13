@@ -2,6 +2,10 @@
 
 How-to guides help an active contributor or agent operator complete a specific task. Start here when you understand the IssueOps model and need the shortest safe route to an outcome.
 
+## Adopt IssueOps
+
+- [Adopt IssueOps in an existing repository](adopt-issueops-in-an-existing-repository.md) — supervise a read-only assessment, select the lightest sufficient posture, authorise the first local issue and prove the result through one subsequent real change.
+
 ## Prepare an executable change
 
 - [Write an executable issue contract](write-executable-issue.md) — turn approved intent into one bounded, reviewable repository change.
