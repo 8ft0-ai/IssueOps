@@ -36,10 +36,12 @@ Stage 4 organised user-facing documentation around Tutorials, How-to guides, Ref
 
 ## Active approved roadmap
 
-No stage roadmap is currently approved for delivery.
+- [Portable IssueOps bootstrap and adoption](portable-issueops-bootstrap-and-adoption.md) — approved as an unnumbered initiative through issue [#115](https://github.com/8ft0-ai/IssueOps/issues/115). Bounded delivery in this repository may proceed independently of issues #90 and #113. External pilot mutation remains blocked until the exact target repository, stable branch, local authority and merge policy are recorded.
 
 ## Future stages
 
 Issue [#90](https://github.com/8ft0-ai/IssueOps/issues/90) remains shaping-only for a possible Stage 5 — Operational evidence assistance. It may use the adopted Stage 4 documentation architecture as a dependency, but it has no implementation authority until independently reviewed and approved.
 
-No roadmap authorises lifecycle automation, execution triggering, auto-merge, repository-setting changes or broader operational evidence assistance unless those capabilities are explicitly shaped, approved and delivered through their own execution contracts.
+Issue [#113](https://github.com/8ft0-ai/IssueOps/issues/113) remains an independently governed, unnumbered shaping proposal for modular IssueOps session architecture. It is not a dependency of the portable bootstrap roadmap and grants no implementation authority to that initiative.
+
+No roadmap authorises lifecycle automation, execution triggering, auto-merge configuration, repository-setting changes or broader operational evidence assistance unless those capabilities are explicitly shaped, approved and delivered through their own execution contracts.
