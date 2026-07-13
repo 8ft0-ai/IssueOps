@@ -2,7 +2,7 @@
 
 This page is the canonical reference for portable IssueOps bootstrap inputs, authority, posture selection, capability mapping, version identity, evidence levels and acceptance requirements.
 
-Use the root [bootstrap entry point](../../BOOTSTRAP.md) to start an agent assessment and [Adopt IssueOps in an existing repository](../how-to/adopt-issueops-in-an-existing-repository.md) for the repository-owner procedure. The detailed implementation lifecycle remains owned by the [IssueOps operating protocol](../issueops-protocol.md).
+Use the root [bootstrap entry point](https://github.com/8ft0-ai/IssueOps/blob/main/BOOTSTRAP.md) to start an agent assessment and [Adopt IssueOps in an existing repository](../how-to/adopt-issueops-in-an-existing-repository.md) for the repository-owner procedure. The detailed implementation lifecycle remains owned by the [IssueOps operating protocol](../issueops-protocol.md).
 
 ## Specification identity
 
@@ -88,7 +88,7 @@ The selected posture must provide locally owned equivalents for all applicable c
 | Human authority | Approval and merge remain human-controlled unless the local owner explicitly grants bounded delegation after all gates pass. |
 | Dependent planning | Required only for Stage-capable adoption and owned separately from actual delivery evidence. |
 
-The assessment form at [`bootstrap/repository-assessment.md`](../../bootstrap/repository-assessment.md) records the capability evidence and gaps.
+The [repository assessment form](https://github.com/8ft0-ai/IssueOps/blob/main/bootstrap/repository-assessment.md) records the capability evidence and gaps.
 
 ## Convention treatments
 
@@ -99,7 +99,7 @@ Each local surface receives one treatment:
 - **Add** — no compatible owner exists and a new surface has a tested need.
 - **Not needed** — not required for the selected posture.
 
-`Add` requires evidence that no smaller adaptation can satisfy the same criterion. Use the [convention-mapping guidance](../../bootstrap/convention-mapping.md).
+`Add` requires evidence that no smaller adaptation can satisfy the same criterion. Use the [convention-mapping guidance](https://github.com/8ft0-ai/IssueOps/blob/main/bootstrap/convention-mapping.md).
 
 Equivalent local terminology is valid. IssueOps filenames and labels are not mandatory.
 
@@ -153,7 +153,7 @@ The first local bootstrap execution contract must contain:
 - required evidence from that issue; and
 - its authority boundary.
 
-Use the adaptable [local bootstrap issue template](../../bootstrap/bootstrap-issue-template.md).
+Use the adaptable [local bootstrap issue template](https://github.com/8ft0-ai/IssueOps/blob/main/bootstrap/bootstrap-issue-template.md).
 
 Creating the issue requires explicit target-repository owner permission. The remote specification does not grant it.
 
@@ -325,8 +325,8 @@ A structural or same-session walkthrough alone cannot justify `Adopt`.
 
 ## Related guidance
 
-- [Bootstrap IssueOps in an existing repository](../../BOOTSTRAP.md)
-- [Portable bootstrap source pack](../../bootstrap/README.md)
+- [Bootstrap IssueOps in an existing repository](https://github.com/8ft0-ai/IssueOps/blob/main/BOOTSTRAP.md)
+- [Portable bootstrap source pack](https://github.com/8ft0-ai/IssueOps/blob/main/bootstrap/README.md)
 - [Adopt IssueOps in an existing repository](../how-to/adopt-issueops-in-an-existing-repository.md)
 - [IssueOps operating protocol](../issueops-protocol.md)
 - [Execution-contract fields](execution-contract-fields.md)
