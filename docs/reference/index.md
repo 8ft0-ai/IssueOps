@@ -2,6 +2,10 @@
 
 Reference pages define exact IssueOps rules, formats, fields, classifications and validation requirements. Use this section when you need a precise answer rather than a guided procedure or conceptual explanation.
 
+## Portable adoption
+
+- [IssueOps bootstrap requirements](issueops-bootstrap-requirements.md) — canonical inputs, authority boundary, adoption postures, capability mapping, version fields, evidence levels and acceptance gates for existing repositories.
+
 ## Contracts and planning gates
 
 - [Execution-contract fields](execution-contract-fields.md) — canonical core and conditional issue fields.
