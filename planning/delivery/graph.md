@@ -31,6 +31,12 @@ flowchart LR
   n_artifact_diataxis_docs["Diátaxis-aligned IssueOps documentation\n(artifact)"]
   n_decision_adopt_diataxis["Adopt the Diátaxis documentation architecture\n(decision)"]
   n_issue_90["Issue #90 — Shape operational evidence assistance\n(issue)"]
+  n_initiative_portable_bootstrap["Portable IssueOps bootstrap and adoption\n(stage)"]
+  n_artifact_bootstrap_v0_1["IssueOps Bootstrap 0.1\n(artifact)"]
+  n_external_pr_bootstrap["mri-fourier-lab PR #2 — Minimal bootstrap adoption\n(pull request)"]
+  n_external_pr_genuine_change["mri-fourier-lab PR #4 — Genuine adopted-process change\n(pull request)"]
+  n_decision_adopt_portable_bootstrap["Adopt the portable IssueOps bootstrap\n(decision)"]
+  n_issue_113["Issue #113 — Modular IssueOps session architecture\n(issue)"]
 
   n_stage_1 -->|implemented by| n_pr_2
   n_stage_1 -->|produced| n_release_v0_1
@@ -69,4 +75,13 @@ flowchart LR
   n_stage_4 -->|produced| n_decision_adopt_diataxis
   n_decision_adapt_evidence_assistance -->|carried forward to| n_issue_90
   n_decision_adopt_diataxis -->|carried forward to| n_issue_90
+  n_decision_planning_adoption -->|enabled| n_initiative_portable_bootstrap
+  n_stage_4 -->|enabled| n_initiative_portable_bootstrap
+  n_initiative_portable_bootstrap -->|produced| n_artifact_bootstrap_v0_1
+  n_initiative_portable_bootstrap -->|proved by| n_external_pr_bootstrap
+  n_initiative_portable_bootstrap -->|proved by| n_external_pr_genuine_change
+  n_initiative_portable_bootstrap -->|preserved| n_boundary_human_authority
+  n_initiative_portable_bootstrap -->|preserved| n_boundary_bounded_automation
+  n_initiative_portable_bootstrap -->|produced| n_decision_adopt_portable_bootstrap
+  n_decision_adopt_portable_bootstrap -->|carried forward to| n_issue_113
 ```
