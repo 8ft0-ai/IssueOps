@@ -2,15 +2,17 @@
 
 Safe repository work requires a deliberate match between the current phase, intended mutation, selected tool, target and forbidden side effects.
 
-This stable page now routes task procedure and exact operation rules to focused guidance. Permitted operations and the circuit breaker have not changed.
+This stable page now routes task procedure and exact operation rules to focused guidance. Permitted operations and the circuit-breaker trigger remain unchanged; deviation classification and resumption are owned by the canonical policy.
 
 ## Perform the task
 
 - [Perform a safe repository mutation](how-to/perform-safe-repository-mutation.md)
+- [Handle an execution deviation](how-to/handle-execution-deviation.md)
 
 ## Check exact permissions and evidence
 
 - [Operation permissions and evidence](reference/operation-permissions-and-evidence.md)
+- [Execution-deviation policy](reference/execution-deviation-policy.md)
 
 ## What remains true
 
@@ -19,7 +21,7 @@ This stable page now routes task procedure and exact operation rules to focused 
 - Every mutation has one expected side effect and named forbidden effects.
 - High-leverage operations require explicit issue scope and full evidence.
 - Changed objects are fetched or read back after mutation.
-- An unintended mutation activates the circuit breaker: stop normal writes, make only the minimum safe remediation, report it and require owner direction before continuing.
+- An unintended mutation activates the circuit breaker: stop normal writes, continue only minimum authorised remediation, verify the resulting state and follow the canonical deviation policy before resuming.
 - Repository policy and human authority remain required for approval and merge.
 
 The complete lifecycle remains in the [IssueOps operating protocol](issueops-protocol.md).
