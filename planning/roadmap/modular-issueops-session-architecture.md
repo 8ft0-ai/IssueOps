@@ -377,7 +377,7 @@ Provisional preference: a neutral top-level `issueops/` source area, with user-f
 
 This remains a planning recommendation, not an approved path. The Version 0.1 decomposition should test whether a new source area is genuinely necessary before authorising it.
 
-## Target workflow
+## Target workflow or target state
 
 ```text
 human identifies initiative issue and operating mode
@@ -617,9 +617,11 @@ Those are next-stage questions. They are not implementation authority for this p
 - Level 3 independent-agent evidence is required for the interrupted-resume pilot. Level 2 evidence may support lower-risk pilots when labelled accurately. Human usability evidence remains desirable but is not a Version 0.1 adoption prerequisite.
 - The proposed prompt, process and documentation budgets are approved as defaults. Any exception requires an explicit, evidence-backed justification.
 
-## Roadmap approval
+## Operating and autonomy boundary
 
 Issue #113 records the reviewed decision to formalise this roadmap. Approval authorises only the bounded implementation slices described here through separately reviewed execution contracts.
+
+## Non-goals
 
 It does not authorise:
 
