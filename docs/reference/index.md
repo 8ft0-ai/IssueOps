@@ -26,7 +26,8 @@ Reference pages define exact IssueOps rules, formats, fields, classifications an
 
 ## Operations and validation
 
-- [Operation permissions and evidence](operation-permissions-and-evidence.md) — phase permissions, forbidden side effects, evidence formats and circuit breaker.
+- [Operation permissions and evidence](operation-permissions-and-evidence.md) — phase permissions, forbidden side effects, operation evidence formats and circuit-breaker trigger.
+- [Execution-deviation policy](execution-deviation-policy.md) — meaningful-deviation threshold, severity, evidence record, stale-evidence rules, resumption gates and escalation criteria.
 - [Validation by change type](validation-by-change-type.md) — canonical documentation, workflow, publishing, process, application and planning matrix.
 - [Validation status and fallback policy](validation-status-and-fallback-policy.md) — repository-native evidence, representative fallback, pending checks and post-merge verification.
 - [Safe-operation compatibility entry](../tool-operations.md) — stable route for earlier operation links.
