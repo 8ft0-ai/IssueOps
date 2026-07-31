@@ -1,6 +1,6 @@
 # IssueOps delivery log
 
-This is the concise chronological ledger for completed stage-level delivery.
+This is the concise chronological ledger for completed stage-level and cross-cutting delivery.
 
 It is not the full delivery narrative. Use `planning/delivery/` for readable records and GitHub history for detailed execution evidence.
 
@@ -11,3 +11,4 @@ It is not the full delivery narrative. Use `planning/delivery/` for readable rec
 | Planning-process adoption | Completed | Separate roadmap and delivery records, deterministic validation and a compact causal graph adopted for future multi-issue stages | [Adoption record](delivery/planning-process-adoption.md) |
 | Stage 3 — Read-only evidence-pack assistance | Completed; decision **Adapt** | Read-only evidence-pack schema and collector proved through pending-to-final dogfood; controlled use retained while non-closing issue linkage and invocation ergonomics require adaptation | [Stage 3 delivery record](delivery/stage-03-read-only-evidence-pack-assistance.md) |
 | Stage 4 — Diátaxis documentation architecture | Completed; decision **Adopt** | Four reader journeys, focused content ownership, preserved compatibility paths and a concise lifecycle protocol validated through representative walkthroughs and repository-native builds | [Stage 4 delivery record](delivery/stage-04-diataxis-documentation-architecture.md) |
+| Portable IssueOps bootstrap and adoption | Completed; decision **Adopt** | Pinned manual bootstrap proved through Level 3 external assessment, minimal target adoption, one genuine follow-on issue and per-PR human approval | [Portable bootstrap delivery record](delivery/portable-issueops-bootstrap-and-adoption.md) |
