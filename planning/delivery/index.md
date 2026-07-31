@@ -1,6 +1,6 @@
 # IssueOps delivery records
 
-This directory contains completed stage and planning-process delivery records.
+This directory contains completed stage, initiative and planning-process delivery records.
 
 A delivery record answers:
 
@@ -25,6 +25,7 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 - [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — completed with an **Adapt** decision.
 - [Stage 4 — Diátaxis documentation architecture](stage-04-diataxis-documentation-architecture.md) — completed with an **Adopt** decision.
 - [Planning-process adoption](planning-process-adoption.md)
+- [Portable IssueOps bootstrap and adoption](portable-issueops-bootstrap-and-adoption.md) — completed with an **Adopt** decision after a Level 3 external pilot and one subsequent genuine target-repository issue.
 
 ## Causal delivery graph
 
