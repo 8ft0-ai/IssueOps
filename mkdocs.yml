@@ -19,6 +19,7 @@ nav:
       - Check readiness and dependencies: how-to/check-readiness-and-dependencies.md
       - Prepare an implementation plan: how-to/prepare-implementation-plan.md
       - Perform a safe repository mutation: how-to/perform-safe-repository-mutation.md
+      - Handle an execution deviation: how-to/handle-execution-deviation.md
       - Validate a documentation change: how-to/validate-documentation-change.md
       - Validate a workflow change: how-to/validate-workflow-change.md
       - Publish and verify the site: how-to/publish-and-verify-documentation-site.md
@@ -35,6 +36,7 @@ nav:
       - Readiness and dependency formats: reference/readiness-and-dependency-formats.md
       - Implementation-plan format: reference/implementation-plan-format.md
       - Operation permissions and evidence: reference/operation-permissions-and-evidence.md
+      - Execution-deviation policy: reference/execution-deviation-policy.md
       - Validation by change type: reference/validation-by-change-type.md
       - Validation status and fallback policy: reference/validation-status-and-fallback-policy.md
       - Safe-operation entry: tool-operations.md
@@ -59,6 +61,7 @@ nav:
       - Overview: explanation/index.md
       - Why the issue is the execution contract: explanation/execution-contract-model.md
       - Why evidence is not approval: explanation/pr-evidence-and-approval.md
+      - Why execution deviations are evidence: explanation/why-execution-deviations-are-evidence.md
       - Why repository-native validation is preferred: explanation/repository-native-validation-model.md
       - Documentation architecture: explanation/documentation-architecture.md
       - Delegated authority and batch mode: delegated-batch-mode.md
