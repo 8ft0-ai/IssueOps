@@ -184,6 +184,48 @@
       "title": "Issue #90 — Shape operational evidence assistance",
       "summary": "Possible Stage 5 remains shaping-only and must use the adopted documentation ownership and project-record boundaries.",
       "url": "https://github.com/8ft0-ai/IssueOps/issues/90"
+    },
+    {
+      "id": "initiative-portable-bootstrap",
+      "type": "stage",
+      "title": "Portable IssueOps bootstrap and adoption",
+      "summary": "Delivered the pinned manual bootstrap and proved external adoption through a fresh independent-agent pilot.",
+      "status": "completed",
+      "path": "planning/delivery/portable-issueops-bootstrap-and-adoption.md"
+    },
+    {
+      "id": "artifact-bootstrap-v0-1",
+      "type": "artifact",
+      "title": "IssueOps Bootstrap 0.1",
+      "summary": "Provides the pinned external entry point, proportional adoption method and local-authority handoff.",
+      "path": "BOOTSTRAP.md"
+    },
+    {
+      "id": "external-pr-bootstrap",
+      "type": "pull_request",
+      "title": "mri-fourier-lab PR #2 — Minimal bootstrap adoption",
+      "summary": "Proved first-write discipline and delivered three target-local manual control surfaces.",
+      "url": "https://github.com/8ft0-ai/mri-fourier-lab/pull/2"
+    },
+    {
+      "id": "external-pr-genuine-change",
+      "type": "pull_request",
+      "title": "mri-fourier-lab PR #4 — Genuine adopted-process change",
+      "summary": "Proved the adopted lifecycle through a source-backed keyboard-accessibility improvement.",
+      "url": "https://github.com/8ft0-ai/mri-fourier-lab/pull/4"
+    },
+    {
+      "id": "decision-adopt-portable-bootstrap",
+      "type": "decision",
+      "title": "Adopt the portable IssueOps bootstrap",
+      "summary": "Level 3 external proof supports adoption without changing the manual authority or merge boundary."
+    },
+    {
+      "id": "issue-113",
+      "type": "issue",
+      "title": "Issue #113 — Modular IssueOps session architecture",
+      "summary": "Separately governs a possible thin invocation and session architecture informed by proven manual portability.",
+      "url": "https://github.com/8ft0-ai/IssueOps/issues/113"
     }
   ],
   "edges": [
@@ -370,6 +412,51 @@
     {
       "from": "decision-adopt-diataxis",
       "to": "issue-90",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "decision-planning-adoption",
+      "to": "initiative-portable-bootstrap",
+      "type": "enabled"
+    },
+    {
+      "from": "stage-4",
+      "to": "initiative-portable-bootstrap",
+      "type": "enabled"
+    },
+    {
+      "from": "initiative-portable-bootstrap",
+      "to": "artifact-bootstrap-v0-1",
+      "type": "produced"
+    },
+    {
+      "from": "initiative-portable-bootstrap",
+      "to": "external-pr-bootstrap",
+      "type": "proved_by"
+    },
+    {
+      "from": "initiative-portable-bootstrap",
+      "to": "external-pr-genuine-change",
+      "type": "proved_by"
+    },
+    {
+      "from": "initiative-portable-bootstrap",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "initiative-portable-bootstrap",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "initiative-portable-bootstrap",
+      "to": "decision-adopt-portable-bootstrap",
+      "type": "produced"
+    },
+    {
+      "from": "decision-adopt-portable-bootstrap",
+      "to": "issue-113",
       "type": "carried_forward_to"
     }
   ]
