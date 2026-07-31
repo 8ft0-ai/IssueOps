@@ -2,7 +2,7 @@
 
 The execution contract controls intent, the implementation plan controls approach, and the operation check controls the repository mutation about to occur.
 
-This page is the canonical reference for operation phases, forbidden side effects, evidence formats and circuit-breaker behaviour.
+This page is the canonical reference for operation phases, forbidden side effects, operation evidence formats and the circuit-breaker trigger. The [Execution-deviation policy](execution-deviation-policy.md) owns classification, stale-evidence, resumption and escalation rules after the circuit breaker is triggered.
 
 ## Core rule
 
@@ -129,14 +129,18 @@ Do not create a branch while a blocking dependency is unresolved. Record the dep
 If an unintended repository mutation occurs:
 
 1. stop normal write operations;
-2. perform only the minimum safe remediation, such as closing an accidental issue or reverting an accidental file change;
-3. record what happened, the impact and the remediation; and
-4. require explicit repository-owner direction before resuming the normal implementation flow.
+2. continue only the read-only investigation and minimum authorised remediation needed to make the situation safe;
+3. fetch and verify the resulting repository state; and
+4. use the [Execution-deviation policy](execution-deviation-policy.md) to determine recording, severity, stale evidence, resumption and escalation.
 
-Do not conceal the accidental mutation or continue as though it were part of the plan.
+Do not conceal the accidental mutation or continue as though it were part of the plan. A successful remediation response is not proof that repository state or evidence is restored.
+
+Use [Handle an execution deviation](../how-to/handle-execution-deviation.md) for the recovery procedure.
 
 ## Related guidance
 
 - [Perform a safe repository mutation](../how-to/perform-safe-repository-mutation.md)
+- [Handle an execution deviation](../how-to/handle-execution-deviation.md)
+- [Execution-deviation policy](execution-deviation-policy.md)
 - [Review decisions and merge blockers](review-decisions-and-merge-blockers.md)
 - [IssueOps operating protocol](../issueops-protocol.md)

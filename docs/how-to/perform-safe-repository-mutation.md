@@ -2,7 +2,7 @@
 
 Use this guide immediately before a repository write such as creating a branch, changing a file, opening a pull request or merging.
 
-For exact phase permissions, evidence formats and circuit-breaker rules, use [Operation permissions and evidence](../reference/operation-permissions-and-evidence.md).
+For exact phase permissions and operation evidence formats, use [Operation permissions and evidence](../reference/operation-permissions-and-evidence.md). When an unintended mutation has already occurred, use [Handle an execution deviation](handle-execution-deviation.md).
 
 ## 1. Confirm the current phase
 
@@ -73,11 +73,12 @@ Examples:
 If the operation changes the wrong object or causes an unplanned side effect:
 
 - stop normal writes;
-- perform only the minimum safe remediation;
-- record the event and impact; and
-- require explicit repository-owner direction before continuing.
+- continue only read-only investigation and minimum authorised remediation;
+- fetch and verify the resulting repository state;
+- record the event when it meets the meaningful-deviation threshold; and
+- follow the canonical severity, revalidation and resumption gates.
 
-Do not continue the normal issue loop after an accidental mutation simply because it was repaired.
+Do not continue the normal issue loop merely because the accidental object was removed. Use [Handle an execution deviation](handle-execution-deviation.md) for the recovery procedure and [Execution-deviation policy](../reference/execution-deviation-policy.md) for exact rules.
 
 ## Common failure modes
 
@@ -85,5 +86,6 @@ Do not continue the normal issue loop after an accidental mutation simply becaus
 - using a stale branch or head SHA;
 - creating a branch before dependencies are satisfied;
 - opening a PR before changed files and validation status are known;
-- merging a changed head without revalidation; or
+- merging a changed head without revalidation;
+- treating a successful remediation response as proof of restored state; or
 - performing an incidental workflow, permission or setting change.

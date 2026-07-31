@@ -34,7 +34,15 @@ The agent should identify:
 
 If the selected tool does not match the intended operation, stop before making the call.
 
-If an unintended repository mutation occurs, stop further writes. Perform only the minimum remediation needed to make the accidental change safe, report what happened, and wait for explicit instruction before continuing.
+If an unintended repository mutation occurs:
+
+- stop normal writes;
+- continue only read-only investigation and minimum authorised remediation;
+- verify the resulting repository state;
+- record and classify the event when required by the canonical [execution-deviation policy](docs/reference/execution-deviation-policy.md); and
+- follow [Handle an execution deviation](docs/how-to/handle-execution-deviation.md) before resuming.
+
+A minor deviation may resume only when restoration is verified, authority and scope remain valid, affected evidence is current or rerun, a practical corrective control is in place and the resumption decision is recorded. Material, critical or uncertain deviations require explicit repository-owner direction before normal mutation resumes.
 
 ## Scope control
 

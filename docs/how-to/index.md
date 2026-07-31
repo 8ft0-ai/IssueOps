@@ -15,6 +15,7 @@ How-to guides help an active contributor or agent operator complete a specific t
 ## Operate and validate safely
 
 - [Perform a safe repository mutation](perform-safe-repository-mutation.md) — match the phase, target, tool and expected side effect before every write.
+- [Handle an execution deviation](handle-execution-deviation.md) — stop, contain, verify, record, revalidate and decide whether safe execution may resume.
 - [Validate a documentation change](validate-documentation-change.md) — read back content, check links and currency, run the strict build and inspect material rendered paths.
 - [Validate a workflow change](validate-workflow-change.md) — review triggers, permissions, dependencies, settings and pre/post-merge evidence.
 - [Publish and verify the documentation site](publish-and-verify-documentation-site.md) — validate the artefact, observe the merged Pages workflow and inspect the public site.
@@ -33,4 +34,4 @@ How-to guides help an active contributor or agent operator complete a specific t
 
 ## Exact rules and formats
 
-Use [Reference](../reference/index.md) when you need contract fields, operation permissions, validation matrices, evidence templates, review decisions, merge blockers, labels, checklists or schema definitions.
+Use [Reference](../reference/index.md) when you need contract fields, operation permissions, deviation classifications, validation matrices, evidence templates, review decisions, merge blockers, labels, checklists or schema definitions.
