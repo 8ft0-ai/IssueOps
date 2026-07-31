@@ -79,9 +79,9 @@ Do not commit directly to `main` unless the repository owner explicitly authoris
 
 Before every mutating repository operation, verify the current phase, intended operation, exact tool, target, expected side effect and forbidden side effects.
 
-If the tool or target does not match the intended operation, stop before making the call. If an unintended mutation occurs, stop further writes except for minimum remediation, report the event and do not resume normal execution without appropriate authority.
+If the tool or target does not match the intended operation, stop before making the call. If an unintended mutation occurs, stop normal writes, continue only minimum authorised remediation and verify the resulting state before any resumption decision.
 
-Use [Perform a safe repository mutation](how-to/perform-safe-repository-mutation.md) for the procedure and [Operation permissions and evidence](reference/operation-permissions-and-evidence.md) for phase permissions, evidence formats and the circuit breaker.
+Use [Perform a safe repository mutation](how-to/perform-safe-repository-mutation.md) for the pre-operation procedure and [Operation permissions and evidence](reference/operation-permissions-and-evidence.md) for phase permissions and the circuit-breaker trigger. After a deviation, use [Handle an execution deviation](how-to/handle-execution-deviation.md) and the canonical [Execution-deviation policy](reference/execution-deviation-policy.md) for recording, classification, stale evidence, resumption and escalation.
 
 ### 6. Implement only the contract
 
@@ -176,6 +176,7 @@ Use this lifecycle checklist before requesting final review:
 - [ ] The implementation plan was posted before branch creation.
 - [ ] One issue-scoped feature branch was used.
 - [ ] Safe-operation checks preceded repository mutations.
+- [ ] Any execution deviation was contained, recorded when required, classified and reflected in current evidence before resumption or review.
 - [ ] The implementation stayed inside scope and non-goals.
 - [ ] Changed files were read back.
 - [ ] Validation matched the change type and actually ran as recorded.
