@@ -1,6 +1,6 @@
 # IssueOps roadmap records
 
-This directory contains stage-level intent records.
+This directory contains stage-level and cross-cutting initiative intent records.
 
 Roadmap records explain the problem, outcome to prove, exclusions, authority boundaries, target state, acceptance evidence and proposed delivery slices. Detailed implementation contracts remain in GitHub issues.
 
@@ -34,15 +34,20 @@ Stage 3 delivered deterministic read-only evidence collection and exposed the ad
 
 Stage 4 organised user-facing documentation around Tutorials, How-to guides, Reference and Explanation, preserved project records outside the substantive tree and retained all IssueOps authority boundaries.
 
+## Completed contemporaneous initiatives
+
+- [Portable IssueOps bootstrap and adoption](portable-issueops-bootstrap-and-adoption.md) — completed with an **Adopt** decision after a Level 3 external pilot in `8ft0-ai/mri-fourier-lab`; actual delivery is recorded in the [portable bootstrap delivery record](../delivery/portable-issueops-bootstrap-and-adoption.md).
+
+The portable initiative proved read-only assessment, capability-first posture selection, first-local-issue authority handoff, minimal target adoption, one subsequent genuine issue and per-PR human merge control from the pinned `IssueOps Bootstrap 0.1` source.
+
 ## Active approved roadmap
 
 - [Modular IssueOps session architecture](modular-issueops-session-architecture.md) — approved as an unnumbered initiative through issue [#113](https://github.com/8ft0-ai/IssueOps/issues/113). Version 0.1 remains manual and evidence-led; implementation requires separate execution contracts and does not replace the stable protocol.
-- [Portable IssueOps bootstrap and adoption](portable-issueops-bootstrap-and-adoption.md) — approved as an unnumbered initiative through issue [#115](https://github.com/8ft0-ai/IssueOps/issues/115). Bounded delivery in this repository may proceed independently of issues #90 and #113. External pilot mutation remains blocked until the exact target repository, stable branch, local authority and merge policy are recorded.
 
 ## Future stages
 
 Issue [#90](https://github.com/8ft0-ai/IssueOps/issues/90) remains shaping-only for a possible Stage 5 — Operational evidence assistance. It may use the adopted Stage 4 documentation architecture as a dependency, but it has no implementation authority until independently reviewed and approved.
 
-The modular session initiative and issue #90 remain independently governed. Neither grants implementation authority to the other.
+The modular session initiative, the portable bootstrap initiative and issue #90 remain independently governed. Completion or approval of one does not grant implementation authority to another.
 
 No roadmap authorises lifecycle automation, execution triggering, auto-merge configuration, repository-setting changes or broader operational evidence assistance unless those capabilities are explicitly shaped, approved and delivered through their own execution contracts.
