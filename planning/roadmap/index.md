@@ -42,7 +42,9 @@ The portable initiative proved read-only assessment, capability-first posture se
 
 ## Active approved roadmap
 
-- [Modular IssueOps session architecture](modular-issueops-session-architecture.md) — approved as an unnumbered initiative through issue [#113](https://github.com/8ft0-ai/IssueOps/issues/113). Version 0.1 remains manual and evidence-led; implementation requires separate execution contracts and does not replace the stable protocol.
+- [Modular IssueOps session architecture](modular-issueops-session-architecture.md) — approved as an unnumbered initiative through issue [#113](https://github.com/8ft0-ai/IssueOps/issues/113) and adapted after portable-bootstrap proof through execution issue [#131](https://github.com/8ft0-ai/IssueOps/issues/131).
+
+The adapted Version 0.1 focuses on compact session grants, repository-native state reconciliation, non-overlapping session roles and durable verifiable handovers. It consumes the adopted portable bootstrap and canonical protocol rather than creating a second kernel, mandatory repository profile or parallel initiative manifest. Implementation and pilots require separate execution contracts and do not replace repository-local authority.
 
 ## Future stages
 
