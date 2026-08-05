@@ -43,8 +43,11 @@ The portable initiative proved read-only assessment, capability-first posture se
 ## Active approved roadmap
 
 - [Modular IssueOps session architecture](modular-issueops-session-architecture.md) — approved as an unnumbered initiative through issue [#113](https://github.com/8ft0-ai/IssueOps/issues/113) and adapted after portable-bootstrap proof through execution issue [#131](https://github.com/8ft0-ai/IssueOps/issues/131).
+- [Modular session contract ownership and Slice 2 decomposition](modular-session-contract-ownership.md) — issue [#133](https://github.com/8ft0-ai/IssueOps/issues/133) records the Slice 1 ownership decision and recommends the minimum future Reference, How-to and non-normative Example set without implementing it.
 
 The adapted Version 0.1 focuses on compact session grants, repository-native state reconciliation, non-overlapping session roles and durable verifiable handovers. It consumes the adopted portable bootstrap and canonical protocol rather than creating a second kernel, mandatory repository profile or parallel initiative manifest. Implementation and pilots require separate execution contracts and do not replace repository-local authority.
+
+The Slice 1 decision keeps adoption, lifecycle, current repository state, invocation facts, role boundaries, transition claims and pilot evidence with distinct owners. Slice 2 guidance and all pilots remain separately authorised.
 
 ## Future stages
 
