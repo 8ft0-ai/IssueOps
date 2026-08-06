@@ -9,6 +9,7 @@ Reference pages define exact IssueOps rules, formats, fields, classifications an
 ## Contracts and planning gates
 
 - [Execution-contract fields](execution-contract-fields.md) — canonical core and conditional issue fields.
+- [Session grants, roles and handovers](session-grants-roles-and-handovers.md) — canonical bounded-session grant fields, role invariants, GitHub-native handover fields and receiving-session verification statuses.
 - [Readiness and dependency formats](readiness-and-dependency-formats.md) — exact comment formats, decisions and branch-start rules.
 - [Implementation-plan format](implementation-plan-format.md) — canonical plan structure and quality tests.
 - [Execution-contract compatibility entry](../execution-contracts.md) — stable route for earlier links.
