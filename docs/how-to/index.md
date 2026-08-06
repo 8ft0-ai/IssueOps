@@ -8,6 +8,7 @@ How-to guides help an active contributor or agent operator complete a specific t
 
 ## Prepare an executable change
 
+- [Start or resume a bounded session](start-or-resume-bounded-session.md) — reconcile a session grant or handover with current repository state, identify the earliest authorised gate and record one permitted next action or an accurate stop.
 - [Write an executable issue contract](write-executable-issue.md) — turn approved intent into one bounded, reviewable repository change.
 - [Check readiness and dependencies](check-readiness-and-dependencies.md) — refresh repository state, record the safe starting point and stop when the issue is blocked.
 - [Prepare an implementation plan](prepare-implementation-plan.md) — make the intended branch, files, sequence, validation and exclusions visible before branch creation.
