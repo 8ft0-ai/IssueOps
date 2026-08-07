@@ -226,6 +226,40 @@
       "title": "Issue #113 — Modular IssueOps session architecture",
       "summary": "Separately governs a possible thin invocation and session architecture informed by proven manual portability.",
       "url": "https://github.com/8ft0-ai/IssueOps/issues/113"
+    },
+    {
+      "id": "decision-adapt-modular-sessions",
+      "type": "decision",
+      "title": "Adapt the modular-session direction",
+      "summary": "Focus the remaining modular-session work on thin invocation, repository-native reconciliation, role separation and verifiable handover rather than a second kernel/profile/manifest architecture."
+    },
+    {
+      "id": "artifact-modular-session-roadmap",
+      "type": "artifact",
+      "title": "Adapted modular-session roadmap",
+      "summary": "Defines the approved modular-session initiative intent and staged evidence path.",
+      "path": "planning/roadmap/modular-issueops-session-architecture.md"
+    },
+    {
+      "id": "artifact-modular-session-ownership",
+      "type": "artifact",
+      "title": "Modular-session contract ownership",
+      "summary": "Records the delivered Slice 1 ownership and decomposition for grants, roles, handovers and supporting guidance.",
+      "path": "planning/roadmap/modular-session-contract-ownership.md"
+    },
+    {
+      "id": "artifact-modular-session-v0-1",
+      "type": "artifact",
+      "title": "Manual modular-session Version 0.1 contract",
+      "summary": "Defines the delivered normative contract for bounded session grants, role invariants, durable handovers and receiving-session verification.",
+      "path": "docs/reference/session-grants-roles-and-handovers.md"
+    },
+    {
+      "id": "issue-137",
+      "type": "issue",
+      "title": "Issue #137 — Slice 3 role-and-resume pilot programme",
+      "summary": "Separately governs the current Slice 3 evidence programme for fresh role-bounded sessions without making an adoption decision.",
+      "url": "https://github.com/8ft0-ai/IssueOps/issues/137"
     }
   ],
   "edges": [
@@ -458,6 +492,41 @@
       "from": "decision-adopt-portable-bootstrap",
       "to": "issue-113",
       "type": "carried_forward_to"
+    },
+    {
+      "from": "issue-113",
+      "to": "decision-adapt-modular-sessions",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "decision-adapt-modular-sessions",
+      "to": "artifact-modular-session-roadmap",
+      "type": "produced"
+    },
+    {
+      "from": "artifact-modular-session-roadmap",
+      "to": "artifact-modular-session-ownership",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "artifact-modular-session-ownership",
+      "to": "artifact-modular-session-v0-1",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "artifact-modular-session-v0-1",
+      "to": "issue-137",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "artifact-modular-session-v0-1",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "artifact-modular-session-v0-1",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
     }
   ]
 }

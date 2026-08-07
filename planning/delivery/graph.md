@@ -37,6 +37,11 @@ flowchart LR
   n_external_pr_genuine_change["mri-fourier-lab PR #4 — Genuine adopted-process change\n(pull request)"]
   n_decision_adopt_portable_bootstrap["Adopt the portable IssueOps bootstrap\n(decision)"]
   n_issue_113["Issue #113 — Modular IssueOps session architecture\n(issue)"]
+  n_decision_adapt_modular_sessions["Adapt the modular-session direction\n(decision)"]
+  n_artifact_modular_session_roadmap["Adapted modular-session roadmap\n(artifact)"]
+  n_artifact_modular_session_ownership["Modular-session contract ownership\n(artifact)"]
+  n_artifact_modular_session_v0_1["Manual modular-session Version 0.1 contract\n(artifact)"]
+  n_issue_137["Issue #137 — Slice 3 role-and-resume pilot programme\n(issue)"]
 
   n_stage_1 -->|implemented by| n_pr_2
   n_stage_1 -->|produced| n_release_v0_1
@@ -84,4 +89,11 @@ flowchart LR
   n_initiative_portable_bootstrap -->|preserved| n_boundary_bounded_automation
   n_initiative_portable_bootstrap -->|produced| n_decision_adopt_portable_bootstrap
   n_decision_adopt_portable_bootstrap -->|carried forward to| n_issue_113
+  n_issue_113 -->|carried forward to| n_decision_adapt_modular_sessions
+  n_decision_adapt_modular_sessions -->|produced| n_artifact_modular_session_roadmap
+  n_artifact_modular_session_roadmap -->|carried forward to| n_artifact_modular_session_ownership
+  n_artifact_modular_session_ownership -->|carried forward to| n_artifact_modular_session_v0_1
+  n_artifact_modular_session_v0_1 -->|carried forward to| n_issue_137
+  n_artifact_modular_session_v0_1 -->|preserved| n_boundary_human_authority
+  n_artifact_modular_session_v0_1 -->|preserved| n_boundary_bounded_automation
 ```
