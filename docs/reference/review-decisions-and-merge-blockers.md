@@ -42,7 +42,7 @@ A reviewer should answer separately:
 
 A complete evidence pack can describe an implementation that does not satisfy the contract. Conversely, a plausible implementation without sufficient evidence cannot be approved safely.
 
-## Merge blockers
+## Review and merge blockers
 
 Do not recommend approval or merge when any of these conditions applies:
 
@@ -58,10 +58,20 @@ Do not recommend approval or merge when any of these conditions applies:
 - permissions, security, deployment or public claims remain uncertain;
 - a post-merge check is being used to defer evidence that should exist before merge;
 - the change weakens or ambiguously changes an authority boundary;
-- branch protection or required review policy is not satisfied;
-- durable pre-action human merge authority for the exact current PR head and accepted review state is absent or stale;
-- merge authority has not been granted; or
+- branch protection or required review policy is not satisfied; or
 - merging would conceal incomplete or misleading evidence.
+
+## Merge-only authority blockers
+
+An otherwise valid independent `Approve` recommendation may exist before human merge authority is granted. The recommendation does not satisfy this later boundary.
+
+Do not invoke merge when:
+
+- durable pre-action human merge authority for the exact current PR head and accepted review state is absent;
+- the recorded human merge decision is stale because the head or material review state moved; or
+- merge authority otherwise has not been granted.
+
+These are merge blockers, not reasons to keep an otherwise contract-satisfying independent review from recording its recommendation. Human authority is established after the accepted review and before merge execution.
 
 ## Acceptable post-merge verification
 
