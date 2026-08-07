@@ -74,7 +74,7 @@ Classify each finding as:
 
 Explain why a required fix blocks approval. Do not ask for optional or out-of-scope work as though it were a contract failure.
 
-## 7. Choose the recommendation
+## 7. Choose the recommendation and stop the review session
 
 Use:
 
@@ -84,17 +84,23 @@ Use:
 
 An agent-generated groundedness review may help orient the reviewer, but it is not independent human review and does not decide approval.
 
-## 8. Confirm merge eligibility separately
+After the independent Review or evaluate session records its final recommendation durably, that reviewer model context is finished for merge purposes. Its next boundary is the human decision or another separately authorised role/session. Later human approval does not reopen or extend the independent-review session, and the same model conversation/context that performed the review must not invoke merge.
+
+If remediation is required, perform it in a separate Deliver session and obtain any required fresh re-review before returning to the human decision boundary.
+
+## 8. Confirm merge eligibility in a separate execution context
 
 Even an approved implementation merges only when:
 
 - repository policy is satisfied;
 - required reviews and checks are complete;
-- the final head has not changed unexpectedly;
-- merge authority exists; and
+- a durable GitHub-native human merge-authority record exists for the exact pull request, accepted head SHA and current accepted review state;
+- the current head and material review state still match that authority immediately before merge; and
 - any delegated-batch conditions are met.
 
-Do not bypass branch protection or permissions.
+If the current head or material review state has moved since the human decision, treat that authority as stale for merge purposes. Stop and obtain a fresh human decision tied to the new exact state before invoking merge.
+
+The owner may merge directly or may authorise a separate non-review execution context to invoke merge. Do not route merge back through the completed independent-review session, and do not bypass branch protection or permissions.
 
 ## 9. Record post-merge verification
 
@@ -113,5 +119,6 @@ After merge, verify the merged repository state rather than assuming the success
 - treating a passing workflow as proof of contract satisfaction;
 - approving stale evidence after remediation;
 - allowing post-merge verification to replace available pre-merge validation;
-- conflating an agent self-review with independent approval; or
-- recommending merge without checking authority and repository policy.
+- conflating an agent self-review with independent approval;
+- continuing the independent reviewer model context into merge after later human approval; or
+- invoking merge without durable exact-state human authority and an immediate current-state recheck.
