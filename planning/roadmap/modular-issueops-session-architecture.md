@@ -277,7 +277,8 @@ Must not:
 - rely on implementation reasoning unavailable in durable records;
 - remediate findings in the same independent review role;
 - describe same-session self-review as independent evidence;
-- merge unless a separate authority grant explicitly permits it after review acceptance.
+- continue into merge execution after its final recommendation; later human approval does not reopen or extend that reviewer model context;
+- invoke merge from the same model conversation/context; merge execution occurs outside the independent reviewer session under separately established human authority.
 
 #### Close and reconcile
 
