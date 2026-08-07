@@ -78,7 +78,7 @@ Explain why a required fix blocks approval. Do not ask for optional or out-of-sc
 
 Use:
 
-- `Approve` only when the contract is satisfied and no merge blocker remains;
+- `Approve` only when the contract is satisfied and no review or pre-merge validation blocker remains;
 - `Approve after minor fixes` when identified small changes must be completed and rechecked; or
 - `Do not approve yet` when correctness, scope, validation, evidence or review state remains unresolved.
 
