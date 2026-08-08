@@ -258,8 +258,42 @@
       "id": "issue-137",
       "type": "issue",
       "title": "Issue #137 — Slice 3 role-and-resume pilot programme",
-      "summary": "Separately governs the current Slice 3 evidence programme for fresh role-bounded sessions without making an adoption decision.",
+      "summary": "Governed the completed Slice 3 evidence programme for fresh role-bounded sessions and supplied the evidence carried into Slice 4.",
       "url": "https://github.com/8ft0-ai/IssueOps/issues/137"
+    },
+    {
+      "id": "issue-142",
+      "type": "issue",
+      "title": "Issue #142 — Slice 4 comparative close-out",
+      "summary": "Compared the modular-session evidence, first requiring Adapt and later supporting Adopt after bounded correction and proof.",
+      "url": "https://github.com/8ft0-ai/IssueOps/issues/142"
+    },
+    {
+      "id": "decision-adapt-modular-baseline",
+      "type": "decision",
+      "title": "Adapt the modular-session baseline before adoption",
+      "summary": "Pilot evidence exposed material reviewer-session, merge-provenance and stale-classification weaknesses that required bounded correction before adoption."
+    },
+    {
+      "id": "pr-145",
+      "type": "pull_request",
+      "title": "PR #145 — Modular-session boundary correction",
+      "summary": "Corrected reviewer termination, durable exact-state human merge authority and explicit stale reclassification, then proved the corrected lifecycle.",
+      "url": "https://github.com/8ft0-ai/IssueOps/pull/145"
+    },
+    {
+      "id": "decision-adopt-modular-baseline",
+      "type": "decision",
+      "title": "Adopt the corrected modular-session baseline",
+      "summary": "The post-adaptation Slice 4 reassessment found the material adoption blockers resolved while retaining historical negative and unavailable evidence."
+    },
+    {
+      "id": "initiative-modular-sessions",
+      "type": "stage",
+      "title": "Modular IssueOps session architecture",
+      "summary": "Completed the manual modular-session initiative and adopted compact grants, repository-native reconciliation, bounded roles and verifiable handovers into the recommended baseline.",
+      "status": "completed",
+      "path": "planning/delivery/modular-issueops-session-architecture.md"
     }
   ],
   "edges": [
@@ -525,6 +559,41 @@
     },
     {
       "from": "artifact-modular-session-v0-1",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "issue-137",
+      "to": "issue-142",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "issue-142",
+      "to": "decision-adapt-modular-baseline",
+      "type": "produced"
+    },
+    {
+      "from": "decision-adapt-modular-baseline",
+      "to": "pr-145",
+      "type": "implemented_by"
+    },
+    {
+      "from": "pr-145",
+      "to": "decision-adopt-modular-baseline",
+      "type": "proved_by"
+    },
+    {
+      "from": "decision-adopt-modular-baseline",
+      "to": "initiative-modular-sessions",
+      "type": "produced"
+    },
+    {
+      "from": "initiative-modular-sessions",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "initiative-modular-sessions",
       "to": "boundary-bounded-automation",
       "type": "preserved"
     }

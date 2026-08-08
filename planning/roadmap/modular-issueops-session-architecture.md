@@ -1,12 +1,33 @@
 # Modular IssueOps session architecture
 
-Status: approved.
+Status: completed.
 
-Record type: contemporaneous, adapted after portable-bootstrap proof.
+Decision: **Adopt**.
+
+Record type: contemporaneous, adapted after portable-bootstrap proof and completed after bounded corrective proof.
 
 Stage number: deliberately unassigned.
 
-Authority: this roadmap approves only bounded decomposition and evidence-led pilots through separate execution contracts. It does not itself authorise session artefacts, pilot mutations, automation, repository-setting changes, lifecycle mutation, approval or merge.
+The exact adapted roadmap immediately before close-out is preserved at commit [`bb3dfdd6e446c59fea1fde3955062993dd404f3d`](https://github.com/8ft0-ai/IssueOps/blob/bb3dfdd6e446c59fea1fde3955062993dd404f3d/planning/roadmap/modular-issueops-session-architecture.md). The planning sections below remain the historical initiative intent; actual delivery, negative evidence and lessons are recorded separately in the [completed delivery record](../delivery/modular-issueops-session-architecture.md).
+
+Authority: this roadmap approved only bounded decomposition and evidence-led pilots through separate execution contracts. It did not itself authorise session artefacts, pilot mutations, automation, repository-setting changes, lifecycle mutation, approval or merge.
+
+## Close-out result
+
+The initiative completed through an evidence-led sequence rather than a clean first-pass adoption:
+
+```text
+Adapt
+  -> bounded correction and proof
+  -> Adopt
+  -> completed modular-session baseline
+```
+
+Slice 4 initially recommended **Adapt** after Pilot B exposed material reviewer-session, merge-provenance and stale-classification weaknesses. Issue [#143](https://github.com/8ft0-ai/IssueOps/issues/143) and PR [#145](https://github.com/8ft0-ai/IssueOps/pull/145) implemented the bounded correction. The post-adaptation reassessment on [#142](https://github.com/8ft0-ai/IssueOps/issues/142#issuecomment-5223755907) then recommended **Adopt**, and the owner [accepted that recommendation](https://github.com/8ft0-ai/IssueOps/issues/142#issuecomment-5223825564).
+
+This close-out does not erase the historical Pilot B B3 reviewer-context-to-merge failure, retrospective human merge-authority provenance weakness, stale-state classification imprecision, unexercised initial receiving-boundary mismatch cases, procedural-only fresh-session evidence or material process cost. Those qualifications remain explicit in the completed delivery record.
+
+Issue [#90](https://github.com/8ft0-ai/IssueOps/issues/90) and the connector-bridge path [#141](https://github.com/8ft0-ai/IssueOps/issues/141) / [#144](https://github.com/8ft0-ai/IssueOps/issues/144) remain separately governed and are not prerequisites for this adopted baseline.
 
 ## Executive recommendation
 
@@ -584,6 +605,8 @@ A shorter grant or handover that relies on hidden context, copies stale reposito
 
 ## Acceptance gates
 
+These were the planned acceptance gates. Actual close-out, including negative, incomplete and unavailable evidence, is recorded in the completed delivery record rather than retroactively rewriting this checklist.
+
 - [ ] **Dependency clarity:** bootstrap, protocol and repository-local owners remain authoritative and are not duplicated.
 - [ ] **Session-grant coherence:** a compact grant identifies repository, role, primary record, authority, expected state and stop boundary.
 - [ ] **Role separation:** Shape, Deliver, Review or evaluate, and Close and reconcile have non-overlapping responsibilities.
@@ -680,7 +703,7 @@ Control: issue #90 remains independently governed. Shared evidence requires sepa
 
 ## Definition of done
 
-The initiative is complete when:
+These were the planned completion criteria. Actual completion and the evidence qualifications attached to it are recorded in the completed delivery record.
 
 - [ ] this adapted roadmap has been reviewed and approved before implementation issues are created;
 - [ ] approved implementation issues are complete or explicitly resolved;
@@ -696,7 +719,7 @@ The initiative is complete when:
 
 ## Likely next decision boundary
 
-If **Adopt**, separately decide whether evidence justifies:
+After **Adopt**, separately decide whether later evidence justifies:
 
 - recommending standard session-grant and handover templates;
 - adding repository template support;
@@ -705,7 +728,7 @@ If **Adopt**, separately decide whether evidence justifies:
 - introducing a coordinator that issues bounded grants; or
 - using the architecture alongside future operational evidence assistance.
 
-Those are next-stage questions. They are not implementation authority for this roadmap.
+Those are later planning questions. They are not implementation authority from this roadmap or from the completed **Adopt** decision.
 
 ## Approved planning decisions
 
@@ -724,9 +747,7 @@ Those are next-stage questions. They are not implementation authority for this r
 
 ## Operating and autonomy boundary
 
-Issue #113 records the original planning decision. Issue #131 authorises this post-bootstrap roadmap adaptation only.
-
-Future roadmap implementation requires separately reviewed execution contracts. Each pilot requires its own exact repository, primary record, role, authority, safe starting state, validation and stop boundary.
+Issue #113 records the original planning decision. Issue #131 authorised the post-bootstrap roadmap adaptation. Later implementation and pilot work proceeded only through separately reviewed execution contracts.
 
 The session architecture does not grant target-repository mutation authority. Repository-local issues, instructions, validation rules, review requirements and human authority govern every mutation.
 
@@ -750,4 +771,4 @@ This roadmap does not authorise:
 - use of non-GitHub authoritative operational state; or
 - presentation of same-session self-review as independent evidence.
 
-The architecture is adopted only after the pilots and comparative close-out support an evidence-backed **Adopt** decision. Until then, the portable bootstrap, canonical protocol and existing invocation practices remain the operational baseline.
+At planning time, adoption was contingent on the pilots and comparative close-out supporting an evidence-backed **Adopt** decision. That condition was later satisfied only after the initial **Adapt** decision, bounded correction/proof through #143 / PR #145, and the accepted post-adaptation **Adopt** reassessment. The historical negative and unavailable evidence remains part of the completed record.

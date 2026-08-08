@@ -26,6 +26,7 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 - [Stage 4 — Diátaxis documentation architecture](stage-04-diataxis-documentation-architecture.md) — completed with an **Adopt** decision.
 - [Planning-process adoption](planning-process-adoption.md)
 - [Portable IssueOps bootstrap and adoption](portable-issueops-bootstrap-and-adoption.md) — completed with an **Adopt** decision after a Level 3 external pilot and one subsequent genuine target-repository issue.
+- [Modular IssueOps session architecture](modular-issueops-session-architecture.md) — completed with an **Adopt** decision after bounded adaptation and corrective proof.
 
 ## Causal delivery graph
 
