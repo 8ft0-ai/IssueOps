@@ -1,0 +1,532 @@
+name: Validate pull-request diff
+
+run-name: >-
+  ${{ github.event_name == 'pull_request' &&
+      format('Validate PR #{0} diff [pull_request]', github.event.pull_request.number) ||
+      format('Validate PR #{0} diff [issue_comment #{1}]', github.event.issue.number, github.event.comment.id) }}
+
+on:
+  pull_request:
+    branches:
+      - main
+  issue_comment:
+    types:
+      - created
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate:
+    name: Validate exact PR base/head pair
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'issue_comment' &&
+       github.event.action == 'created' &&
+       github.event.issue.pull_request &&
+       github.event.comment.body == '/validate-pr-diff')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Derive event-owned PR identity
+        id: target
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REQUEST_COMMENT_ID: ${{ github.event.comment.id }}
+        run: |
+          set -euo pipefail
+
+          case "$EVENT_NAME" in
+            pull_request)
+              pr_number="$PULL_REQUEST_NUMBER"
+              request_comment_id=""
+              ;;
+            issue_comment)
+              pr_number="$ISSUE_NUMBER"
+              request_comment_id="$REQUEST_COMMENT_ID"
+              ;;
+            *)
+              echo "unsupported trigger: $EVENT_NAME" >&2
+              exit 1
+              ;;
+          esac
+
+          if [[ ! "$pr_number" =~ ^[1-9][0-9]*$ ]]; then
+            echo "event-derived PR number is invalid" >&2
+            exit 1
+          fi
+
+          echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+          echo "request_comment_id=$request_comment_id" >> "$GITHUB_OUTPUT"
+
+      - name: Check comment actor effective repository permission
+        id: permission
+        if: github.event_name == 'issue_comment'
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          COMMENT_ACTOR: ${{ github.event.comment.user.login }}
+        run: |
+          set -euo pipefail
+
+          actor_uri="$(jq -rn --arg value "$COMMENT_ACTOR" '$value|@uri')"
+          response_file="$RUNNER_TEMP/comment-actor-permission.json"
+          endpoint="$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/collaborators/$actor_uri/permission"
+
+          set +e
+          http_code="$(
+            curl --silent --show-error --location \
+              --output "$response_file" \
+              --write-out '%{http_code}' \
+              --header 'Accept: application/vnd.github+json' \
+              --header "Authorization: Bearer $GITHUB_TOKEN" \
+              --header 'X-GitHub-Api-Version: 2022-11-28' \
+              "$endpoint"
+          )"
+          curl_status=$?
+          set -e
+
+          if [[ "$curl_status" -ne 0 || "$http_code" != "200" ]]; then
+            echo "permission lookup failed closed (curl=$curl_status http=$http_code)" >&2
+            echo "permission_status=unknown" >> "$GITHUB_OUTPUT"
+            echo "effective_permission=unknown" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! effective_permission="$(jq -er '.permission | select(type == "string")' "$response_file" 2>/dev/null)"; then
+            echo "permission lookup returned a malformed response" >&2
+            echo "permission_status=unknown" >> "$GITHUB_OUTPUT"
+            echo "effective_permission=unknown" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          case "$effective_permission" in
+            write|admin)
+              echo "permission_status=allowed" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "permission_status=denied" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+          echo "effective_permission=$effective_permission" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve current pull request through GitHub state
+        id: resolve
+        if: github.event_name == 'pull_request' || steps.permission.outputs.permission_status == 'allowed'
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.target.outputs.pr_number }}
+        run: |
+          set -euo pipefail
+
+          response_file="$RUNNER_TEMP/current-pr.json"
+          endpoint="$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER"
+
+          set +e
+          http_code="$(
+            curl --silent --show-error --location \
+              --output "$response_file" \
+              --write-out '%{http_code}' \
+              --header 'Accept: application/vnd.github+json' \
+              --header "Authorization: Bearer $GITHUB_TOKEN" \
+              --header 'X-GitHub-Api-Version: 2022-11-28' \
+              "$endpoint"
+          )"
+          curl_status=$?
+          set -e
+
+          if [[ "$curl_status" -ne 0 || "$http_code" != "200" ]]; then
+            echo "current PR lookup unavailable (curl=$curl_status http=$http_code)" >&2
+            echo "pr_resolved=false" >> "$GITHUB_OUTPUT"
+            echo "resolution_status=pr-unavailable" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! pr_number="$(jq -er '.number | select(type == "number")' "$response_file" 2>/dev/null)" ||
+             ! pr_state="$(jq -er '.state | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! base_sha="$(jq -er '.base.sha | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! head_sha="$(jq -er '.head.sha | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! base_ref="$(jq -er '.base.ref | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! head_ref="$(jq -er '.head.ref | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! base_repo="$(jq -er '.base.repo.full_name | select(type == "string")' "$response_file" 2>/dev/null)"; then
+            echo "current PR lookup returned a malformed response" >&2
+            echo "pr_resolved=false" >> "$GITHUB_OUTPUT"
+            echo "resolution_status=pr-unavailable" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ "$pr_number" != "$PR_NUMBER" ||
+                ! "$base_sha" =~ ^[0-9a-f]{40}$ ||
+                ! "$head_sha" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "current PR identity is malformed or mismatched" >&2
+            echo "pr_resolved=false" >> "$GITHUB_OUTPUT"
+            echo "resolution_status=pr-unavailable" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "pr_resolved=true" >> "$GITHUB_OUTPUT"
+          echo "pr_state=$pr_state" >> "$GITHUB_OUTPUT"
+          echo "base_sha=$base_sha" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+          echo "base_ref=$base_ref" >> "$GITHUB_OUTPUT"
+          echo "head_ref=$head_ref" >> "$GITHUB_OUTPUT"
+
+          if [[ "$pr_state" != "open" || "$base_ref" != "main" || "$base_repo" != "$GITHUB_REPOSITORY" ]]; then
+            echo "PR is not an open current PR targeting main in the base repository" >&2
+            echo "resolution_status=pr-not-current" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "resolution_status=ready" >> "$GITHUB_OUTPUT"
+
+      - name: Check out base repository
+        id: checkout
+        if: steps.resolve.outputs.resolution_status == 'ready'
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+          submodules: false
+
+      - name: Acquire and reconcile exact Git objects
+        id: acquire
+        if: steps.checkout.outcome == 'success'
+        shell: bash
+        env:
+          PR_NUMBER: ${{ steps.target.outputs.pr_number }}
+          BASE_SHA: ${{ steps.resolve.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+
+          fetched_ref="refs/remotes/issueops/pr-head"
+
+          set +e
+          git fetch --no-tags --force origin \
+            "+refs/pull/${PR_NUMBER}/head:${fetched_ref}"
+          fetch_status=$?
+          set -e
+
+          if [[ "$fetch_status" -ne 0 ]]; then
+            echo "failed to fetch base-repository PR head ref" >&2
+            echo "acquire_status=pr-head-fetch-failure" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! fetched_head_sha="$(git rev-parse "${fetched_ref}^{commit}" 2>/dev/null)"; then
+            echo "fetched PR head ref did not resolve to a commit" >&2
+            echo "acquire_status=pr-head-fetch-failure" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "fetched_head_sha=$fetched_head_sha" >> "$GITHUB_OUTPUT"
+
+          if [[ "$fetched_head_sha" != "$HEAD_SHA" ]]; then
+            echo "REST/fetched-head mismatch" >&2
+            echo "acquire_status=rest-fetched-head-mismatch" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+            echo "BASE_SHA is not available locally as a commit object" >&2
+            echo "acquire_status=missing-base-object" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! git cat-file -e "${HEAD_SHA}^{commit}" 2>/dev/null; then
+            echo "HEAD_SHA is not available locally as a commit object" >&2
+            echo "acquire_status=missing-head-object" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! base_ref_tip_sha="$(git rev-parse 'HEAD^{commit}' 2>/dev/null)" ||
+             [[ ! "$base_ref_tip_sha" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "current locally fetched main tip could not be resolved" >&2
+            echo "acquire_status=base-ref-tip-unavailable" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "base_ref_tip_sha=$base_ref_tip_sha" >> "$GITHUB_OUTPUT"
+          echo "acquire_status=ready" >> "$GITHUB_OUTPUT"
+
+      - name: Compute merge base and validator provenance
+        id: prepare
+        if: steps.acquire.outputs.acquire_status == 'ready'
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ steps.resolve.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+
+          if ! merge_base="$(git merge-base "$BASE_SHA" "$HEAD_SHA" 2>/dev/null)" ||
+             [[ ! "$merge_base" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "git merge-base failed" >&2
+            echo "prepare_status=merge-base-failure" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "merge_base=$merge_base" >> "$GITHUB_OUTPUT"
+
+          set +e
+          git diff --quiet "$BASE_SHA...$HEAD_SHA" -- .github/workflows/pr-diff-validation.yml
+          validator_diff_status=$?
+          set -e
+
+          case "$validator_diff_status" in
+            0)
+              validator_changed=false
+              ;;
+            1)
+              validator_changed=true
+              ;;
+            *)
+              echo "validator provenance classification failed" >&2
+              echo "prepare_status=provenance-classification-failure" >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+          esac
+
+          if [[ "$EVENT_NAME" == "issue_comment" ]]; then
+            provenance="default-branch-validator-provenance"
+          elif [[ "$validator_changed" == "true" ]]; then
+            provenance="candidate-pr-associated-validator-evidence"
+          else
+            provenance="normal-automatic-repository-validation-evidence"
+          fi
+
+          echo "validator_changed=$validator_changed" >> "$GITHUB_OUTPUT"
+          echo "provenance=$provenance" >> "$GITHUB_OUTPUT"
+          echo "prepare_status=ready" >> "$GITHUB_OUTPUT"
+
+      - name: Run exact repository validation
+        id: validation
+        if: steps.prepare.outputs.prepare_status == 'ready'
+        shell: bash
+        env:
+          BASE_SHA: ${{ steps.resolve.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+
+          output_file="$RUNNER_TEMP/pr-diff-check-output.txt"
+
+          set +e
+          git diff --check "$BASE_SHA...$HEAD_SHA" >"$output_file" 2>&1
+          validation_exit=$?
+          set -e
+
+          cat "$output_file"
+          echo "validation_exit=$validation_exit" >> "$GITHUB_OUTPUT"
+
+          if [[ "$validation_exit" -eq 0 ]]; then
+            echo "validation_status=success" >> "$GITHUB_OUTPUT"
+          else
+            echo "validation_status=non-zero-git-diff-check" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Reconcile post-run PR state
+        id: post
+        if: steps.validation.outputs.validation_status != ''
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.target.outputs.pr_number }}
+          BASE_SHA: ${{ steps.resolve.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+          BASE_REF: ${{ steps.resolve.outputs.base_ref }}
+          HEAD_REF: ${{ steps.resolve.outputs.head_ref }}
+        run: |
+          set -euo pipefail
+
+          response_file="$RUNNER_TEMP/post-run-pr.json"
+          endpoint="$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER"
+
+          set +e
+          http_code="$(
+            curl --silent --show-error --location \
+              --output "$response_file" \
+              --write-out '%{http_code}' \
+              --header 'Accept: application/vnd.github+json' \
+              --header "Authorization: Bearer $GITHUB_TOKEN" \
+              --header 'X-GitHub-Api-Version: 2022-11-28' \
+              "$endpoint"
+          )"
+          curl_status=$?
+          set -e
+
+          if [[ "$curl_status" -ne 0 || "$http_code" != "200" ]]; then
+            echo "post-run PR lookup unavailable (curl=$curl_status http=$http_code)" >&2
+            echo "post_status=post-run-state-unavailable" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! pr_state="$(jq -er '.state | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! base_sha="$(jq -er '.base.sha | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! head_sha="$(jq -er '.head.sha | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! base_ref="$(jq -er '.base.ref | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! head_ref="$(jq -er '.head.ref | select(type == "string")' "$response_file" 2>/dev/null)"; then
+            echo "post-run PR lookup returned a malformed response" >&2
+            echo "post_status=post-run-state-unavailable" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ "$pr_state" != "open" ||
+                "$base_sha" != "$BASE_SHA" ||
+                "$head_sha" != "$HEAD_SHA" ||
+                "$base_ref" != "$BASE_REF" ||
+                "$head_ref" != "$HEAD_REF" ]]; then
+            echo "PR target moved during validation" >&2
+            echo "post_status=stale-target" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "post_status=current" >> "$GITHUB_OUTPUT"
+
+      - name: Record validation run summary
+        if: always() && steps.resolve.outputs.pr_resolved == 'true'
+        shell: bash
+        env:
+          PR_NUMBER: ${{ steps.target.outputs.pr_number }}
+          REQUEST_COMMENT_ID: ${{ steps.target.outputs.request_comment_id }}
+          PR_STATE: ${{ steps.resolve.outputs.pr_state }}
+          BASE_SHA: ${{ steps.resolve.outputs.base_sha }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+          BASE_REF: ${{ steps.resolve.outputs.base_ref }}
+          HEAD_REF: ${{ steps.resolve.outputs.head_ref }}
+          BASE_REF_TIP_SHA: ${{ steps.acquire.outputs.base_ref_tip_sha }}
+          MERGE_BASE: ${{ steps.prepare.outputs.merge_base }}
+          PROVENANCE: ${{ steps.prepare.outputs.provenance }}
+          VALIDATOR_CHANGED: ${{ steps.prepare.outputs.validator_changed }}
+          VALIDATION_EXIT: ${{ steps.validation.outputs.validation_exit }}
+          POST_STATUS: ${{ steps.post.outputs.post_status }}
+          RESOLUTION_STATUS: ${{ steps.resolve.outputs.resolution_status }}
+          ACQUIRE_STATUS: ${{ steps.acquire.outputs.acquire_status }}
+          PREPARE_STATUS: ${{ steps.prepare.outputs.prepare_status }}
+        run: |
+          set -euo pipefail
+
+          value_or_unavailable() {
+            if [[ -n "$1" ]]; then
+              printf '%s' "$1"
+            else
+              printf '%s' 'unavailable'
+            fi
+          }
+
+          {
+            echo "## Pull-request diff validation"
+            echo
+            echo "| Evidence | Value |"
+            echo "| --- | --- |"
+            printf '| repository | `%s` |\n' "$GITHUB_REPOSITORY"
+            printf '| PR number | `%s` |\n' "$PR_NUMBER"
+            printf '| PR state | `%s` |\n' "$(value_or_unavailable "$PR_STATE")"
+            printf '| BASE_SHA | `%s` |\n' "$(value_or_unavailable "$BASE_SHA")"
+            printf '| HEAD_SHA | `%s` |\n' "$(value_or_unavailable "$HEAD_SHA")"
+            printf '| BASE_REF | `%s` |\n' "$(value_or_unavailable "$BASE_REF")"
+            printf '| HEAD_REF | `%s` |\n' "$(value_or_unavailable "$HEAD_REF")"
+            printf '| BASE_REF_TIP_SHA | `%s` |\n' "$(value_or_unavailable "$BASE_REF_TIP_SHA")"
+            printf '| MERGE_BASE | `%s` |\n' "$(value_or_unavailable "$MERGE_BASE")"
+            printf '| workflow definition ref | `%s` |\n' "$GITHUB_WORKFLOW_REF"
+            printf '| workflow definition SHA | `%s` |\n' "$GITHUB_WORKFLOW_SHA"
+            printf '| validator changed | `%s` |\n' "$(value_or_unavailable "$VALIDATOR_CHANGED")"
+            printf '| provenance classification | `%s` |\n' "$(value_or_unavailable "$PROVENANCE")"
+            printf '| workflow run ID | `%s` |\n' "$GITHUB_RUN_ID"
+            printf '| workflow run attempt | `%s` |\n' "$GITHUB_RUN_ATTEMPT"
+            printf '| trigger kind | `%s` |\n' "$GITHUB_EVENT_NAME"
+            printf '| request-comment ID | `%s` |\n' "$(value_or_unavailable "$REQUEST_COMMENT_ID")"
+            echo '| exact validation command | `git diff --check "$BASE_SHA...$HEAD_SHA"` |'
+            printf '| actual command exit status | `%s` |\n' "$(value_or_unavailable "$VALIDATION_EXIT")"
+            printf '| initial PR resolution | `%s` |\n' "$(value_or_unavailable "$RESOLUTION_STATUS")"
+            printf '| Git-object acquisition | `%s` |\n' "$(value_or_unavailable "$ACQUIRE_STATUS")"
+            printf '| merge-base/provenance preparation | `%s` |\n' "$(value_or_unavailable "$PREPARE_STATUS")"
+            printf '| post-run current/stale conclusion | `%s` |\n' "$(value_or_unavailable "$POST_STATUS")"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Enforce terminal result
+        if: always()
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PERMISSION_STATUS: ${{ steps.permission.outputs.permission_status }}
+          EFFECTIVE_PERMISSION: ${{ steps.permission.outputs.effective_permission }}
+          RESOLUTION_STATUS: ${{ steps.resolve.outputs.resolution_status }}
+          CHECKOUT_OUTCOME: ${{ steps.checkout.outcome }}
+          ACQUIRE_STATUS: ${{ steps.acquire.outputs.acquire_status }}
+          PREPARE_STATUS: ${{ steps.prepare.outputs.prepare_status }}
+          VALIDATION_STATUS: ${{ steps.validation.outputs.validation_status }}
+          VALIDATION_EXIT: ${{ steps.validation.outputs.validation_exit }}
+          POST_STATUS: ${{ steps.post.outputs.post_status }}
+        run: |
+          set -euo pipefail
+
+          failures=()
+
+          if [[ "$EVENT_NAME" == "issue_comment" ]]; then
+            case "$PERMISSION_STATUS" in
+              allowed)
+                ;;
+              denied)
+                failures+=("permission denied (effective permission: ${EFFECTIVE_PERMISSION:-unknown})")
+                ;;
+              *)
+                failures+=("permission denied/unknown")
+                ;;
+            esac
+          fi
+
+          resolution_expected=false
+          if [[ "$EVENT_NAME" == "pull_request" || "$PERMISSION_STATUS" == "allowed" ]]; then
+            resolution_expected=true
+          fi
+
+          if [[ "$resolution_expected" == "true" && "$RESOLUTION_STATUS" != "ready" ]]; then
+            failures+=("${RESOLUTION_STATUS:-PR unavailable/not current}")
+          fi
+
+          if [[ "$RESOLUTION_STATUS" == "ready" && "$CHECKOUT_OUTCOME" != "success" ]]; then
+            failures+=("base-repository checkout failure")
+          fi
+
+          if [[ -n "$ACQUIRE_STATUS" && "$ACQUIRE_STATUS" != "ready" ]]; then
+            failures+=("$ACQUIRE_STATUS")
+          fi
+
+          if [[ -n "$PREPARE_STATUS" && "$PREPARE_STATUS" != "ready" ]]; then
+            failures+=("$PREPARE_STATUS")
+          fi
+
+          if [[ -n "$POST_STATUS" && "$POST_STATUS" != "current" ]]; then
+            failures+=("$POST_STATUS")
+          fi
+
+          if [[ "$VALIDATION_STATUS" == "non-zero-git-diff-check" ]]; then
+            failures+=("non-zero git diff --check (exit ${VALIDATION_EXIT:-unknown})")
+          elif [[ "$RESOLUTION_STATUS" == "ready" &&
+                  "$CHECKOUT_OUTCOME" == "success" &&
+                  "$ACQUIRE_STATUS" == "ready" &&
+                  "$PREPARE_STATUS" == "ready" &&
+                  "$VALIDATION_STATUS" != "success" ]]; then
+            failures+=("git diff --check did not produce a terminal result")
+          fi
+
+          if (( ${#failures[@]} > 0 )); then
+            printf 'Validation failed closed:\n' >&2
+            printf ' - %s\n' "${failures[@]}" >&2
+            exit 1
+          fi
+
+          if [[ "$POST_STATUS" != "current" || "$VALIDATION_STATUS" != "success" ]]; then
+            echo "validation did not reach successful exact pair" >&2
+            exit 1
+          fi
+
+          echo "successful exact pair"
