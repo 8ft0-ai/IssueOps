@@ -42,6 +42,11 @@ flowchart LR
   n_artifact_modular_session_ownership["Modular-session contract ownership\n(artifact)"]
   n_artifact_modular_session_v0_1["Manual modular-session Version 0.1 contract\n(artifact)"]
   n_issue_137["Issue #137 — Slice 3 role-and-resume pilot programme\n(issue)"]
+  n_issue_142["Issue #142 — Slice 4 comparative close-out\n(issue)"]
+  n_decision_adapt_modular_baseline["Adapt the modular-session baseline before adoption\n(decision)"]
+  n_pr_145["PR #145 — Modular-session boundary correction\n(pull request)"]
+  n_decision_adopt_modular_baseline["Adopt the corrected modular-session baseline\n(decision)"]
+  n_initiative_modular_sessions["Modular IssueOps session architecture\n(stage)"]
 
   n_stage_1 -->|implemented by| n_pr_2
   n_stage_1 -->|produced| n_release_v0_1
@@ -96,4 +101,11 @@ flowchart LR
   n_artifact_modular_session_v0_1 -->|carried forward to| n_issue_137
   n_artifact_modular_session_v0_1 -->|preserved| n_boundary_human_authority
   n_artifact_modular_session_v0_1 -->|preserved| n_boundary_bounded_automation
+  n_issue_137 -->|carried forward to| n_issue_142
+  n_issue_142 -->|produced| n_decision_adapt_modular_baseline
+  n_decision_adapt_modular_baseline -->|implemented by| n_pr_145
+  n_pr_145 -->|proved by| n_decision_adopt_modular_baseline
+  n_decision_adopt_modular_baseline -->|produced| n_initiative_modular_sessions
+  n_initiative_modular_sessions -->|preserved| n_boundary_human_authority
+  n_initiative_modular_sessions -->|preserved| n_boundary_bounded_automation
 ```
