@@ -1,5 +1,10 @@
 name: Collect pull-request evidence pack
 
+run-name: >-
+  ${{ github.event_name == 'workflow_dispatch' &&
+      format('Collect evidence for PR #{0} [workflow_dispatch]', inputs.pull_request) ||
+      format('Collect evidence for PR #{0} [issue_comment #{1}]', github.event.issue.number, github.event.comment.id) }}
+
 on:
   workflow_dispatch:
     inputs:
@@ -7,6 +12,9 @@ on:
         description: Pull-request number in this repository
         required: true
         type: string
+  issue_comment:
+    types:
+      - created
 
 permissions:
   contents: read
@@ -18,17 +26,170 @@ permissions:
 jobs:
   collect:
     name: Collect read-only evidence
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' &&
+       github.event.action == 'created' &&
+       github.event.issue.pull_request &&
+       github.event.comment.body == '/collect-evidence')
     runs-on: ubuntu-latest
     steps:
-      - name: Validate pull-request input
+      - name: Derive and validate pull-request target
+        id: target
         shell: bash
         env:
-          PULL_REQUEST: ${{ inputs.pull_request }}
+          EVENT_NAME: ${{ github.event_name }}
+          MANUAL_PULL_REQUEST: ${{ inputs.pull_request }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REQUEST_COMMENT_ID: ${{ github.event.comment.id }}
         run: |
-          if [[ ! "$PULL_REQUEST" =~ ^[1-9][0-9]*$ ]]; then
-            echo "pull_request must be a positive integer" >&2
+          set -euo pipefail
+
+          case "$EVENT_NAME" in
+            workflow_dispatch)
+              pr_number="$MANUAL_PULL_REQUEST"
+              request_comment_id=""
+              trigger_kind="workflow_dispatch"
+              ;;
+            issue_comment)
+              pr_number="$ISSUE_NUMBER"
+              request_comment_id="$REQUEST_COMMENT_ID"
+              trigger_kind="issue_comment"
+              ;;
+            *)
+              echo "unsupported trigger: $EVENT_NAME" >&2
+              exit 1
+              ;;
+          esac
+
+          if [[ ! "$pr_number" =~ ^[1-9][0-9]*$ ]]; then
+            if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+              echo "pull_request must be a positive integer" >&2
+            else
+              echo "event-derived PR number is invalid" >&2
+            fi
             exit 1
           fi
+
+          if [[ "$EVENT_NAME" == "issue_comment" && ! "$request_comment_id" =~ ^[1-9][0-9]*$ ]]; then
+            echo "event-derived request comment ID is invalid" >&2
+            exit 1
+          fi
+
+          echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+          echo "request_comment_id=$request_comment_id" >> "$GITHUB_OUTPUT"
+          echo "trigger_kind=$trigger_kind" >> "$GITHUB_OUTPUT"
+
+      - name: Check comment actor effective repository permission
+        if: github.event_name == 'issue_comment'
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          COMMENT_ACTOR: ${{ github.event.comment.user.login }}
+        run: |
+          set -euo pipefail
+
+          actor_uri="$(jq -rn --arg value "$COMMENT_ACTOR" '$value|@uri')"
+          response_file="$RUNNER_TEMP/comment-actor-permission.json"
+          endpoint="$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/collaborators/$actor_uri/permission"
+
+          set +e
+          http_code="$(
+            curl --silent --show-error --location \
+              --output "$response_file" \
+              --write-out '%{http_code}' \
+              --header 'Accept: application/vnd.github+json' \
+              --header "Authorization: Bearer $GITHUB_TOKEN" \
+              --header 'X-GitHub-Api-Version: 2022-11-28' \
+              "$endpoint"
+          )"
+          curl_status=$?
+          set -e
+
+          if [[ "$curl_status" -ne 0 || "$http_code" != "200" ]]; then
+            echo "permission lookup failed closed (curl=$curl_status http=$http_code)" >&2
+            exit 1
+          fi
+
+          if ! effective_permission="$(jq -er '.permission | select(type == "string")' "$response_file" 2>/dev/null)"; then
+            echo "permission lookup returned a malformed response" >&2
+            exit 1
+          fi
+
+          case "$effective_permission" in
+            write|admin)
+              ;;
+            *)
+              echo "comment actor lacks required write/admin permission" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Revalidate comment-triggered pull request
+        if: github.event_name == 'issue_comment'
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.target.outputs.pr_number }}
+        run: |
+          set -euo pipefail
+
+          response_file="$RUNNER_TEMP/current-pr.json"
+          endpoint="$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER"
+
+          set +e
+          http_code="$(
+            curl --silent --show-error --location \
+              --output "$response_file" \
+              --write-out '%{http_code}' \
+              --header 'Accept: application/vnd.github+json' \
+              --header "Authorization: Bearer $GITHUB_TOKEN" \
+              --header 'X-GitHub-Api-Version: 2022-11-28' \
+              "$endpoint"
+          )"
+          curl_status=$?
+          set -e
+
+          if [[ "$curl_status" -ne 0 || "$http_code" != "200" ]]; then
+            echo "current PR lookup failed closed (curl=$curl_status http=$http_code)" >&2
+            exit 1
+          fi
+
+          if ! pr_number="$(jq -er '.number | select(type == "number")' "$response_file" 2>/dev/null)" ||
+             ! pr_state="$(jq -er '.state | select(type == "string")' "$response_file" 2>/dev/null)" ||
+             ! base_repository="$(jq -er '.base.repo.full_name | select(type == "string")' "$response_file" 2>/dev/null)"; then
+            echo "current PR lookup returned a malformed response" >&2
+            exit 1
+          fi
+
+          if [[ "$pr_number" != "$PR_NUMBER" || "$pr_state" != "open" || "$base_repository" != "$GITHUB_REPOSITORY" ]]; then
+            echo "PR is not open/current in this repository" >&2
+            exit 1
+          fi
+
+      - name: Record request correlation
+        shell: bash
+        env:
+          TRIGGER_KIND: ${{ steps.target.outputs.trigger_kind }}
+          PR_NUMBER: ${{ steps.target.outputs.pr_number }}
+          REQUEST_COMMENT_ID: ${{ steps.target.outputs.request_comment_id }}
+        run: |
+          set -euo pipefail
+
+          {
+            echo "## Evidence collection request"
+            echo
+            echo "- Trigger: \`$TRIGGER_KIND\`"
+            echo "- PR: #$PR_NUMBER"
+            if [[ -n "$REQUEST_COMMENT_ID" ]]; then
+              echo "- Request comment ID: \`$REQUEST_COMMENT_ID\`"
+            else
+              echo "- Request comment ID: n/a (manual workflow_dispatch)"
+            fi
+            echo "- Workflow run ID: \`$GITHUB_RUN_ID\`"
+            echo "- Run attempt: \`$GITHUB_RUN_ATTEMPT\`"
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Check out repository
         uses: actions/checkout@v4
@@ -43,7 +204,7 @@ jobs:
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          PULL_REQUEST: ${{ inputs.pull_request }}
+          PULL_REQUEST: ${{ steps.target.outputs.pr_number }}
           OUTPUT_DIR: ${{ runner.temp }}/evidence-pack
         run: |
           set +e
@@ -71,7 +232,7 @@ jobs:
         if: steps.collect.outputs.collector_exit != '1'
         uses: actions/upload-artifact@v4
         with:
-          name: evidence-pack-pr-${{ inputs.pull_request }}-${{ github.run_id }}
+          name: evidence-pack-pr-${{ steps.target.outputs.pr_number }}-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/evidence-pack/evidence-pack.json
             ${{ runner.temp }}/evidence-pack/evidence-pack.md
