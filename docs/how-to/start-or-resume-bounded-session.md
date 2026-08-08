@@ -58,7 +58,19 @@ Classify each action-relevant grant or handover claim:
 - **contradicted** when current evidence conflicts with it; or
 - **unsupported** when sufficient canonical evidence cannot be found.
 
-A mismatch is a result to record. Do not silently normalise it or continue from the most convenient interpretation.
+Reconciliation continues after first receipt. If current GitHub state has moved since an earlier reconciliation or continuation, revisit the earlier action-relevant observations before acting again. When an observation that was previously confirmed has been superseded by later state, explicitly record that prior observation as **stale**, record the new current evidence and its consequence, and only then recover the current gate.
+
+For example:
+
+```text
+prior observation: no workflow run exists — Stale
+current evidence: workflow run <id> exists and completed <result>
+consequence: recover the earliest incomplete gate from current evidence
+```
+
+Use **contradicted** when current evidence conflicts with the original claim rather than merely showing normal later state movement. Do not manufacture state changes to exercise a classification.
+
+A mismatch or status transition is a result to record. Do not silently normalise it or continue from the most convenient interpretation.
 
 ## 6. Identify the earliest incomplete authorised gate
 
@@ -93,6 +105,8 @@ Post a durable comment on the relevant issue or pull request that records:
 - the grant and handover references inspected;
 - the stable state and active head observed;
 - material confirmed, stale, contradicted and unsupported claims;
+- any material status transition for a prior action-relevant observation, including confirmed-to-stale transitions caused by later state movement;
+- the current evidence that superseded the prior observation and its consequence for gate selection;
 - duplicate or conflict checks;
 - the earliest incomplete authorised gate;
 - the one next permitted action, or the reason for stopping; and

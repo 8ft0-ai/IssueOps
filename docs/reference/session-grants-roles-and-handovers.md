@@ -57,7 +57,7 @@ A role constrains responsibility. It never grants authority by itself. Moving to
 | --- | --- | --- |
 | **Shape** | Analyse the problem, inspect evidence, compare options and prepare bounded decisions or recommendations. | Do not implement repository changes, create unapproved execution work or represent a proposal as approved authority. |
 | **Deliver** | Implement one ready execution contract and prepare current validation and pull-request evidence. | Do not invent missing intent, absorb adjacent work, approve the implementation or infer merge authority. |
-| **Review or evaluate** | Independently assess current durable evidence against the governing contract or proof question and record one supported conclusion. | Do not remediate findings in the same independent role or represent same-role self-review as independent evidence. |
+| **Review or evaluate** | Independently assess current durable evidence against the governing contract or proof question and record one supported conclusion. | Do not remediate findings in the same independent role or represent same-role self-review as independent evidence. After recording the final supported conclusion, the Review or evaluate session terminates for merge purposes; later human approval does not reopen that model context, and the same model conversation/context must not invoke merge. |
 | **Close and reconcile** | Verify completed outcomes, compare intended and actual delivery, reconcile authorised planning or close-out state and identify the next decision boundary. | Do not rewrite original intent, mark unavailable evidence complete or silently begin the next initiative. |
 
 Every role remains subordinate to the [canonical lifecycle and authority boundary](../issueops-protocol.md).
@@ -101,6 +101,8 @@ The receiving session classifies each action-relevant grant or handover claim se
 
 Split compound statements into independently verifiable claims. A partly correct statement must not hide a stale, contradicted or unsupported component.
 
+Status is evaluated against current canonical evidence, not frozen at first receipt. A previously **Confirmed** action-relevant observation becomes **Stale** when later state supersedes it. Use **Contradicted** when current canonical evidence conflicts with the claim rather than merely showing normal subsequent state movement, and **Unsupported** when sufficient canonical evidence cannot be established. Do not silently replace a stale observation with a newer fact without recording the status transition.
+
 ## Receiving-session verification
 
 Before action, the receiving session must:
@@ -108,11 +110,12 @@ Before action, the receiving session must:
 1. fetch current repository instructions and the primary record;
 2. fetch action-relevant branches, commits, pull requests, checks, reviews, threads, dependencies and execution deviations;
 3. compare every action-relevant grant and handover claim with current canonical evidence;
-4. classify each mismatch as stale, contradicted or unsupported rather than repairing it from private chat history;
-5. identify the earliest incomplete authorised lifecycle gate;
-6. check for duplicate or conflicting issues, branches and pull requests;
-7. record the reconciliation outcome durably on the relevant issue or pull request; and
-8. continue only within the new session grant, verified repository state and explicit authority.
+4. revisit previously recorded action-relevant observations whenever current state has moved and explicitly record any transition, including **Confirmed** to **Stale**, before selecting the next action;
+5. classify each current mismatch as stale, contradicted or unsupported rather than repairing it from private chat history;
+6. identify the earliest incomplete authorised lifecycle gate;
+7. check for duplicate or conflicting issues, branches and pull requests;
+8. record the reconciliation outcome durably on the relevant issue or pull request; and
+9. continue only within the new session grant, verified repository state and explicit authority.
 
 A mismatch may permit narrower continuation, but only when the governing record and current evidence support that action. Otherwise stop and state the missing evidence, decision or authority.
 

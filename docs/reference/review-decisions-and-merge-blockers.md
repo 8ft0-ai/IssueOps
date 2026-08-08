@@ -14,6 +14,23 @@ Use one final recommendation.
 
 A recommendation is not merge authority. Repository permissions, branch protection, required reviews and owner authorisation still apply.
 
+## Durable merge-authority provenance
+
+Before merge is invoked, current durable GitHub evidence must contain an explicit human merge decision for the exact state being merged. At minimum, the authority record must identify:
+
+```text
+pull request
+exact accepted head SHA
+accepted independent review/recommendation or equivalent current review state
+explicit human merge decision for that exact state
+```
+
+Chat-only approval that is first copied to GitHub after merge is not sufficient normal pre-action provenance for this boundary. Repository write access, connector capability, an `Approve` recommendation or a role label also does not create merge authority.
+
+Immediately before merge, the merge executor must re-fetch and compare the current pull-request head and material review state with the durable authority record. If the head or material review state has changed, the prior human decision is **stale for merge purposes**. Stop and obtain a fresh human decision tied to the new exact state before invoking merge.
+
+The human owner may merge directly or may explicitly authorise a separate non-review execution context to invoke merge. In either case, the independent Review or evaluate session must already have terminated after recording its final recommendation; later human approval does not reopen that reviewer model context.
+
 ## Evidence and contract questions
 
 A reviewer should answer separately:
@@ -25,7 +42,7 @@ A reviewer should answer separately:
 
 A complete evidence pack can describe an implementation that does not satisfy the contract. Conversely, a plausible implementation without sufficient evidence cannot be approved safely.
 
-## Merge blockers
+## Review and merge blockers
 
 Do not recommend approval or merge when any of these conditions applies:
 
@@ -41,9 +58,20 @@ Do not recommend approval or merge when any of these conditions applies:
 - permissions, security, deployment or public claims remain uncertain;
 - a post-merge check is being used to defer evidence that should exist before merge;
 - the change weakens or ambiguously changes an authority boundary;
-- branch protection or required review policy is not satisfied;
-- merge authority has not been granted; or
+- branch protection or required review policy is not satisfied; or
 - merging would conceal incomplete or misleading evidence.
+
+## Merge-only authority blockers
+
+An otherwise valid independent `Approve` recommendation may exist before human merge authority is granted. The recommendation does not satisfy this later boundary.
+
+Do not invoke merge when:
+
+- durable pre-action human merge authority for the exact current PR head and accepted review state is absent;
+- the recorded human merge decision is stale because the head or material review state moved; or
+- merge authority otherwise has not been granted.
+
+These are merge blockers, not reasons to keep an otherwise contract-satisfying independent review from recording its recommendation. Human authority is established after the accepted review and before merge execution.
 
 ## Acceptable post-merge verification
 
@@ -80,7 +108,8 @@ Repository-owner delegation may authorise routine merge after all gates pass. It
 - convert agent analysis into independent human review;
 - override required reviews or branch protection;
 - permit failing or unavailable required validation;
-- excuse unresolved material findings; or
+- excuse unresolved material findings;
+- remove the requirement for durable exact-state merge authority; or
 - authorise work beyond the execution contract.
 
 ## Related guidance
