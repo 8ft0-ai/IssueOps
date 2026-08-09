@@ -8,11 +8,23 @@ Use one final recommendation.
 
 | Recommendation | Meaning | Merge state |
 | --- | --- | --- |
-| **Approve** | The contract is satisfied, the diff remains inside scope, required pre-merge validation passed, no material finding remains and residual post-merge risk is acceptable to the authorised human. | May qualify for merge when repository policy and authority also permit it. |
+| **Approve** | The contract is satisfied, required pre-implementation lifecycle authority is valid, the diff remains inside scope, required pre-merge validation passed, no material finding remains and residual post-merge risk is acceptable to the authorised human. | May qualify for merge when repository policy and later merge authority also permit it. |
 | **Approve after minor fixes** | The implementation is substantially correct, but small identified fixes or evidence updates are required before approval is final. | Do not merge until the fixes are present, affected validation is rerun and the final state is reviewed. |
-| **Do not approve yet** | Correctness, contract satisfaction, scope, validation or review state is unresolved. | Do not merge. |
+| **Do not approve yet** | Correctness, contract satisfaction, lifecycle authority, scope, validation or review state is unresolved. | Do not merge. |
 
 A recommendation is not merge authority. Repository permissions, branch protection, required reviews and owner authorisation still apply.
+
+## Pre-implementation lifecycle authority
+
+The implementation plan is a proposed execution path, not self-authorising permission to begin work.
+
+Before branch creation or implementation mutation, durable GitHub evidence must contain explicit human approval of the detailed implementation plan. That approval must clearly apply to the plan being executed and must predate the action it authorises.
+
+A missing required human plan-approval record is a lifecycle and approval defect even when the resulting implementation is technically correct and validation passes. A later comment cannot retrospectively manufacture normal pre-action authority for work that has already begun. Do not recommend `Approve` while that required authority defect remains.
+
+Additional procedural authority is conditional. When a governed action such as `/collect-evidence` is used, the action must have its own durable authority where the governing issue/session requires it. When no additional authority is required, `N/A` is valid.
+
+This pre-implementation authority boundary is separate from the later human merge decision.
 
 ## Durable merge-authority provenance
 
@@ -36,17 +48,20 @@ The human owner may merge directly or may explicitly authorise a separate non-re
 A reviewer should answer separately:
 
 1. Is the evidence present, current and trustworthy?
-2. Does the implementation satisfy the issue contract?
-3. Did the implementation stay inside the contract boundaries?
-4. Is remaining risk explicit and acceptable?
+2. Did the required pre-implementation lifecycle authority exist before the work it authorised?
+3. Does the implementation satisfy the issue contract?
+4. Did the implementation stay inside the contract boundaries?
+5. Is remaining risk explicit and acceptable?
 
-A complete evidence pack can describe an implementation that does not satisfy the contract. Conversely, a plausible implementation without sufficient evidence cannot be approved safely.
+A complete evidence pack can describe an implementation that does not satisfy the contract. Conversely, a plausible implementation without sufficient evidence or required lifecycle authority cannot be approved safely.
 
 ## Review and merge blockers
 
 Do not recommend approval or merge when any of these conditions applies:
 
 - implementation is incomplete;
+- required pre-implementation human plan approval is missing, retrospective or does not clearly apply to the executed plan;
+- required additional procedural authority for an action taken under the governing work is missing;
 - the expected outcome or acceptance criteria are not satisfied;
 - the diff contains unexplained work outside scope;
 - a stated non-goal was violated;
@@ -71,7 +86,7 @@ Do not invoke merge when:
 - the recorded human merge decision is stale because the head or material review state moved; or
 - merge authority otherwise has not been granted.
 
-These are merge blockers, not reasons to keep an otherwise contract-satisfying independent review from recording its recommendation. Human authority is established after the accepted review and before merge execution.
+These are merge blockers, not reasons to keep an otherwise contract-satisfying independent review from recording its recommendation. Human merge authority is established after the accepted review and before merge execution; it is separate from the earlier human approval that authorised implementation to begin.
 
 ## Acceptable post-merge verification
 
@@ -79,6 +94,7 @@ A PR may still receive `Approve` with a named post-merge check when all of the f
 
 - implementation is complete;
 - the contract is satisfied based on available evidence;
+- required pre-implementation lifecycle authority is valid;
 - required pre-merge validation passed;
 - no available check is failing;
 - the remaining check genuinely cannot run before merge or deployment;
@@ -109,6 +125,7 @@ Repository-owner delegation may authorise routine merge after all gates pass. It
 - override required reviews or branch protection;
 - permit failing or unavailable required validation;
 - excuse unresolved material findings;
+- repair missing required pre-implementation lifecycle authority retrospectively;
 - remove the requirement for durable exact-state merge authority; or
 - authorise work beyond the execution contract.
 

@@ -11,6 +11,7 @@ Every pull request should record:
 | Section | Required content |
 | --- | --- |
 | **Execution contract** | Exactly one canonical `Issue #<issue-number>` declaration under `## Execution contract`. GitHub closing keywords are optional lifecycle syntax, not the canonical IssueOps linkage. |
+| **Lifecycle authority** | Durable references for readiness, the detailed implementation plan, the separate human approval of that plan, and any additional procedural authority required by the work or explicit `N/A`. |
 | **Parent or roadmap** | The governing stage or initiative when one materially constrains the issue. |
 | **Changed** | Files, behaviours or documentation areas changed and the purpose of the change. |
 | **Deliberately excluded** | Relevant non-goals and adjacent work not included. |
@@ -18,7 +19,7 @@ Every pull request should record:
 | **Validation status** | Checks actually performed, checks not performed or pending, and evidence tied to the final head. |
 | **Post-merge verification** | Named checks that can run only after merge, deployment or environment configuration. |
 | **Risks and caveats** | Remaining uncertainty, assumptions, limitations and residual risk. |
-| **Groundedness review** | The pre-approval review of issue alignment, scope control, validation evidence and risk. |
+| **Groundedness review** | The pre-approval review of issue alignment, lifecycle authority, scope control, validation evidence and risk. |
 | **Final recommendation** | `Approve`, `Approve after minor fixes`, or `Do not approve yet`. |
 | **Merge authorisation** | The source and limit of delegated merge authority where applicable. |
 
@@ -41,6 +42,27 @@ Issue #123
 For historical compatibility, a single closing-keyword reference may still be recognised when no canonical declaration is present. That fallback is not the normal form for new IssueOps pull requests. Multiple legacy closing references remain conflicting.
 
 Missing canonical/legacy linkage is incomplete evidence. Multiple execution-contract sections, multiple canonical declarations, or an `Issue`-shaped malformed declaration inside the canonical section are conflicting evidence. These states must not produce a false mechanical `complete` result.
+
+## Lifecycle authority
+
+The normal implementation PR evidence pack records these durable GitHub-native authority references:
+
+```text
+readiness assessment
+detailed implementation plan
+human approval of implementation plan
+additional procedural authority: N/A or governing durable record
+```
+
+The detailed implementation plan and its human approval are separate records. The plan describes the proposed execution path; it does not authorise itself. Explicit human approval of that plan must exist before branch creation or implementation mutation begins, must clearly apply to the plan being executed, and must be durable in the repository record.
+
+Required authority must predate the action it authorises. A comment created after implementation has already begun cannot be used to manufacture normal pre-action authority retrospectively. When the required pre-implementation human plan approval is missing or retrospective, the lifecycle record is defective and the PR must not receive an `Approve` recommendation merely because the implementation and technical validation are otherwise satisfactory.
+
+Additional procedural authority is conditional. Record `N/A` when the governing work requires no additional procedural mutation. When `/collect-evidence` or another governed procedural mutation is used, record the durable authority that permits that action; repository collaborator status or connector capability is not a substitute for IssueOps procedural authority.
+
+These lifecycle-authority fields are human review evidence. This requirement does not add automated semantic approval inference to the evidence collector or change the collector's mechanical completeness schema.
+
+Implementation-plan approval is also distinct from later merge authority. The earlier approval permits the approved implementation path to begin; merge remains a separate human decision after substantive review of the final state.
 
 ## Deliberate evidence collection
 
@@ -174,13 +196,14 @@ Assertions should be specific and supported where possible. They are not equival
 
 A human reviewer or repository owner decides:
 
+- whether an implementation plan is approved before implementation begins;
 - whether evidence is trustworthy and sufficient;
 - whether the implementation satisfies the contract;
 - whether scope and non-goals were respected;
 - whether residual risk is acceptable; and
 - whether approval and merge should occur.
 
-An agent-generated groundedness review is transparent analysis in the evidence pack. It is not independent human review and does not itself grant approval or merge authority.
+An agent-generated groundedness review is transparent analysis in the evidence pack. It is not independent human review and does not itself grant implementation, approval or merge authority.
 
 ## Validation status
 
@@ -224,12 +247,13 @@ The groundedness review answers:
 It should address:
 
 - issue alignment;
+- lifecycle authority;
 - scope control;
 - validation evidence;
 - risks and caveats; and
 - one final recommendation.
 
-Do not recommend approval when validation is materially incomplete, scope has drifted, the final evidence is stale, a material review finding remains unresolved or the implementation does not satisfy the issue.
+Do not recommend approval when required pre-implementation authority is missing or retrospective, validation is materially incomplete, scope has drifted, the final evidence is stale, a material review finding remains unresolved or the implementation does not satisfy the issue.
 
 ## Material remediation
 

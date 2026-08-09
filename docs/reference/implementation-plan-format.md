@@ -2,7 +2,7 @@
 
 Post the implementation plan on the execution-contract issue after readiness and dependency evidence are complete and before creating the feature branch.
 
-The plan records the proposed execution path. It is evidence of intended implementation, not permission to exceed the issue contract.
+The plan records the proposed execution path. It is evidence of intended implementation, not permission to exceed the issue contract and not authority to begin implementation by itself.
 
 ## Standard format
 
@@ -79,6 +79,14 @@ Use `Not applicable` or `None` rather than omitting a heading when its absence c
 
 Add link, URL, migration, generated-output or compatibility treatment when the issue affects those concerns.
 
+## Human approval boundary
+
+The implementation-plan comment and the human approval of that plan are separate durable records.
+
+After the plan is posted, explicit human approval of the detailed plan must be recorded on GitHub before branch creation or implementation mutation begins. The approval must clearly apply to the plan and must predate the action it authorises. Editing the plan to insert approval, or posting approval after implementation has already started, does not satisfy the normal pre-action authority boundary.
+
+If the approved execution path later changes materially, record the adaptation and obtain fresh human approval before proceeding with work that was not covered by the existing approval.
+
 ## Planning quality tests
 
 The plan is specific enough when a reviewer can later answer:
@@ -105,8 +113,11 @@ The branch is created only after:
 
 1. the issue is executable;
 2. dependencies and safe starting state are recorded;
-3. the implementation plan is posted; and
-4. no blocking state remains.
+3. the implementation plan is posted;
+4. explicit durable human approval of that plan is recorded; and
+5. no blocking state remains.
+
+Immediately before branch creation, refresh the safe base and action-relevant repository state. If a material change invalidates the approved plan, re-plan and obtain fresh approval rather than silently treating the earlier approval as authority for the changed execution path.
 
 Preferred branch format:
 

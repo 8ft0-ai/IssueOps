@@ -6,7 +6,9 @@ For exact recommendation meanings and blockers, use [Review decisions and merge 
 
 ## 1. Read the authorising issue
 
-Review the problem, expected outcome, scope, non-goals, acceptance criteria, validation expectations, risk and agent instructions. Include later clarifications, readiness evidence and the implementation plan.
+Review the problem, expected outcome, scope, non-goals, acceptance criteria, validation expectations, risk and agent instructions. Include later clarifications, readiness evidence, the detailed implementation plan, the separate durable human approval of that plan, and any additional procedural authority required by the work.
+
+Verify that required pre-implementation authority existed before the action it authorised. The human plan-approval record must clearly apply to the detailed plan and must predate branch creation or implementation mutation. A later record cannot be used to reconstruct missing authority retrospectively.
 
 The PR is not reviewed as a standalone diff. The issue defines what the diff was allowed and expected to do.
 
@@ -22,7 +24,7 @@ Check:
 - inline review threads; and
 - repository policy or required checks.
 
-Confirm that the pull request declares the governing issue in the canonical execution-contract form and that its evidence description represents the decision-relevant state.
+Confirm that the pull request declares the governing issue in the canonical execution-contract form, records the required lifecycle-authority evidence, and that its evidence description represents the decision-relevant state.
 
 ## 3. Request evidence deliberately when authorised
 
@@ -57,6 +59,7 @@ If the head, material validation state or material review state changes after co
 
 Separate repository-observed facts from contributor assertions. Check that:
 
+- required lifecycle-authority records are present, durable and temporally valid;
 - completed validation actually ran;
 - workflow evidence belongs to the final relevant head;
 - unavailable validation is explicit;
@@ -85,16 +88,15 @@ When the result is useful but outside the issue, record a follow-up rather than 
 
 ## 7. Review authority and safety boundaries
 
-Confirm that the PR does not silently change:
+Confirm that:
 
-- human approval or merge authority;
-- permissions or credentials;
-- branch protection or required checks;
-- lifecycle automation;
-- production or publication behaviour; or
-- stable versus experimental capability claims.
+- the readiness, implementation plan and separate human plan approval form a durable pre-implementation authority chain;
+- any additional procedural authority used by the work is recorded, or `N/A` is explicit where none was required; and
+- the PR does not silently change human approval or merge authority, permissions or credentials, branch protection or required checks, lifecycle automation, production or publication behaviour, or stable versus experimental capability claims.
 
-Any authorised change to those areas must be explicit in the issue and supported by matching validation.
+Missing or retrospective required pre-action authority is a material lifecycle defect. Do not treat technical correctness or passing validation as a substitute for that authority.
+
+Any authorised change to authority-sensitive areas must be explicit in the issue and supported by matching validation.
 
 The collector supplies bounded read-only evidence. It does not decide readiness, remediation, validation sufficiency, approval, merge, publication or deployment.
 
@@ -109,13 +111,15 @@ Classify each finding as:
 
 Explain why a required fix blocks approval. Do not ask for optional or out-of-scope work as though it were a contract failure.
 
+A missing required pre-implementation human authority record is not repaired by adding a later comment to the historical record. Classify the lifecycle defect honestly and route any follow-up through a separately authorised path rather than rewriting history.
+
 ## 9. Choose the recommendation and stop the review session
 
 Use:
 
-- `Approve` only when the contract is satisfied and no review or pre-merge validation blocker remains;
+- `Approve` only when the contract is satisfied, required lifecycle authority is present and valid, and no review or pre-merge validation blocker remains;
 - `Approve after minor fixes` when identified small changes must be completed and rechecked; or
-- `Do not approve yet` when correctness, scope, validation, evidence or review state remains unresolved.
+- `Do not approve yet` when correctness, scope, lifecycle authority, validation, evidence or review state remains unresolved.
 
 An agent-generated groundedness review may help orient the reviewer, but it is not independent human review and does not decide approval.
 
@@ -125,7 +129,7 @@ If remediation is required, perform it in a separate Deliver session and obtain 
 
 ## 10. Confirm merge eligibility in a separate execution context
 
-Even an approved implementation merges only when:
+Implementation-plan approval is not merge authority. Even an approved implementation merges only when:
 
 - repository policy is satisfied;
 - required reviews and checks are complete;
@@ -151,6 +155,8 @@ After merge, verify the merged repository state rather than assuming the success
 ## Common failure modes
 
 - reviewing only the diff without reading the issue;
+- treating the implementation plan as self-authorising;
+- approving an implementation whose required human plan approval is missing or retrospective;
 - requesting collection without IssueOps procedural authority;
 - treating a pending collection run as successful evidence;
 - relying on a collected pack after the decision-relevant head or material review state has changed;
