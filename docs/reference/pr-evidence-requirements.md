@@ -2,7 +2,7 @@
 
 The pull request is the evidence pack for one execution-contract issue. It must let a human reviewer compare the final repository change with the issue without relying on private chat history or memory.
 
-This page is the canonical reference for evidence-pack content.
+This page is the canonical reference for evidence-pack content and the normal deliberate evidence-collection contract.
 
 ## Required sections
 
@@ -41,6 +41,87 @@ Issue #123
 For historical compatibility, a single closing-keyword reference may still be recognised when no canonical declaration is present. That fallback is not the normal form for new IssueOps pull requests. Multiple legacy closing references remain conflicting.
 
 Missing canonical/legacy linkage is incomplete evidence. Multiple execution-contract sections, multiple canonical declarations, or an `Issue`-shaped malformed declaration inside the canonical section are conflicting evidence. These states must not produce a false mechanical `complete` result.
+
+## Deliberate evidence collection
+
+The normal comment-triggered collection command is the exact zero-argument pull-request comment:
+
+```text
+/collect-evidence
+```
+
+### IssueOps authority and GitHub eligibility
+
+Posting the command is an IssueOps repository mutation and requires explicit procedural authority from the current governing issue/session grant for the pull request in scope. Repository collaborator status, connector write capability or GitHub effective permission does not by itself grant that IssueOps authority.
+
+After a newly created exact command comment is posted on a pull request, the repository-owned workflow independently enforces GitHub platform eligibility before collection:
+
+- the event must be a newly created pull-request comment whose body is exactly `/collect-evidence`;
+- the pull-request number is derived from the event, not from comment-supplied text;
+- the target must still resolve as an open/current pull request in this repository;
+- the comment actor's current effective repository permission must resolve to `write` or `admin`; and
+- permission, API or context uncertainty fails closed before evidence collection.
+
+The comment cannot select another pull request, ref, workflow name, arbitrary input map or shell fragment.
+
+The workflow retains these explicit read-only repository permissions:
+
+```text
+contents: read
+pull-requests: read
+issues: read
+checks: read
+actions: read
+```
+
+The collector does not gain issue, pull-request, review, branch, commit, file, merge or settings mutation authority through this path.
+
+### Request identity and correlation
+
+For the comment-triggered path:
+
+- one newly created exact command comment ID is one IssueOps request identity;
+- editing or deleting that comment is not a new request;
+- a second newly created exact command comment is a new deliberate request; and
+- a GitHub workflow rerun is another attempt in the existing workflow-run lineage, not a new IssueOps request.
+
+A comment-triggered result must be reconstructable as:
+
+```text
+request comment ID
+  -> workflow run ID
+  -> run attempt / terminal conclusion
+  -> run summary / evidence artifact
+```
+
+The workflow summary records the trigger kind, pull-request number, request comment ID for comment-triggered runs, workflow run ID and run attempt. Manual `workflow_dispatch` remains a distinguishable fallback and has no request comment ID.
+
+A run that has not reached a terminal conclusion is pending evidence. Pending collection must not be represented as a successful terminal result.
+
+### Summary, artifact and durable record
+
+When the collector reaches a report-producing result, generated evidence is exposed in the Actions run summary and uploaded as the short-lived artifact:
+
+```text
+evidence-pack-pr-<PR>-<run-id>
+```
+
+The workflow currently retains that artifact for seven days. The artifact is supporting evidence, not permanent governance evidence.
+
+When a collection result is action-relevant to an IssueOps decision, the governing durable issue/PR record should preserve enough correlation to reconstruct the observation after artifact expiry, including:
+
+- request comment ID for comment-triggered collection;
+- workflow run ID;
+- run attempt;
+- terminal conclusion;
+- artifact availability; and
+- artifact retention/expiry status or date where available.
+
+### Snapshot currentness
+
+A collection is a snapshot of repository evidence for one pull request and decision-relevant state. The evidence pack records exact-target/current-head evidence; later material head, validation or review-state changes can make an earlier snapshot stale for the next decision.
+
+When refreshed evidence is needed and the current session remains authorised, a new exact command comment creates a new deliberate request and snapshot. That new request does not itself approve the pull request, resolve review findings or advance the IssueOps lifecycle.
 
 ## Evidence sources
 
@@ -163,11 +244,14 @@ Evidence must be refreshed when remediation changes:
 - assumptions or caveats; or
 - remaining checks.
 
+When material remediation or another decision-relevant head, validation or review-state change occurs after evidence collection, treat the earlier collection as a prior snapshot. If a fresh collection is required, request it deliberately under current authority and correlate it as a new request.
+
 Minor wording fixes may be handled in a review reply when they do not change meaning, scope, validation or risk.
 
 ## Related guidance
 
 - [Prepare a pull-request evidence pack](../how-to/prepare-pr-evidence-pack.md)
+- [Review a pull request against its contract](../how-to/review-pr-against-contract.md)
 - [PR evidence templates](pr-evidence-templates.md)
 - [Review decisions and merge blockers](review-decisions-and-merge-blockers.md)
 - [Why evidence is not approval](../explanation/pr-evidence-and-approval.md)

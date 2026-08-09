@@ -2,7 +2,7 @@
 
 Use this guide to decide whether a pull request satisfies its execution-contract issue and is ready for approval.
 
-For exact recommendation meanings and blockers, use [Review decisions and merge blockers](../reference/review-decisions-and-merge-blockers.md).
+For exact recommendation meanings and blockers, use [Review decisions and merge blockers](../reference/review-decisions-and-merge-blockers.md). For exact evidence-collection semantics, use [Pull-request evidence requirements](../reference/pr-evidence-requirements.md).
 
 ## 1. Read the authorising issue
 
@@ -22,9 +22,38 @@ Check:
 - inline review threads; and
 - repository policy or required checks.
 
-Confirm that the evidence pack describes this final state.
+Confirm that the pull request declares the governing issue in the canonical execution-contract form and that its evidence description represents the decision-relevant state.
 
-## 3. Verify evidence quality
+## 3. Request evidence deliberately when authorised
+
+When the current review/session grant explicitly permits evidence collection for this pull request, post exactly this PR comment:
+
+```text
+/collect-evidence
+```
+
+Do not request collection merely because the actor has repository write access or collaborator status. IssueOps procedural authority to request collection is separate from the repository workflow's GitHub platform-eligibility checks.
+
+Use [Pull-request evidence requirements](../reference/pr-evidence-requirements.md#deliberate-evidence-collection) for the exact command, eligibility, request-identity, correlation, artifact and failure rules.
+
+Collection is optional evidence assistance inside an authorised review flow. It is not the review decision and it does not advance the lifecycle automatically.
+
+## 4. Correlate the collection result
+
+For a comment-triggered request, reconstruct the repository-native chain:
+
+```text
+request comment ID
+  -> workflow run ID
+  -> run attempt / terminal conclusion
+  -> run summary / evidence artifact
+```
+
+Treat a pending run as pending evidence, not as a successful result. Confirm that the correlated pack belongs to the pull request and exact decision-relevant head you are reviewing.
+
+If the head, material validation state or material review state changes after collection, the earlier pack is a prior snapshot. When collection remains authorised and the changed state matters to the decision, deliberately request and correlate a new snapshot rather than silently treating the old one as current.
+
+## 5. Verify evidence quality
 
 Separate repository-observed facts from contributor assertions. Check that:
 
@@ -35,9 +64,13 @@ Separate repository-observed facts from contributor assertions. Check that:
 - material remediation is reflected in the evidence pack; and
 - no failing or contradictory evidence is omitted.
 
-Evidence completeness is necessary, but it is not the approval decision.
+Interpret submitted review states and inline review-thread resolution as separate evidence surfaces. An `APPROVED` review, review count or absence of requested changes does not prove that inline review threads are resolved.
 
-## 4. Verify contract satisfaction
+Treat stale, pending, unavailable, conflicting, retrieval-error or otherwise incomplete evidence as fail-closed mechanical evidence. Do not fill gaps by inference or convert an incomplete collection into a `complete` claim.
+
+Evidence completeness is necessary input to review when the evidence surface is relied upon, but it is not the approval decision.
+
+## 6. Verify contract satisfaction
 
 Ask:
 
@@ -50,7 +83,7 @@ Ask:
 
 When the result is useful but outside the issue, record a follow-up rather than approving scope drift.
 
-## 5. Review authority and safety boundaries
+## 7. Review authority and safety boundaries
 
 Confirm that the PR does not silently change:
 
@@ -63,7 +96,9 @@ Confirm that the PR does not silently change:
 
 Any authorised change to those areas must be explicit in the issue and supported by matching validation.
 
-## 6. Classify findings
+The collector supplies bounded read-only evidence. It does not decide readiness, remediation, validation sufficiency, approval, merge, publication or deployment.
+
+## 8. Classify findings
 
 Classify each finding as:
 
@@ -74,7 +109,7 @@ Classify each finding as:
 
 Explain why a required fix blocks approval. Do not ask for optional or out-of-scope work as though it were a contract failure.
 
-## 7. Choose the recommendation and stop the review session
+## 9. Choose the recommendation and stop the review session
 
 Use:
 
@@ -88,7 +123,7 @@ After the independent Review or evaluate session records its final recommendatio
 
 If remediation is required, perform it in a separate Deliver session and obtain any required fresh re-review before returning to the human decision boundary.
 
-## 8. Confirm merge eligibility in a separate execution context
+## 10. Confirm merge eligibility in a separate execution context
 
 Even an approved implementation merges only when:
 
@@ -102,7 +137,7 @@ If the current head or material review state has moved since the human decision,
 
 The owner may merge directly or may authorise a separate non-review execution context to invoke merge. Do not route merge back through the completed independent-review session, and do not bypass branch protection or permissions.
 
-## 9. Record post-merge verification
+## 11. Record post-merge verification
 
 When legitimate post-merge verification remains, state:
 
@@ -116,6 +151,10 @@ After merge, verify the merged repository state rather than assuming the success
 ## Common failure modes
 
 - reviewing only the diff without reading the issue;
+- requesting collection without IssueOps procedural authority;
+- treating a pending collection run as successful evidence;
+- relying on a collected pack after the decision-relevant head or material review state has changed;
+- treating a submitted review as proof that inline review threads are resolved;
 - treating a passing workflow as proof of contract satisfaction;
 - approving stale evidence after remediation;
 - allowing post-merge verification to replace available pre-merge validation;
