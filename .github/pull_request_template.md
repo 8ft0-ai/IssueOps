@@ -73,7 +73,7 @@ Did the pull request stay inside the contract boundaries?
 
 Did all required lifecycle authority exist before the action it authorised?
 
-- 
+- ...
 
 What uncertainty remains?
 
