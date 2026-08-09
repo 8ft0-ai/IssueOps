@@ -32,6 +32,9 @@ REPOSITORY_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 CLOSING_REFERENCE_PATTERN = re.compile(
     r"(?i)\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s*:?[ \t]+#(?P<number>[1-9][0-9]*)\b"
 )
+CANONICAL_REFERENCE_PATTERN = re.compile(r"^Issue #(?P<number>[1-9][0-9]*)$")
+ISSUE_SHAPED_PATTERN = re.compile(r"(?i)^Issue\b")
+EXECUTION_CONTRACT_HEADING = "## Execution contract"
 
 
 class CollectionFailure(RuntimeError):
@@ -215,6 +218,32 @@ def _closing_issue_numbers(body: str | None) -> list[int]:
     return sorted({int(match.group("number")) for match in CLOSING_REFERENCE_PATTERN.finditer(body or "")})
 
 
+def _canonical_issue_declarations(body: str | None) -> tuple[int, list[int], int]:
+    section_count = 0
+    issue_numbers: list[int] = []
+    malformed_count = 0
+    in_section = False
+
+    for raw_line in (body or "").splitlines():
+        line = raw_line.strip()
+        if line == EXECUTION_CONTRACT_HEADING:
+            section_count += 1
+            in_section = True
+            continue
+        if in_section and line.startswith("## "):
+            in_section = False
+        if not in_section or not line:
+            continue
+
+        match = CANONICAL_REFERENCE_PATTERN.fullmatch(line)
+        if match:
+            issue_numbers.append(int(match.group("number")))
+        elif ISSUE_SHAPED_PATTERN.match(line):
+            malformed_count += 1
+
+    return section_count, issue_numbers, malformed_count
+
+
 def _api_error(errors: list[dict[str, Any]], code: str, exc: GitHubAPIError) -> None:
     errors.append({"code": code, "message": exc.message, "source_url": exc.endpoint})
 
@@ -278,19 +307,78 @@ def collect_report(
             }
         )
 
-    issue_numbers = _closing_issue_numbers(body)
-    linked_issue = issue_numbers[0] if len(issue_numbers) == 1 else None
-    if len(issue_numbers) > 1:
+    section_count, canonical_issue_numbers, malformed_count = _canonical_issue_declarations(body)
+    closing_issue_numbers = _closing_issue_numbers(body)
+    linked_issue: int | None = None
+    linkage_details = {
+        "section_count": section_count,
+        "canonical_issue_numbers": canonical_issue_numbers,
+        "closing_issue_numbers": closing_issue_numbers,
+        "malformed_declaration_count": malformed_count,
+    }
+    conflict_reasons: list[str] = []
+    if section_count > 1:
+        conflict_reasons.append("multiple execution-contract sections")
+    if len(canonical_issue_numbers) > 1:
+        conflict_reasons.append("multiple canonical execution-contract declarations")
+    if malformed_count:
+        conflict_reasons.append("malformed canonical execution-contract declaration")
+
+    if not conflict_reasons and len(canonical_issue_numbers) == 1:
+        canonical_issue = canonical_issue_numbers[0]
+        if any(number != canonical_issue for number in closing_issue_numbers):
+            conflict_reasons.append("canonical and closing issue references disagree")
+        else:
+            linked_issue = canonical_issue
+            linkage_details["method"] = "canonical"
+    elif not conflict_reasons and not canonical_issue_numbers:
+        if len(closing_issue_numbers) > 1:
+            conflict_reasons.append("multiple legacy closing issue references")
+        elif len(closing_issue_numbers) == 1:
+            linked_issue = closing_issue_numbers[0]
+            linkage_details["method"] = "legacy-closing-keyword"
+
+    if conflict_reasons:
+        linkage_details["conflict_reasons"] = conflict_reasons
         evidence.append(
             {
                 "id": "issue.linkage",
                 "classification": "conflicting",
-                "summary": "The pull-request body declares more than one same-repository closing issue reference.",
+                "summary": "The pull-request execution-contract linkage is ambiguous or conflicting.",
                 "source_url": pr_url,
-                "details": {"issue_numbers": issue_numbers},
+                "source_timestamp": _source_timestamp(initial_pr.get("updated_at")),
+                "details": linkage_details,
             }
         )
-    elif linked_issue is not None:
+    elif linked_issue is None:
+        evidence.append(
+            {
+                "id": "issue.linkage",
+                "classification": "unavailable",
+                "summary": "No canonical execution-contract declaration or legacy closing issue reference was found.",
+                "source_url": pr_url,
+                "source_timestamp": _source_timestamp(initial_pr.get("updated_at")),
+                "details": linkage_details,
+            }
+        )
+    else:
+        method = str(linkage_details["method"])
+        summary = (
+            f"Issue #{linked_issue} is declared by the canonical execution-contract field."
+            if method == "canonical"
+            else f"Issue #{linked_issue} is resolved through legacy closing-keyword compatibility."
+        )
+        evidence.append(
+            {
+                "id": "issue.linkage",
+                "classification": "contributor-reported",
+                "summary": summary,
+                "source_url": pr_url,
+                "source_timestamp": _source_timestamp(initial_pr.get("updated_at")),
+                "details": linkage_details,
+            }
+        )
+
         issue_path = f"/repos/{repository}/issues/{linked_issue}"
         try:
             issue = _require_mapping(client.get(issue_path), "linked issue")
