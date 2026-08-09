@@ -1,6 +1,6 @@
 ## Execution contract
 
-Closes #
+Issue #
 
 ## Evidence pack
 

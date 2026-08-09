@@ -10,7 +10,7 @@ Every pull request should record:
 
 | Section | Required content |
 | --- | --- |
-| **Execution contract** | The linked issue, normally using a closing keyword when merge should close it. |
+| **Execution contract** | Exactly one canonical `Issue #<issue-number>` declaration under `## Execution contract`. GitHub closing keywords are optional lifecycle syntax, not the canonical IssueOps linkage. |
 | **Parent or roadmap** | The governing stage or initiative when one materially constrains the issue. |
 | **Changed** | Files, behaviours or documentation areas changed and the purpose of the change. |
 | **Deliberately excluded** | Relevant non-goals and adjacent work not included. |
@@ -23,6 +23,24 @@ Every pull request should record:
 | **Merge authorisation** | The source and limit of delegated merge authority where applicable. |
 
 The pull request body must describe the final head. After material remediation, update it or add a clearly labelled evidence comment that makes the final state equally visible.
+
+## Execution-contract linkage
+
+The canonical IssueOps pull-request declaration is:
+
+```md
+## Execution contract
+
+Issue #123
+```
+
+`Issue #<issue-number>` must be an exact standalone line inside one `## Execution contract` section. The normal case identifies exactly one governing issue in the same repository. The issue remains the execution contract; the pull request only identifies it.
+
+`Closes #123`, `Fixes #123` and `Resolves #123` remain valid GitHub lifecycle syntax when merge should deliberately close an issue, but they are not the canonical IssueOps evidence linkage. A canonical declaration may coexist with matching closing syntax. If canonical and closing references identify different issues, the evidence linkage is conflicting and must not be guessed.
+
+For historical compatibility, a single closing-keyword reference may still be recognised when no canonical declaration is present. That fallback is not the normal form for new IssueOps pull requests. Multiple legacy closing references remain conflicting.
+
+Missing canonical/legacy linkage is incomplete evidence. Multiple execution-contract sections, multiple canonical declarations, or an `Issue`-shaped malformed declaration inside the canonical section are conflicting evidence. These states must not produce a false mechanical `complete` result.
 
 ## Evidence sources
 

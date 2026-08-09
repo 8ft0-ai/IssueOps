@@ -4,12 +4,14 @@ These templates implement the canonical [pull-request evidence requirements](pr-
 
 Do not pre-check validation that has not run. Replace placeholder recommendations with the current evidence-based decision.
 
+The canonical execution-contract declaration in every template is `Issue #<issue-number>`. Add `Closes`, `Fixes` or `Resolves` separately only when GitHub lifecycle auto-closure is deliberately intended; closing syntax is not the canonical IssueOps linkage.
+
 ## Full evidence-pack template
 
 ````md
 ## Execution contract
 
-Closes #<issue-number>
+Issue #<issue-number>
 
 Parent stage or initiative:
 
@@ -93,7 +95,7 @@ Use the full template when a change crosses risk areas, changes workflows or per
 ````md
 ## Execution contract
 
-Closes #<issue-number>
+Issue #<issue-number>
 
 ## Evidence pack
 
@@ -151,7 +153,7 @@ Final recommendation:
 ````md
 ## Execution contract
 
-Closes #<issue-number>
+Issue #<issue-number>
 
 ## Evidence pack
 
@@ -213,7 +215,7 @@ Final recommendation:
 ````md
 ## Execution contract
 
-Closes #<issue-number>
+Issue #<issue-number>
 
 ## Evidence pack
 

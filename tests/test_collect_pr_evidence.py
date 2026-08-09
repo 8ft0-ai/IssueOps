@@ -19,9 +19,10 @@ REPO = "8ft0-ai/IssueOps"
 PR = 81
 HEAD = "a" * 40
 NEW_HEAD = "b" * 40
+CANONICAL_BODY = "## Execution contract\n\nIssue #80"
 
 
-def pr_payload(body="Closes #80", head=HEAD):
+def pr_payload(body=CANONICAL_BODY, head=HEAD):
     return {
         "html_url": f"https://github.com/{REPO}/pull/{PR}",
         "title": "Collector test",
@@ -46,7 +47,7 @@ def issue_payload():
 
 
 class FakeTransport:
-    def __init__(self, *, body="Closes #80", final_head=HEAD, pending=False, fail_path=None, empty=False):
+    def __init__(self, *, body=CANONICAL_BODY, final_head=HEAD, pending=False, fail_path=None, empty=False):
         self.body = body
         self.final_head = final_head
         self.pending = pending
@@ -125,17 +126,161 @@ class CollectorTests(unittest.TestCase):
         values = iter(["2026-07-11T08:00:00Z", "2026-07-11T08:00:05Z"])
         return lambda: next(values)
 
+    @staticmethod
+    def linkage(mapping):
+        return next(item for item in mapping["evidence"] if item["id"] == "issue.linkage")
+
     def test_stable_collection_follows_pagination_and_reports_failed_checks_as_facts(self):
         transport = FakeTransport()
         report = collector.collect_report(REPO, PR, self.client(transport), clock=self.clock())
         self.assertEqual("complete", report.status.value)
         mapping = report.to_mapping()
+        self.assertEqual(80, mapping["target"]["linked_issue"])
+        self.assertEqual("canonical", self.linkage(mapping)["details"]["method"])
         changed = next(item for item in mapping["evidence"] if item["id"] == "pr.changed-files")
         self.assertEqual(101, changed["details"]["count"])
         workflow = next(item for item in mapping["evidence"] if item["id"] == "workflow.2")
         self.assertEqual("repository-observed", workflow["classification"])
         self.assertEqual("failure", workflow["details"]["conclusion"])
         self.assertTrue(all(url.startswith("https://api.github.com/") for url in transport.urls))
+
+    def test_legacy_single_closing_reference_remains_supported(self):
+        report = collector.collect_report(
+            REPO, PR, self.client(FakeTransport(body="Closes #80")), clock=self.clock()
+        )
+        mapping = report.to_mapping()
+        self.assertEqual("complete", report.status.value)
+        self.assertEqual(80, mapping["target"]["linked_issue"])
+        linkage = self.linkage(mapping)
+        self.assertEqual("legacy-closing-keyword", linkage["details"]["method"])
+        self.assertEqual([80], linkage["details"]["closing_issue_numbers"])
+
+    def test_matching_canonical_and_closing_reference_use_canonical_linkage(self):
+        body = "## Execution contract\n\nIssue #80\n\nCloses #80"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("complete", report.status.value)
+        self.assertEqual(80, mapping["target"]["linked_issue"])
+        linkage = self.linkage(mapping)
+        self.assertEqual("canonical", linkage["details"]["method"])
+        self.assertEqual([80], linkage["details"]["canonical_issue_numbers"])
+        self.assertEqual([80], linkage["details"]["closing_issue_numbers"])
+
+    def test_canonical_and_closing_disagreement_is_conflicting(self):
+        body = "## Execution contract\n\nIssue #80\n\nCloses #81"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("conflicting", report.status.value)
+        linkage = self.linkage(mapping)
+        self.assertEqual("conflicting", linkage["classification"])
+        self.assertEqual([80], linkage["details"]["canonical_issue_numbers"])
+        self.assertEqual([81], linkage["details"]["closing_issue_numbers"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_multiple_canonical_declarations_are_conflicting(self):
+        body = "## Execution contract\n\nIssue #80\nIssue #81"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("conflicting", report.status.value)
+        self.assertEqual([80, 81], self.linkage(mapping)["details"]["canonical_issue_numbers"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_duplicate_execution_contract_sections_are_conflicting(self):
+        body = "## Execution contract\n\nIssue #80\n\n## Evidence pack\n\n...\n\n## Execution contract\n\nIssue #80"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("conflicting", report.status.value)
+        self.assertEqual(2, self.linkage(mapping)["details"]["section_count"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_malformed_canonical_declaration_is_conflicting(self):
+        body = "## Execution contract\n\nIssue #not-a-number"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("conflicting", report.status.value)
+        self.assertEqual(1, self.linkage(mapping)["details"]["malformed_declaration_count"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_fenced_canonical_example_is_not_linkage(self):
+        body = "```md\n## Execution contract\n\nIssue #80\n```"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        linkage = self.linkage(mapping)
+        self.assertEqual("unavailable", linkage["classification"])
+        self.assertEqual(0, linkage["details"]["section_count"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_html_commented_canonical_example_is_not_linkage(self):
+        body = "<!--\n## Execution contract\n\nIssue #80\n-->"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        linkage = self.linkage(mapping)
+        self.assertEqual("unavailable", linkage["classification"])
+        self.assertEqual(0, linkage["details"]["section_count"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_indented_canonical_example_is_not_linkage(self):
+        body = "    ## Execution contract\n\n    Issue #80"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        linkage = self.linkage(mapping)
+        self.assertEqual("unavailable", linkage["classification"])
+        self.assertEqual(0, linkage["details"]["section_count"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_tab_and_mixed_indented_canonical_examples_are_not_linkage(self):
+        for indent in ("\t", " \t", "  \t", "   \t", "\t "):
+            with self.subTest(indent=repr(indent)):
+                body = f"{indent}## Execution contract\n\n{indent}Issue #80"
+                report = collector.collect_report(
+                    REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock()
+                )
+                mapping = report.to_mapping()
+                self.assertEqual("incomplete", report.status.value)
+                linkage = self.linkage(mapping)
+                self.assertEqual("unavailable", linkage["classification"])
+                self.assertEqual(0, linkage["details"]["section_count"])
+                self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_mixed_indented_example_does_not_conflict_with_real_canonical_linkage(self):
+        body = CANONICAL_BODY + "\n\n \tIssue #81"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("complete", report.status.value)
+        self.assertEqual(80, mapping["target"]["linked_issue"])
+        linkage = self.linkage(mapping)
+        self.assertEqual("canonical", linkage["details"]["method"])
+        self.assertEqual([80], linkage["details"]["canonical_issue_numbers"])
+
+    def test_three_space_markdown_indentation_remains_parseable(self):
+        body = "   ## Execution contract\n\n   Issue #80"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("complete", report.status.value)
+        self.assertEqual(80, mapping["target"]["linked_issue"])
+        self.assertEqual("canonical", self.linkage(mapping)["details"]["method"])
+
+    def test_fenced_example_does_not_conflict_with_real_canonical_linkage(self):
+        body = CANONICAL_BODY + "\n\n~~~md\n## Execution contract\n\nIssue #81\n~~~"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("complete", report.status.value)
+        self.assertEqual(80, mapping["target"]["linked_issue"])
+        linkage = self.linkage(mapping)
+        self.assertEqual("canonical", linkage["details"]["method"])
+        self.assertEqual(1, linkage["details"]["section_count"])
+        self.assertEqual([80], linkage["details"]["canonical_issue_numbers"])
+
+    def test_missing_linkage_is_unavailable_and_incomplete(self):
+        body = "## Evidence pack\n\nNo execution contract yet."
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        self.assertEqual("unavailable", self.linkage(mapping)["classification"])
+        self.assertNotIn("linked_issue", mapping["target"])
 
     def test_pending_check_is_incomplete(self):
         report = collector.collect_report(REPO, PR, self.client(FakeTransport(pending=True)), clock=self.clock())
@@ -172,8 +317,8 @@ class CollectorTests(unittest.TestCase):
             clock=self.clock(),
         )
         self.assertEqual("conflicting", report.status.value)
-        conflict = next(item for item in report.to_mapping()["evidence"] if item["id"] == "issue.linkage")
-        self.assertEqual([80, 81], conflict["details"]["issue_numbers"])
+        conflict = self.linkage(report.to_mapping())
+        self.assertEqual([80, 81], conflict["details"]["closing_issue_numbers"])
         self.assertNotIn("linked_issue", report.to_mapping()["target"])
 
     def test_moving_head_is_stale(self):
