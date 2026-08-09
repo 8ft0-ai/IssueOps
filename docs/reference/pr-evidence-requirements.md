@@ -46,6 +46,24 @@ Missing canonical/legacy linkage is incomplete evidence. Multiple execution-cont
 
 Distinguish where evidence comes from.
 
+### Inline review-thread evidence
+
+Submitted pull-request reviews and inline review-thread resolution are separate repository-observed evidence surfaces. A submitted review state such as `APPROVED`, a review count, or the absence of requested changes must never be used to infer that inline review threads are resolved.
+
+When the repository-owned collector can completely retrieve GitHub's read-only `pullRequest.reviewThreads` surface under its existing token permission ceiling, the `pr.review-threads` evidence item records:
+
+- `total_threads` — the declared total inline thread count;
+- `unresolved_threads` — threads whose `isResolved` value is `false`;
+- `resolved_threads` — threads whose `isResolved` value is `true`;
+- `complete: true` — only after bounded cursor pagination terminates and the collected node count exactly matches the declared total; and
+- `retrieval_surface: GitHub GraphQL pullRequest.reviewThreads` — the source contract used for the observation.
+
+Review-thread pagination is bounded by the collector's existing page safety limit. GraphQL errors, transport failures, missing or malformed connection data, inconsistent totals, malformed thread nodes, missing or non-advancing continuation cursors, page-limit exhaustion, or a final collected-count/declared-total mismatch fail closed. In those cases `pr.review-threads` is classified `unavailable`, records `complete: false`, contributes a collection error, and makes the evidence pack mechanically incomplete.
+
+The collector does not broaden workflow permissions to obtain this evidence. If the retained Actions `GITHUB_TOKEN` cannot access the required review-thread surface, the truthful result is unavailable/incomplete until a separately governed permission decision changes that boundary.
+
+A mechanically complete review-thread surface only means the requested metadata was completely collected. It does not determine whether review findings are substantively resolved, whether the pull request satisfies its execution contract, or whether approval or merge is appropriate.
+
 ### Repository-observed evidence
 
 Examples include:
