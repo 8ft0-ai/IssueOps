@@ -218,6 +218,18 @@ def _closing_issue_numbers(body: str | None) -> list[int]:
     return sorted({int(match.group("number")) for match in CLOSING_REFERENCE_PATTERN.finditer(body or "")})
 
 
+def _markdown_indent_columns(line: str) -> int:
+    columns = 0
+    for character in line:
+        if character == " ":
+            columns += 1
+        elif character == "\t":
+            columns += 4 - (columns % 4)
+        else:
+            break
+    return columns
+
+
 def _canonical_issue_declarations(body: str | None) -> tuple[int, list[int], int]:
     section_count = 0
     issue_numbers: list[int] = []
@@ -228,15 +240,15 @@ def _canonical_issue_declarations(body: str | None) -> tuple[int, list[int], int
     fence_length = 0
 
     for raw_line in (body or "").splitlines():
-        leading_spaces = len(raw_line) - len(raw_line.lstrip(" "))
-        left_stripped = raw_line.lstrip(" ")
+        indent_columns = _markdown_indent_columns(raw_line)
+        left_stripped = raw_line.lstrip(" \t")
 
         if fence_char is not None:
             closing_fence = re.fullmatch(
                 rf"{re.escape(fence_char)}{{{fence_length},}}[ \t]*",
                 left_stripped,
             )
-            if leading_spaces <= 3 and closing_fence:
+            if indent_columns <= 3 and closing_fence:
                 fence_char = None
                 fence_length = 0
             continue
@@ -246,20 +258,19 @@ def _canonical_issue_declarations(body: str | None) -> tuple[int, list[int], int
                 in_html_comment = False
             continue
 
+        if indent_columns >= 4:
+            continue
+
         if "<!--" in raw_line:
             if "-->" not in raw_line.split("<!--", 1)[1]:
                 in_html_comment = True
             continue
 
-        if leading_spaces <= 3:
-            opening_fence = re.match(r"(?P<fence>`{3,}|~{3,})", left_stripped)
-            if opening_fence:
-                marker = opening_fence.group("fence")
-                fence_char = marker[0]
-                fence_length = len(marker)
-                continue
-
-        if raw_line.startswith("\t") or raw_line.startswith("    "):
+        opening_fence = re.match(r"(?P<fence>`{3,}|~{3,})", left_stripped)
+        if opening_fence:
+            marker = opening_fence.group("fence")
+            fence_char = marker[0]
+            fence_length = len(marker)
             continue
 
         line = raw_line.strip()
