@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 import tempfile
 import unittest
@@ -43,6 +44,15 @@ def issue_payload():
         "state": "open",
         "updated_at": "2026-07-11T07:00:00Z",
         "body": "Contract body",
+    }
+
+
+def review_thread_page(*, resolved=(), total_count=None, has_next=False, end_cursor=None):
+    nodes = [{"isResolved": value} for value in resolved]
+    return {
+        "totalCount": len(nodes) if total_count is None else total_count,
+        "pageInfo": {"hasNextPage": has_next, "endCursor": end_cursor},
+        "nodes": nodes,
     }
 
 
@@ -118,9 +128,46 @@ class FakeTransport:
         assert headers["Accept"] == "application/vnd.github+json"
 
 
+class FakeGraphQLTransport:
+    def __init__(self, *, pages=None, payload=None, error=None):
+        self.pages = pages if pages is not None else [review_thread_page(resolved=())]
+        self.payload = payload
+        self.error = error
+        self.calls = []
+
+    def __call__(self, url, headers, body):
+        assert url == "https://api.github.com/graphql"
+        assert headers["Authorization"] == "Bearer secret-token"
+        assert headers["Accept"] == "application/vnd.github+json"
+        assert headers["Content-Type"] == "application/json"
+        request = json.loads(body.decode("utf-8"))
+        self.calls.append(request)
+        if self.error is not None:
+            raise self.error
+        if self.payload is not None:
+            return {}, self.payload
+        index = len(self.calls) - 1
+        if index >= len(self.pages):
+            raise AssertionError("unexpected GraphQL page request")
+        return {}, {
+            "data": {
+                "repository": {
+                    "pullRequest": {
+                        "reviewThreads": self.pages[index],
+                    }
+                }
+            }
+        }
+
+
 class CollectorTests(unittest.TestCase):
-    def client(self, transport, max_pages=20):
-        return collector.GitHubClient("secret-token", transport=transport, max_pages=max_pages)
+    def client(self, transport, max_pages=20, graphql_transport=None):
+        return collector.GitHubClient(
+            "secret-token",
+            transport=transport,
+            max_pages=max_pages,
+            graphql_transport=graphql_transport or FakeGraphQLTransport(),
+        )
 
     def clock(self):
         values = iter(["2026-07-11T08:00:00Z", "2026-07-11T08:00:05Z"])
@@ -129,6 +176,10 @@ class CollectorTests(unittest.TestCase):
     @staticmethod
     def linkage(mapping):
         return next(item for item in mapping["evidence"] if item["id"] == "issue.linkage")
+
+    @staticmethod
+    def review_threads(mapping):
+        return next(item for item in mapping["evidence"] if item["id"] == "pr.review-threads")
 
     def test_stable_collection_follows_pagination_and_reports_failed_checks_as_facts(self):
         transport = FakeTransport()
@@ -142,6 +193,9 @@ class CollectorTests(unittest.TestCase):
         workflow = next(item for item in mapping["evidence"] if item["id"] == "workflow.2")
         self.assertEqual("repository-observed", workflow["classification"])
         self.assertEqual("failure", workflow["details"]["conclusion"])
+        threads = self.review_threads(mapping)
+        self.assertEqual(0, threads["details"]["total_threads"])
+        self.assertTrue(threads["details"]["complete"])
         self.assertTrue(all(url.startswith("https://api.github.com/") for url in transport.urls))
 
     def test_legacy_single_closing_reference_remains_supported(self):
@@ -290,10 +344,14 @@ class CollectorTests(unittest.TestCase):
     def test_validly_empty_surfaces_are_observed_absence(self):
         report = collector.collect_report(REPO, PR, self.client(FakeTransport(empty=True)), clock=self.clock())
         self.assertEqual("complete", report.status.value)
-        ids = {item["id"] for item in report.to_mapping()["evidence"]}
+        mapping = report.to_mapping()
+        ids = {item["id"] for item in mapping["evidence"]}
         self.assertIn("checks.absent", ids)
         self.assertIn("workflows.absent", ids)
-        self.assertFalse(report.to_mapping()["errors"])
+        threads = self.review_threads(mapping)
+        self.assertEqual("repository-observed", threads["classification"])
+        self.assertEqual(0, threads["details"]["total_threads"])
+        self.assertFalse(mapping["errors"])
 
     def test_partial_api_failure_is_non_complete_with_sanitised_error(self):
         path = f"/repos/{REPO}/pulls/{PR}/reviews"
@@ -301,6 +359,169 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual("incomplete", report.status.value)
         self.assertEqual("pr.reviews", report.to_mapping()["errors"][0]["code"])
         self.assertNotIn("secret-token", str(report.to_mapping()["errors"]))
+
+    def test_review_threads_are_counted_separately_from_submitted_reviews(self):
+        graphql = FakeGraphQLTransport(
+            pages=[review_thread_page(resolved=(False, True, False), total_count=3)]
+        )
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        mapping = report.to_mapping()
+        self.assertEqual("complete", report.status.value)
+        threads = self.review_threads(mapping)
+        self.assertEqual(
+            {
+                "total_threads": 3,
+                "unresolved_threads": 2,
+                "resolved_threads": 1,
+                "complete": True,
+                "retrieval_surface": "GitHub GraphQL pullRequest.reviewThreads",
+            },
+            threads["details"],
+        )
+        reviews = next(item for item in mapping["evidence"] if item["id"] == "pr.reviews")
+        self.assertEqual(0, reviews["details"]["count"])
+        self.assertEqual(1, len(graphql.calls))
+
+    def test_review_thread_cursor_pagination_reconciles_total(self):
+        graphql = FakeGraphQLTransport(
+            pages=[
+                review_thread_page(
+                    resolved=(False,), total_count=2, has_next=True, end_cursor="cursor-1"
+                ),
+                review_thread_page(resolved=(True,), total_count=2),
+            ]
+        )
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        self.assertEqual("complete", report.status.value)
+        self.assertEqual(2, len(graphql.calls))
+        self.assertIsNone(graphql.calls[0]["variables"]["after"])
+        self.assertEqual("cursor-1", graphql.calls[1]["variables"]["after"])
+        self.assertEqual(1, self.review_threads(report.to_mapping())["details"]["unresolved_threads"])
+
+    def test_review_thread_partial_page_fails_closed(self):
+        graphql = FakeGraphQLTransport(
+            pages=[review_thread_page(resolved=(False,), total_count=2)]
+        )
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        threads = self.review_threads(mapping)
+        self.assertEqual("unavailable", threads["classification"])
+        self.assertFalse(threads["details"]["complete"])
+        self.assertTrue(any(error["code"] == "pr.review-threads" for error in mapping["errors"]))
+
+    def test_review_thread_non_progressing_cursor_fails_closed(self):
+        graphql = FakeGraphQLTransport(
+            pages=[
+                review_thread_page(
+                    resolved=(False,), total_count=3, has_next=True, end_cursor="cursor-1"
+                ),
+                review_thread_page(
+                    resolved=(True,), total_count=3, has_next=True, end_cursor="cursor-1"
+                ),
+            ]
+        )
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        self.assertEqual("incomplete", report.status.value)
+        self.assertEqual("unavailable", self.review_threads(report.to_mapping())["classification"])
+
+    def test_review_thread_page_limit_fails_closed(self):
+        graphql = FakeGraphQLTransport(
+            pages=[
+                review_thread_page(
+                    resolved=(False,), total_count=2, has_next=True, end_cursor="cursor-1"
+                )
+            ]
+        )
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), max_pages=1, graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        self.assertEqual("incomplete", report.status.value)
+        self.assertTrue(
+            any(
+                "safety limit" in error["message"]
+                for error in report.to_mapping()["errors"]
+                if error["code"] == "pr.review-threads"
+            )
+        )
+
+    def test_review_thread_graphql_errors_fail_closed_even_with_partial_data(self):
+        payload = {
+            "data": {
+                "repository": {
+                    "pullRequest": {
+                        "reviewThreads": review_thread_page(resolved=(False,), total_count=1)
+                    }
+                }
+            },
+            "errors": [{"message": "Resource not accessible by integration"}],
+        }
+        graphql = FakeGraphQLTransport(payload=payload)
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        self.assertEqual("unavailable", self.review_threads(mapping)["classification"])
+        error = next(error for error in mapping["errors"] if error["code"] == "pr.review-threads")
+        self.assertEqual("Resource not accessible by integration", error["message"])
+        self.assertNotIn("secret-token", str(mapping["errors"]))
+
+    def test_review_thread_transport_failure_fails_closed(self):
+        graphql = FakeGraphQLTransport(
+            error=collector.GitHubAPIError(
+                "https://api.github.com/graphql", 403, "forbidden"
+            )
+        )
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        self.assertEqual("unavailable", self.review_threads(mapping)["classification"])
+        self.assertTrue(any(error["code"] == "pr.review-threads" for error in mapping["errors"]))
+
+    def test_review_thread_malformed_node_fails_closed(self):
+        malformed_page = review_thread_page(resolved=(False,), total_count=1)
+        malformed_page["nodes"] = [{"isResolved": "false"}]
+        graphql = FakeGraphQLTransport(pages=[malformed_page])
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        self.assertEqual("incomplete", report.status.value)
+        self.assertEqual("unavailable", self.review_threads(report.to_mapping())["classification"])
 
     def test_unresolved_target_fails_before_report_construction(self):
         class FailingTransport:
