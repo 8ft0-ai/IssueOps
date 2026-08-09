@@ -468,6 +468,75 @@ class CollectorTests(unittest.TestCase):
             )
         )
 
+    def test_review_thread_missing_continuation_cursor_fails_closed(self):
+        graphql = FakeGraphQLTransport(
+            pages=[review_thread_page(resolved=(False,), total_count=2, has_next=True)]
+        )
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        self.assertEqual("unavailable", self.review_threads(mapping)["classification"])
+        error = next(error for error in mapping["errors"] if error["code"] == "pr.review-threads")
+        self.assertIn("non-empty endCursor", error["message"])
+
+    def test_review_thread_changing_total_count_fails_closed(self):
+        graphql = FakeGraphQLTransport(
+            pages=[
+                review_thread_page(
+                    resolved=(False,), total_count=2, has_next=True, end_cursor="cursor-1"
+                ),
+                review_thread_page(resolved=(True,), total_count=3),
+            ]
+        )
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        self.assertEqual("unavailable", self.review_threads(mapping)["classification"])
+        error = next(error for error in mapping["errors"] if error["code"] == "pr.review-threads")
+        self.assertIn("totalCount changed", error["message"])
+
+    def test_review_thread_missing_connection_fails_closed(self):
+        graphql = FakeGraphQLTransport(
+            payload={"data": {"repository": {"pullRequest": {"reviewThreads": None}}}}
+        )
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        self.assertEqual("unavailable", self.review_threads(mapping)["classification"])
+        error = next(error for error in mapping["errors"] if error["code"] == "pr.review-threads")
+        self.assertIn("missing reviewThreads connection", error["message"])
+
+    def test_review_thread_malformed_page_info_fails_closed(self):
+        malformed_page = review_thread_page(resolved=(False,), total_count=1)
+        malformed_page["pageInfo"] = None
+        graphql = FakeGraphQLTransport(pages=[malformed_page])
+        report = collector.collect_report(
+            REPO,
+            PR,
+            self.client(FakeTransport(), graphql_transport=graphql),
+            clock=self.clock(),
+        )
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        self.assertEqual("unavailable", self.review_threads(mapping)["classification"])
+        error = next(error for error in mapping["errors"] if error["code"] == "pr.review-threads")
+        self.assertIn("pageInfo must be an object", error["message"])
+
     def test_review_thread_graphql_errors_fail_closed_even_with_partial_data(self):
         payload = {
             "data": {
