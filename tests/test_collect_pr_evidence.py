@@ -201,6 +201,47 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(1, self.linkage(mapping)["details"]["malformed_declaration_count"])
         self.assertNotIn("linked_issue", mapping["target"])
 
+    def test_fenced_canonical_example_is_not_linkage(self):
+        body = "```md\n## Execution contract\n\nIssue #80\n```"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        linkage = self.linkage(mapping)
+        self.assertEqual("unavailable", linkage["classification"])
+        self.assertEqual(0, linkage["details"]["section_count"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_html_commented_canonical_example_is_not_linkage(self):
+        body = "<!--\n## Execution contract\n\nIssue #80\n-->"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        linkage = self.linkage(mapping)
+        self.assertEqual("unavailable", linkage["classification"])
+        self.assertEqual(0, linkage["details"]["section_count"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_indented_canonical_example_is_not_linkage(self):
+        body = "    ## Execution contract\n\n    Issue #80"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("incomplete", report.status.value)
+        linkage = self.linkage(mapping)
+        self.assertEqual("unavailable", linkage["classification"])
+        self.assertEqual(0, linkage["details"]["section_count"])
+        self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_fenced_example_does_not_conflict_with_real_canonical_linkage(self):
+        body = CANONICAL_BODY + "\n\n~~~md\n## Execution contract\n\nIssue #81\n~~~"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("complete", report.status.value)
+        self.assertEqual(80, mapping["target"]["linked_issue"])
+        linkage = self.linkage(mapping)
+        self.assertEqual("canonical", linkage["details"]["method"])
+        self.assertEqual(1, linkage["details"]["section_count"])
+        self.assertEqual([80], linkage["details"]["canonical_issue_numbers"])
+
     def test_missing_linkage_is_unavailable_and_incomplete(self):
         body = "## Evidence pack\n\nNo execution contract yet."
         report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
