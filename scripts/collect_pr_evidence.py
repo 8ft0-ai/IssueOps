@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Collect one pull request's GitHub evidence into evidence-pack/v1 reports.
 
-The collector performs GitHub REST GET requests only. It writes generated JSON
-and Markdown to a local output directory; it does not mutate GitHub state or
-make readiness, approval, merge, publication, or release decisions.
+The collector performs read-only GitHub REST GET and GraphQL query requests. It
+writes generated JSON and Markdown to a local output directory; it does not
+mutate GitHub state or make readiness, approval, merge, publication, or release
+decisions.
 """
 
 from __future__ import annotations
@@ -35,6 +36,30 @@ CLOSING_REFERENCE_PATTERN = re.compile(
 CANONICAL_REFERENCE_PATTERN = re.compile(r"^Issue #(?P<number>[1-9][0-9]*)$")
 ISSUE_SHAPED_PATTERN = re.compile(r"(?i)^Issue\b")
 EXECUTION_CONTRACT_HEADING = "## Execution contract"
+REVIEW_THREADS_QUERY = """
+query ReviewThreads(
+  $owner: String!
+  $name: String!
+  $number: Int!
+  $first: Int!
+  $after: String
+) {
+  repository(owner: $owner, name: $name) {
+    pullRequest(number: $number) {
+      reviewThreads(first: $first, after: $after) {
+        totalCount
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          isResolved
+        }
+      }
+    }
+  }
+}
+"""
 
 
 class CollectionFailure(RuntimeError):
@@ -53,10 +78,13 @@ class GitHubAPIError(RuntimeError):
 
 
 Transport = Callable[[str, Mapping[str, str]], tuple[Mapping[str, str], Any]]
+GraphQLTransport = Callable[
+    [str, Mapping[str, str], bytes], tuple[Mapping[str, str], Any]
+]
 
 
 class GitHubClient:
-    """Small read-only GitHub REST client with deterministic page-based pagination."""
+    """Small read-only GitHub client with bounded REST and GraphQL pagination."""
 
     def __init__(
         self,
@@ -64,6 +92,8 @@ class GitHubClient:
         api_url: str = "https://api.github.com",
         transport: Transport | None = None,
         max_pages: int = MAX_PAGES,
+        graphql_transport: GraphQLTransport | None = None,
+        graphql_url: str | None = None,
     ) -> None:
         if not token:
             raise ValueError("a non-empty GitHub token is required")
@@ -71,8 +101,16 @@ class GitHubClient:
             raise ValueError("max_pages must be positive")
         self._token = token
         self.api_url = api_url.rstrip("/")
+        self.graphql_url = (graphql_url or self._default_graphql_url(self.api_url)).rstrip("/")
         self._transport = transport or self._urllib_transport
+        self._graphql_transport = graphql_transport or self._urllib_graphql_transport
         self.max_pages = max_pages
+
+    @staticmethod
+    def _default_graphql_url(api_url: str) -> str:
+        if api_url.endswith("/api/v3"):
+            return f"{api_url[:-7]}/api/graphql"
+        return f"{api_url}/graphql"
 
     def absolute_url(self, path: str, params: Mapping[str, Any] | None = None) -> str:
         if not path.startswith("/"):
@@ -92,6 +130,185 @@ class GitHubClient:
         }
         _, payload = self._transport(url, headers)
         return payload
+
+    def graphql(self, query: str, variables: Mapping[str, Any]) -> Mapping[str, Any]:
+        headers = {
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {self._token}",
+            "Content-Type": "application/json",
+            "User-Agent": "IssueOps-evidence-pack/1",
+            "X-GitHub-Api-Version": API_VERSION,
+        }
+        body = json.dumps(
+            {"query": query, "variables": dict(variables)},
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+        _, payload = self._graphql_transport(self.graphql_url, headers, body)
+        if not isinstance(payload, Mapping):
+            raise GitHubAPIError(
+                self.graphql_url,
+                None,
+                "GraphQL response must be an object",
+            )
+        raw_errors = payload.get("errors")
+        if raw_errors:
+            message = "GraphQL query failed"
+            if isinstance(raw_errors, list):
+                for item in raw_errors:
+                    if isinstance(item, Mapping) and isinstance(item.get("message"), str):
+                        message = item["message"][:500]
+                        break
+            raise GitHubAPIError(self.graphql_url, None, message)
+        data = payload.get("data")
+        if not isinstance(data, Mapping):
+            raise GitHubAPIError(
+                self.graphql_url,
+                None,
+                "GraphQL response must contain object field 'data'",
+            )
+        return data
+
+    def get_review_thread_summary(self, repository: str, pull_request: int) -> dict[str, Any]:
+        owner, name = repository.split("/", 1)
+        after: str | None = None
+        seen_cursors: set[str] = set()
+        declared_total: int | None = None
+        resolved_count = 0
+        unresolved_count = 0
+        collected_count = 0
+
+        for _page in range(1, self.max_pages + 1):
+            data = self.graphql(
+                REVIEW_THREADS_QUERY,
+                {
+                    "owner": owner,
+                    "name": name,
+                    "number": pull_request,
+                    "first": PER_PAGE,
+                    "after": after,
+                },
+            )
+            repository_data = data.get("repository")
+            if not isinstance(repository_data, Mapping):
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "GraphQL response was missing repository data",
+                )
+            pull_request_data = repository_data.get("pullRequest")
+            if not isinstance(pull_request_data, Mapping):
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "GraphQL response was missing pull-request data",
+                )
+            connection = pull_request_data.get("reviewThreads")
+            if not isinstance(connection, Mapping):
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "GraphQL response was missing reviewThreads connection",
+                )
+
+            raw_total = connection.get("totalCount")
+            if not isinstance(raw_total, int) or isinstance(raw_total, bool) or raw_total < 0:
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "reviewThreads.totalCount must be a non-negative integer",
+                )
+            if declared_total is None:
+                declared_total = raw_total
+            elif declared_total != raw_total:
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "reviewThreads.totalCount changed during pagination",
+                )
+
+            nodes = connection.get("nodes")
+            if not isinstance(nodes, list):
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "reviewThreads.nodes must be an array",
+                )
+            if len(nodes) > PER_PAGE:
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    f"reviewThreads page returned more than {PER_PAGE} nodes",
+                )
+            for node in nodes:
+                if not isinstance(node, Mapping) or not isinstance(node.get("isResolved"), bool):
+                    raise GitHubAPIError(
+                        self.graphql_url,
+                        None,
+                        "reviewThreads nodes must contain boolean isResolved",
+                    )
+                if node["isResolved"]:
+                    resolved_count += 1
+                else:
+                    unresolved_count += 1
+            collected_count += len(nodes)
+            if declared_total is not None and collected_count > declared_total:
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "reviewThreads pagination returned more nodes than totalCount",
+                )
+
+            page_info = connection.get("pageInfo")
+            if not isinstance(page_info, Mapping):
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "reviewThreads.pageInfo must be an object",
+                )
+            has_next_page = page_info.get("hasNextPage")
+            if not isinstance(has_next_page, bool):
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "reviewThreads.pageInfo.hasNextPage must be a boolean",
+                )
+
+            if not has_next_page:
+                if declared_total is None or collected_count != declared_total:
+                    raise GitHubAPIError(
+                        self.graphql_url,
+                        None,
+                        f"reviewThreads pagination ended after {collected_count} of {declared_total} declared nodes",
+                    )
+                return {
+                    "total_threads": declared_total,
+                    "unresolved_threads": unresolved_count,
+                    "resolved_threads": resolved_count,
+                    "complete": True,
+                }
+
+            end_cursor = page_info.get("endCursor")
+            if not isinstance(end_cursor, str) or not end_cursor:
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "reviewThreads pagination requires a non-empty endCursor",
+                )
+            if end_cursor == after or end_cursor in seen_cursors:
+                raise GitHubAPIError(
+                    self.graphql_url,
+                    None,
+                    "reviewThreads pagination cursor did not advance",
+                )
+            seen_cursors.add(end_cursor)
+            after = end_cursor
+
+        raise GitHubAPIError(
+            self.graphql_url,
+            None,
+            f"reviewThreads pagination exceeded the {self.max_pages}-page safety limit",
+        )
 
     def get_paginated(
         self,
@@ -184,6 +401,40 @@ class GitHubClient:
             payload = json.loads(raw.decode("utf-8"))
         except (json.JSONDecodeError, UnicodeDecodeError) as exc:
             raise GitHubAPIError(url, None, "response was not valid JSON") from exc
+        return response_headers, payload
+
+    @staticmethod
+    def _urllib_graphql_transport(
+        url: str,
+        headers: Mapping[str, str],
+        body: bytes,
+    ) -> tuple[Mapping[str, str], Any]:
+        request = urllib.request.Request(url, data=body, headers=dict(headers), method="POST")
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                raw = response.read()
+                response_headers = dict(response.headers.items())
+        except urllib.error.HTTPError as exc:
+            message = "GitHub GraphQL request failed"
+            try:
+                payload = json.loads(exc.read().decode("utf-8", errors="replace"))
+                if isinstance(payload, Mapping):
+                    if isinstance(payload.get("message"), str):
+                        message = payload["message"]
+                    elif isinstance(payload.get("errors"), list):
+                        for item in payload["errors"]:
+                            if isinstance(item, Mapping) and isinstance(item.get("message"), str):
+                                message = item["message"][:500]
+                                break
+            except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+                pass
+            raise GitHubAPIError(url, exc.code, message) from exc
+        except urllib.error.URLError as exc:
+            raise GitHubAPIError(url, None, str(exc.reason)) from exc
+        try:
+            payload = json.loads(raw.decode("utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            raise GitHubAPIError(url, None, "GraphQL response was not valid JSON") from exc
         return response_headers, payload
 
 
@@ -552,6 +803,39 @@ def collect_report(
             }
         )
 
+    try:
+        review_threads = client.get_review_thread_summary(repository, pull_request)
+        evidence.append(
+            {
+                "id": "pr.review-threads",
+                "classification": "repository-observed",
+                "summary": (
+                    f"GitHub returned {review_threads['total_threads']} inline review threads: "
+                    f"{review_threads['unresolved_threads']} unresolved and "
+                    f"{review_threads['resolved_threads']} resolved."
+                ),
+                "source_url": f"{pr_url}/files",
+                "details": {
+                    **review_threads,
+                    "retrieval_surface": "GitHub GraphQL pullRequest.reviewThreads",
+                },
+            }
+        )
+    except GitHubAPIError as exc:
+        _api_error(errors, "pr.review-threads", exc)
+        evidence.append(
+            {
+                "id": "pr.review-threads",
+                "classification": "unavailable",
+                "summary": "Inline review-thread resolution state could not be completely retrieved.",
+                "source_url": f"{pr_url}/files",
+                "details": {
+                    "complete": False,
+                    "retrieval_surface": "GitHub GraphQL pullRequest.reviewThreads",
+                },
+            }
+        )
+
     checks = collect_list(
         "checks.runs",
         f"/repos/{repository}/commits/{head_sha_start}/check-runs",
@@ -778,7 +1062,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
         return 1
     try:
-        client = GitHubClient(token, api_url=args.api_url)
+        client = GitHubClient(
+            token,
+            api_url=args.api_url,
+            graphql_url=os.environ.get("GITHUB_GRAPHQL_URL") or None,
+        )
         report = collect_report(args.repository, args.pull_request, client)
         write_report(report, Path(args.output_dir))
     except (CollectionFailure, GitHubAPIError, OSError, ValueError) as exc:
