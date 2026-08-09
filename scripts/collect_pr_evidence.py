@@ -223,8 +223,45 @@ def _canonical_issue_declarations(body: str | None) -> tuple[int, list[int], int
     issue_numbers: list[int] = []
     malformed_count = 0
     in_section = False
+    in_html_comment = False
+    fence_char: str | None = None
+    fence_length = 0
 
     for raw_line in (body or "").splitlines():
+        leading_spaces = len(raw_line) - len(raw_line.lstrip(" "))
+        left_stripped = raw_line.lstrip(" ")
+
+        if fence_char is not None:
+            closing_fence = re.fullmatch(
+                rf"{re.escape(fence_char)}{{{fence_length},}}[ \t]*",
+                left_stripped,
+            )
+            if leading_spaces <= 3 and closing_fence:
+                fence_char = None
+                fence_length = 0
+            continue
+
+        if in_html_comment:
+            if "-->" in raw_line:
+                in_html_comment = False
+            continue
+
+        if "<!--" in raw_line:
+            if "-->" not in raw_line.split("<!--", 1)[1]:
+                in_html_comment = True
+            continue
+
+        if leading_spaces <= 3:
+            opening_fence = re.match(r"(?P<fence>`{3,}|~{3,})", left_stripped)
+            if opening_fence:
+                marker = opening_fence.group("fence")
+                fence_char = marker[0]
+                fence_length = len(marker)
+                continue
+
+        if raw_line.startswith("\t") or raw_line.startswith("    "):
+            continue
+
         line = raw_line.strip()
         if line == EXECUTION_CONTRACT_HEADING:
             section_count += 1
