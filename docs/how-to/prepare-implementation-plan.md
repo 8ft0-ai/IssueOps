@@ -57,21 +57,35 @@ Post the complete plan as a new issue comment. Do not rewrite the original readi
 
 **Expected result:** a reviewer can identify the proposed branch, safe base, predicted files, intended sequence, validation, post-merge checks and explicit exclusions before implementation begins.
 
-## 8. Create the branch only after the plan is visible
+The implementation plan is a proposed execution path. It is not self-authorising and does not itself permit branch creation or repository mutation.
 
-Refresh the base state one final time. If it still matches the dependency check, create the planned branch.
+## 8. Obtain durable human approval of the plan
 
-If `main` changed materially or a new conflicting PR appeared, refresh readiness and the plan before branching.
+After the plan is posted, obtain explicit human approval as a separate durable GitHub-native issue record before creating the branch or changing repository files.
 
-## 9. Record material adaptation
+The approval must clearly apply to the detailed implementation plan and must exist before the action it authorises. Do not edit the plan to make it appear self-approved and do not create retrospective authority after implementation has already begun.
+
+If approval is withheld, qualified in a way that changes the planned scope, or replaced by a request for amendment, stop and update or re-plan before implementation.
+
+## 9. Create the branch only after plan approval
+
+Refresh the base state one final time after plan approval. If it still matches the dependency check and no conflicting work has appeared, create the planned branch.
+
+If `main` changed materially or a new conflicting PR appeared, refresh readiness and the plan before branching. Obtain fresh approval when the material change alters the approved execution path.
+
+## 10. Record material adaptation
 
 Implementation may reveal a different safe path. Record a material adaptation in the issue or PR evidence pack, explain why it remained inside the contract and rerun validation affected by the change.
 
 Do not rewrite the original plan to imply that later discoveries were known from the start.
 
+A material adaptation that changes the approved execution path or authority boundary requires fresh human approval before the newly authorised work proceeds.
+
 ## Common failure modes
 
-- creating the branch before posting the plan;
+- creating the branch before the plan is posted and durably approved;
+- treating the implementation plan as self-authorising;
+- creating retrospective approval after implementation has begun;
 - using a vague base such as “latest” without a reviewed commit;
 - listing no expected files or compatibility decisions;
 - treating post-merge verification as completed pre-merge validation;

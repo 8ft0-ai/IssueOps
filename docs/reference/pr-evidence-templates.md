@@ -6,6 +6,8 @@ Do not pre-check validation that has not run. Replace placeholder recommendation
 
 The canonical execution-contract declaration in every template is `Issue #<issue-number>`. Add `Closes`, `Fixes` or `Resolves` separately only when GitHub lifecycle auto-closure is deliberately intended; closing syntax is not the canonical IssueOps linkage.
 
+For implementation PRs, record the lifecycle-authority references as durable GitHub records. The implementation plan is not self-authorising: required human plan approval must predate branch creation or implementation mutation and must not be reconstructed retrospectively. Additional procedural authority may be `N/A` when none is required.
+
 ## Full evidence-pack template
 
 ````md
@@ -16,6 +18,24 @@ Issue #<issue-number>
 Parent stage or initiative:
 
 - None / #<number> — <title>
+
+## Lifecycle authority
+
+Readiness assessment:
+
+- Issue comment: <reference>
+
+Detailed implementation plan:
+
+- Issue comment: <reference>
+
+Human approval of implementation plan:
+
+- Issue comment: <reference>
+
+Additional procedural authority, if required:
+
+- N/A / issue comment: <reference>
 
 ## Evidence pack
 
@@ -67,6 +87,10 @@ Issue alignment:
 
 - ...
 
+Lifecycle authority:
+
+- ...
+
 Scope control:
 
 - ...
@@ -96,6 +120,24 @@ Use the full template when a change crosses risk areas, changes workflows or per
 ## Execution contract
 
 Issue #<issue-number>
+
+## Lifecycle authority
+
+Readiness assessment:
+
+- Issue comment: <reference>
+
+Detailed implementation plan:
+
+- Issue comment: <reference>
+
+Human approval of implementation plan:
+
+- Issue comment: <reference>
+
+Additional procedural authority, if required:
+
+- N/A / issue comment: <reference>
 
 ## Evidence pack
 
@@ -131,6 +173,10 @@ Issue alignment:
 
 - ...
 
+Lifecycle authority:
+
+- ...
+
 Scope control:
 
 - ...
@@ -154,6 +200,24 @@ Final recommendation:
 ## Execution contract
 
 Issue #<issue-number>
+
+## Lifecycle authority
+
+Readiness assessment:
+
+- Issue comment: <reference>
+
+Detailed implementation plan:
+
+- Issue comment: <reference>
+
+Human approval of implementation plan:
+
+- Issue comment: <reference>
+
+Additional procedural authority, if required:
+
+- N/A / issue comment: <reference>
 
 ## Evidence pack
 
@@ -193,6 +257,10 @@ Issue alignment:
 
 - ...
 
+Lifecycle authority:
+
+- ...
+
 Scope control:
 
 - ...
@@ -216,6 +284,24 @@ Final recommendation:
 ## Execution contract
 
 Issue #<issue-number>
+
+## Lifecycle authority
+
+Readiness assessment:
+
+- Issue comment: <reference>
+
+Detailed implementation plan:
+
+- Issue comment: <reference>
+
+Human approval of implementation plan:
+
+- Issue comment: <reference>
+
+Additional procedural authority, if required:
+
+- N/A / issue comment: <reference>
 
 ## Evidence pack
 
@@ -246,6 +332,10 @@ Post-merge verification required:
 ## Groundedness review
 
 Issue alignment:
+
+- ...
+
+Lifecycle authority:
 
 - ...
 
@@ -301,4 +391,4 @@ Use a compact template only when:
 - no material remediation or complex post-merge check remains; and
 - the compact body still covers every canonical requirement that matters.
 
-A short PR body is not a reason to omit scope exclusions, unavailable validation, caveats or the final recommendation.
+A short PR body is not a reason to omit lifecycle authority, scope exclusions, unavailable validation, caveats or the final recommendation.

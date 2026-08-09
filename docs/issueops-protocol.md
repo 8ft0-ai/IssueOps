@@ -20,10 +20,11 @@ The repository record is the source of truth:
 - the issue defines the execution contract;
 - the readiness comment records whether the contract is executable and identifies a safe starting point;
 - the implementation-plan comment records the proposed execution path;
+- a separate durable human plan-approval record authorises that proposed path before implementation begins;
 - the feature branch contains the implementation;
 - the pull request carries the evidence pack;
 - review records contract verification and remediation; and
-- merge records the human acceptance decision.
+- merge records the later human acceptance decision.
 
 Labels are optional visibility aids and never replace written evidence. See [Manual lifecycle labels](labels.md).
 
@@ -55,17 +56,21 @@ If the contract is unclear or a blocking dependency is unsatisfied, post a clari
 
 Use [Check readiness and dependencies](how-to/check-readiness-and-dependencies.md) for the procedure and [Readiness and dependency formats](reference/readiness-and-dependency-formats.md) for the exact comment structures and decisions.
 
-### 3. Post the implementation plan
+### 3. Post and obtain approval of the implementation plan
 
 When the issue is ready, post the implementation plan before creating the branch or changing files.
 
 The plan must make the proposed branch, safe starting point, likely files or areas, implementation sequence, validation, assumptions, caveats and explicit exclusions visible before execution begins.
 
+The plan is not self-authorising. After it is posted, obtain explicit human approval as a separate durable GitHub-native record before branch creation or implementation mutation. That approval must clearly apply to the detailed plan and must predate the action it authorises. Retrospective approval does not repair a missing pre-implementation authority record.
+
+If the approved path changes materially before or during implementation, record the adaptation and obtain fresh human approval before proceeding with work outside the previously approved execution path.
+
 Use [Prepare an implementation plan](how-to/prepare-implementation-plan.md) and the [Implementation-plan format](reference/implementation-plan-format.md).
 
 ### 4. Create one branch per issue
 
-Create one feature branch for the issue from the recorded safe starting point.
+After durable plan approval, refresh the safe starting point and action-relevant repository state, then create one feature branch for the issue from the recorded safe starting point.
 
 Preferred branch format:
 
@@ -113,6 +118,7 @@ Open a draft pull request while implementation, validation or evidence remains i
 The final evidence pack must allow a reviewer to compare the pull request with the issue without relying on chat history or memory. It records:
 
 - the linked execution contract;
+- lifecycle authority for readiness, the detailed implementation plan, human plan approval and any additional procedural authority required by the work;
 - what changed and what was deliberately excluded;
 - how the acceptance criteria were satisfied;
 - validation completed, unavailable or pending;
@@ -131,13 +137,13 @@ The reviewer must determine:
 1. Did the pull request do what was needed?
 2. Did the pull request only do what was asked?
 
-Review must consider issue alignment, scope control, validation, remaining checks, risks and caveats. Use one final recommendation:
+Review must consider issue alignment, scope control, lifecycle authority, validation, remaining checks, risks and caveats. Use one final recommendation:
 
 - **Approve**
 - **Approve after minor fixes**
 - **Do not approve yet**
 
-Required validation failures, incomplete implementation, unresolved material findings, misleading evidence and scope drift block approval and merge.
+Required validation failures, incomplete implementation, missing required pre-action lifecycle authority, unresolved material findings, misleading evidence and scope drift block approval and merge.
 
 Use [Review a pull request against its contract](how-to/review-pr-against-contract.md) and [Review decisions and merge blockers](reference/review-decisions-and-merge-blockers.md).
 
@@ -154,6 +160,8 @@ Use [Remediate pull-request review feedback](how-to/remediate-review-feedback.md
 ### 11. Merge only after human approval
 
 The agent may implement the contract and prepare evidence, but a human owns approval and merge authority.
+
+The earlier human approval of the implementation plan authorises implementation only; it is not merge approval. Merge remains a separate later human decision after substantive review of the final state.
 
 Do not merge while required validation is failing, the implementation is incomplete, material review findings remain unresolved, the evidence pack is stale or the change does not satisfy the issue contract.
 
@@ -174,6 +182,7 @@ Use this lifecycle checklist before requesting final review:
 - [ ] The issue contract is clear, bounded and reviewable.
 - [ ] Readiness, dependencies and the safe starting point are recorded.
 - [ ] The implementation plan was posted before branch creation.
+- [ ] Separate durable human approval of that implementation plan was recorded before branch creation or implementation mutation.
 - [ ] One issue-scoped feature branch was used.
 - [ ] Safe-operation checks preceded repository mutations.
 - [ ] Any execution deviation was contained, recorded when required, classified and reflected in current evidence before resumption or review.
@@ -181,11 +190,11 @@ Use this lifecycle checklist before requesting final review:
 - [ ] Changed files were read back.
 - [ ] Validation matched the change type and actually ran as recorded.
 - [ ] Pre-merge and post-merge evidence are distinguished honestly.
-- [ ] The pull request records scope, exclusions, evidence and caveats.
+- [ ] The pull request records scope, exclusions, lifecycle authority, evidence and caveats.
 - [ ] Review considered the final head and all material findings.
 - [ ] The groundedness review answers both contract questions.
 - [ ] The final recommendation is supported by evidence.
-- [ ] Merge occurs only under human approval or explicit bounded owner delegation after all gates pass.
+- [ ] Merge occurs only under the separate later human approval or explicit bounded owner delegation after all gates pass.
 - [ ] Required post-merge verification is recorded and completed.
 
 ## Relationship to focused documentation
