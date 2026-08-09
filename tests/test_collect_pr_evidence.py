@@ -231,6 +231,38 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(0, linkage["details"]["section_count"])
         self.assertNotIn("linked_issue", mapping["target"])
 
+    def test_tab_and_mixed_indented_canonical_examples_are_not_linkage(self):
+        for indent in ("\t", " \t", "  \t", "   \t", "\t "):
+            with self.subTest(indent=repr(indent)):
+                body = f"{indent}## Execution contract\n\n{indent}Issue #80"
+                report = collector.collect_report(
+                    REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock()
+                )
+                mapping = report.to_mapping()
+                self.assertEqual("incomplete", report.status.value)
+                linkage = self.linkage(mapping)
+                self.assertEqual("unavailable", linkage["classification"])
+                self.assertEqual(0, linkage["details"]["section_count"])
+                self.assertNotIn("linked_issue", mapping["target"])
+
+    def test_mixed_indented_example_does_not_conflict_with_real_canonical_linkage(self):
+        body = CANONICAL_BODY + "\n\n \tIssue #81"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("complete", report.status.value)
+        self.assertEqual(80, mapping["target"]["linked_issue"])
+        linkage = self.linkage(mapping)
+        self.assertEqual("canonical", linkage["details"]["method"])
+        self.assertEqual([80], linkage["details"]["canonical_issue_numbers"])
+
+    def test_three_space_markdown_indentation_remains_parseable(self):
+        body = "   ## Execution contract\n\n   Issue #80"
+        report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
+        mapping = report.to_mapping()
+        self.assertEqual("complete", report.status.value)
+        self.assertEqual(80, mapping["target"]["linked_issue"])
+        self.assertEqual("canonical", self.linkage(mapping)["details"]["method"])
+
     def test_fenced_example_does_not_conflict_with_real_canonical_linkage(self):
         body = CANONICAL_BODY + "\n\n~~~md\n## Execution contract\n\nIssue #81\n~~~"
         report = collector.collect_report(REPO, PR, self.client(FakeTransport(body=body)), clock=self.clock())
