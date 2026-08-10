@@ -38,24 +38,25 @@ How this satisfies the acceptance criteria:
 
 ## Validation evidence
 
-Validation performed:
-
-- [ ] Read back changed files from the feature branch
-- [ ] Reviewed Markdown for clarity and structure
-- [ ] Reviewed issue-form YAML, if changed
-- [ ] Checked internal documentation links by inspection
-- [ ] Confirmed no automation or application code was added
-- [ ] Other:
-
-Validation not performed:
-
-- [ ] None
-- [ ] Pending local validation
-- [ ] Pending environment-specific validation
-
-Explain any unchecked validation:
+Applicable validation profile / change type:
 
 - 
+
+Commands or checks run:
+
+- 
+
+Results:
+
+- 
+
+Pending / unavailable / environment-specific validation:
+
+- None / exact check and reason.
+
+Canonical validation guidance:
+
+- `docs/reference/validation-by-change-type.md`
 
 ## Assumptions and caveats
 
