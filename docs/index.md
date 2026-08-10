@@ -4,7 +4,9 @@
 
 IssueOps is an experiment in making agentic coding safer and easier to review by turning the GitHub issue into an execution contract. The issue defines the work. The branch contains the implementation. The pull request carries the evidence pack that a human verifies before deciding whether to merge.
 
-The repository starts deliberately small. Stage 1 established the manual workflow, Stage 2 hardened it into the current recommended operating protocol, Stage 3 tested read-only evidence-pack assistance as an experimental alpha capability, and Stage 4 adopted a Diátaxis-aligned documentation architecture without changing the operating or authority model.
+IssueOps has grown through four completed delivery stages. Stage 1 established the manual workflow, Stage 2 hardened it into the current recommended operating protocol, Stage 3 tested read-only evidence-pack assistance as an experimental alpha capability, and Stage 4 adopted a Diátaxis-aligned documentation architecture without changing the operating or authority model.
+
+Current programme status is maintained in the [planning control surface](https://github.com/8ft0-ai/IssueOps/blob/main/planning/README.md) and [roadmap index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/index.md), rather than duplicated on this landing page.
 
 ## Choose your path
 
