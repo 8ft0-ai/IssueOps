@@ -40,15 +40,15 @@ How this satisfies the acceptance criteria:
 
 Applicable validation profile / change type:
 
-- 
+- ...
 
 Commands or checks run:
 
-- 
+- ...
 
 Results:
 
-- 
+- ...
 
 Pending / unavailable / environment-specific validation:
 
