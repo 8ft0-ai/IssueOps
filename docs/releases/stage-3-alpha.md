@@ -19,10 +19,10 @@ The exact former alpha page remains available at the verified [pre-migration sna
 ## Current related guidance
 
 - [Evidence-pack schema](../evidence-pack-schema.md)
-- [Approved Stage 5 roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-05-operational-evidence-assistance.md)
+- [Completed Stage 5 roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-05-operational-evidence-assistance.md)
 - [Roadmap index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/index.md)
 
-Stage 5 has moved beyond shaping under an approved roadmap. Its delivery, proof and final **Adopt / Adapt / Reject** decision are separately governed; use the canonical roadmap and planning records for current status. That later Stage 5 work does not rewrite the Stage 3 **Adapt** outcome or make this alpha snapshot the recommended baseline.
+Stage 5 completed with decision **Adopt**. Its detailed delivery, proof and close-out evidence remain owned by the canonical roadmap and planning records. Stage 5 adoption does not rewrite the historical Stage 3 **Adapt** outcome or make this alpha snapshot the recommended baseline.
 
 ## Compatibility note
 
