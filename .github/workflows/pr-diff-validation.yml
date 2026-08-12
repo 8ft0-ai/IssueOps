@@ -3,15 +3,26 @@ name: Validate pull-request diff
 run-name: >-
   ${{ github.event_name == 'pull_request' &&
       format('Validate PR #{0} diff [pull_request]', github.event.pull_request.number) ||
-      format('Validate PR #{0} diff [issue_comment #{1}]', github.event.issue.number, github.event.comment.id) }}
+      format('Validate PR #{0} diff [routed comment #{1}]', inputs.routed_pr_number, inputs.request_comment_id) }}
 
 on:
   pull_request:
     branches:
       - main
-  issue_comment:
-    types:
-      - created
+  workflow_call:
+    inputs:
+      routed_pr_number:
+        description: Event-derived pull-request number from the fixed comment router
+        required: true
+        type: number
+      request_comment_id:
+        description: Event-derived request comment ID from the fixed comment router
+        required: true
+        type: number
+      comment_actor:
+        description: Event-derived comment actor from the fixed comment router
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -20,12 +31,6 @@ permissions:
 jobs:
   validate:
     name: Validate exact PR base/head pair
-    if: >-
-      github.event_name == 'pull_request' ||
-      (github.event_name == 'issue_comment' &&
-       github.event.action == 'created' &&
-       github.event.issue.pull_request &&
-       github.event.comment.body == '/validate-pr-diff')
     runs-on: ubuntu-latest
 
     steps:
@@ -35,41 +40,51 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          REQUEST_COMMENT_ID: ${{ github.event.comment.id }}
+          ROUTED_PR_NUMBER: ${{ inputs.routed_pr_number }}
+          REQUEST_COMMENT_ID: ${{ inputs.request_comment_id }}
+          COMMENT_ACTOR: ${{ inputs.comment_actor }}
         run: |
           set -euo pipefail
 
-          case "$EVENT_NAME" in
-            pull_request)
-              pr_number="$PULL_REQUEST_NUMBER"
-              request_comment_id=""
-              ;;
-            issue_comment)
-              pr_number="$ISSUE_NUMBER"
-              request_comment_id="$REQUEST_COMMENT_ID"
-              ;;
-            *)
-              echo "unsupported trigger: $EVENT_NAME" >&2
-              exit 1
-              ;;
-          esac
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            pr_number="$PULL_REQUEST_NUMBER"
+            request_comment_id=""
+            comment_actor=""
+            trigger_kind="pull_request"
+          else
+            pr_number="$ROUTED_PR_NUMBER"
+            request_comment_id="$REQUEST_COMMENT_ID"
+            comment_actor="$COMMENT_ACTOR"
+            trigger_kind="issue_comment_router"
+          fi
 
           if [[ ! "$pr_number" =~ ^[1-9][0-9]*$ ]]; then
             echo "event-derived PR number is invalid" >&2
             exit 1
           fi
 
+          if [[ "$trigger_kind" == "issue_comment_router" && ! "$request_comment_id" =~ ^[1-9][0-9]*$ ]]; then
+            echo "event-derived routed request comment ID is invalid" >&2
+            exit 1
+          fi
+
+          if [[ "$trigger_kind" == "issue_comment_router" && -z "$comment_actor" ]]; then
+            echo "event-derived routed comment actor is unavailable" >&2
+            exit 1
+          fi
+
           echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
           echo "request_comment_id=$request_comment_id" >> "$GITHUB_OUTPUT"
+          echo "comment_actor=$comment_actor" >> "$GITHUB_OUTPUT"
+          echo "trigger_kind=$trigger_kind" >> "$GITHUB_OUTPUT"
 
       - name: Check comment actor effective repository permission
         id: permission
-        if: github.event_name == 'issue_comment'
+        if: steps.target.outputs.trigger_kind == 'issue_comment_router'
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          COMMENT_ACTOR: ${{ github.event.comment.user.login }}
+          COMMENT_ACTOR: ${{ steps.target.outputs.comment_actor }}
         run: |
           set -euo pipefail
 
@@ -116,7 +131,7 @@ jobs:
 
       - name: Resolve current pull request through GitHub state
         id: resolve
-        if: github.event_name == 'pull_request' || steps.permission.outputs.permission_status == 'allowed'
+        if: steps.target.outputs.trigger_kind == 'pull_request' || steps.permission.outputs.permission_status == 'allowed'
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -261,7 +276,7 @@ jobs:
         if: steps.acquire.outputs.acquire_status == 'ready'
         shell: bash
         env:
-          EVENT_NAME: ${{ github.event_name }}
+          TRIGGER_KIND: ${{ steps.target.outputs.trigger_kind }}
           BASE_SHA: ${{ steps.resolve.outputs.base_sha }}
           HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
         run: |
@@ -294,7 +309,7 @@ jobs:
               ;;
           esac
 
-          if [[ "$EVENT_NAME" == "issue_comment" ]]; then
+          if [[ "$TRIGGER_KIND" == "issue_comment_router" ]]; then
             provenance="default-branch-validator-provenance"
           elif [[ "$validator_changed" == "true" ]]; then
             provenance="candidate-pr-associated-validator-evidence"
@@ -396,6 +411,7 @@ jobs:
         env:
           PR_NUMBER: ${{ steps.target.outputs.pr_number }}
           REQUEST_COMMENT_ID: ${{ steps.target.outputs.request_comment_id }}
+          TRIGGER_KIND: ${{ steps.target.outputs.trigger_kind }}
           PR_STATE: ${{ steps.resolve.outputs.pr_state }}
           BASE_SHA: ${{ steps.resolve.outputs.base_sha }}
           HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
@@ -435,13 +451,15 @@ jobs:
             printf '| HEAD_REF | `%s` |\n' "$(value_or_unavailable "$HEAD_REF")"
             printf '| BASE_REF_TIP_SHA | `%s` |\n' "$(value_or_unavailable "$BASE_REF_TIP_SHA")"
             printf '| MERGE_BASE | `%s` |\n' "$(value_or_unavailable "$MERGE_BASE")"
-            printf '| workflow definition ref | `%s` |\n' "$GITHUB_WORKFLOW_REF"
-            printf '| workflow definition SHA | `%s` |\n' "$GITHUB_WORKFLOW_SHA"
+            printf '| workflow/caller definition ref | `%s` |\n' "$GITHUB_WORKFLOW_REF"
+            printf '| workflow/caller definition SHA | `%s` |\n' "$GITHUB_WORKFLOW_SHA"
+            echo '| validator workflow path | `.github/workflows/pr-diff-validation.yml` |'
+            printf '| validator definition commit | `%s` |\n' "$GITHUB_WORKFLOW_SHA"
             printf '| validator changed | `%s` |\n' "$(value_or_unavailable "$VALIDATOR_CHANGED")"
             printf '| provenance classification | `%s` |\n' "$(value_or_unavailable "$PROVENANCE")"
             printf '| workflow run ID | `%s` |\n' "$GITHUB_RUN_ID"
             printf '| workflow run attempt | `%s` |\n' "$GITHUB_RUN_ATTEMPT"
-            printf '| trigger kind | `%s` |\n' "$GITHUB_EVENT_NAME"
+            printf '| trigger kind | `%s` |\n' "$(value_or_unavailable "$TRIGGER_KIND")"
             printf '| request-comment ID | `%s` |\n' "$(value_or_unavailable "$REQUEST_COMMENT_ID")"
             echo '| exact validation command | `git diff --check "$BASE_SHA...$HEAD_SHA"` |'
             printf '| actual command exit status | `%s` |\n' "$(value_or_unavailable "$VALIDATION_EXIT")"
@@ -455,7 +473,7 @@ jobs:
         if: always()
         shell: bash
         env:
-          EVENT_NAME: ${{ github.event_name }}
+          TRIGGER_KIND: ${{ steps.target.outputs.trigger_kind }}
           PERMISSION_STATUS: ${{ steps.permission.outputs.permission_status }}
           EFFECTIVE_PERMISSION: ${{ steps.permission.outputs.effective_permission }}
           RESOLUTION_STATUS: ${{ steps.resolve.outputs.resolution_status }}
@@ -470,7 +488,7 @@ jobs:
 
           failures=()
 
-          if [[ "$EVENT_NAME" == "issue_comment" ]]; then
+          if [[ "$TRIGGER_KIND" == "issue_comment_router" ]]; then
             case "$PERMISSION_STATUS" in
               allowed)
                 ;;
@@ -484,7 +502,7 @@ jobs:
           fi
 
           resolution_expected=false
-          if [[ "$EVENT_NAME" == "pull_request" || "$PERMISSION_STATUS" == "allowed" ]]; then
+          if [[ "$TRIGGER_KIND" == "pull_request" || "$PERMISSION_STATUS" == "allowed" ]]; then
             resolution_expected=true
           fi
 
