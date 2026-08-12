@@ -77,7 +77,7 @@ The strongest ordinary-work proof snapshots were:
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | #167 | `cfc58623ddec0403452b624fda65c48bf10099b4` | `5233803230` | `31335523738` | 1 | success | `9044198947` | `4892656057` |
 | 2 | #173 | `9c7d0719432604ccbafe483b1a9c65f3cf58d2c1` | `5245349417` | `31427268867` | 1 | success | `9077666717` | `4900599406` |
-| 3 | #176 | `2683d3a043a8a44f7928a43c702d157b467622be` | `5248559483` | `31454688542` | 1 | success | `9087581658` | `4901871525` |
+| 3 | #176 | `2683d3a043a8a44f7928a43c702d157b467622be` | `5248559483` | `31454688542` | 1 | success | `9087581658` | `4903280549` |
 
 All three packs mechanically completed on the decision-relevant heads, represented canonical linkage truthfully and reported submitted-review state separately from inline review-thread state. The final snapshots contained zero inline review threads.
 
