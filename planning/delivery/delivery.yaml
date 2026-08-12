@@ -182,7 +182,7 @@
       "id": "issue-90",
       "type": "issue",
       "title": "Issue #90 — Shape operational evidence assistance",
-      "summary": "Possible Stage 5 remains shaping-only and must use the adopted documentation ownership and project-record boundaries.",
+      "summary": "Governed Stage 5 planning, ordinary-work adoption proof and the final owner Adopt decision.",
       "url": "https://github.com/8ft0-ai/IssueOps/issues/90"
     },
     {
@@ -294,6 +294,27 @@
       "summary": "Completed the manual modular-session initiative and adopted compact grants, repository-native reconciliation, bounded roles and verifiable handovers into the recommended baseline.",
       "status": "completed",
       "path": "planning/delivery/modular-issueops-session-architecture.md"
+    },
+    {
+      "id": "stage-5",
+      "type": "stage",
+      "title": "Stage 5 — Operational evidence assistance",
+      "summary": "Adopted human-triggered, read-only normal-review evidence assistance after bounded completeness changes and ordinary-work proof.",
+      "status": "completed",
+      "path": "planning/delivery/stage-05-operational-evidence-assistance.md"
+    },
+    {
+      "id": "issue-163",
+      "type": "issue",
+      "title": "Issue #163 — Stage 5 ordinary-work proof",
+      "summary": "Governed prospective suitability, three qualifying ordinary-PR proof positions, exclusions, synthesis and authority audit.",
+      "url": "https://github.com/8ft0-ai/IssueOps/issues/163"
+    },
+    {
+      "id": "decision-adopt-stage-5",
+      "type": "decision",
+      "title": "Adopt operational evidence assistance",
+      "summary": "Ordinary-work proof and authority audit support adopting the human-triggered, read-only evidence-assistance model."
     }
   ],
   "edges": [
@@ -594,6 +615,31 @@
     },
     {
       "from": "initiative-modular-sessions",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "issue-90",
+      "to": "stage-5",
+      "type": "enabled"
+    },
+    {
+      "from": "stage-5",
+      "to": "issue-163",
+      "type": "proved_by"
+    },
+    {
+      "from": "issue-163",
+      "to": "decision-adopt-stage-5",
+      "type": "produced"
+    },
+    {
+      "from": "stage-5",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-5",
       "to": "boundary-bounded-automation",
       "type": "preserved"
     }

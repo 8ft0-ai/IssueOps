@@ -29,10 +29,13 @@ Retrospective records must not claim that the complete planning structure existe
 
 - [Stage 3 — Read-only evidence-pack assistance](stage-03-read-only-evidence-pack-assistance.md) — completed with an **Adapt** decision.
 - [Stage 4 — Diátaxis documentation architecture](stage-04-diataxis-documentation-architecture.md) — completed with an **Adopt** decision; actual delivery is recorded in the [Stage 4 delivery record](../delivery/stage-04-diataxis-documentation-architecture.md).
+- [Stage 5 — Operational evidence assistance](stage-05-operational-evidence-assistance.md) — completed with an **Adopt** decision after three qualifying ordinary-PR proof positions; actual delivery is recorded in the [Stage 5 delivery record](../delivery/stage-05-operational-evidence-assistance.md) and [close-out record](../closeout/stage-05-operational-evidence-assistance.md).
 
-Stage 3 delivered deterministic read-only evidence collection and exposed the contract-linkage, review-completeness and operational-adoption questions now carried into approved Stage 5.
+Stage 3 delivered deterministic read-only evidence collection and exposed contract-linkage, review-completeness and operational-adoption questions that were subsequently addressed and proved through Stage 5.
 
 Stage 4 organised user-facing documentation around Tutorials, How-to guides, Reference and Explanation, preserved project records outside the substantive tree and retained all IssueOps authority boundaries.
+
+Stage 5 adopted the bounded human-triggered, read-only evidence-assistance model for normal IssueOps review after delivering canonical non-closing execution-contract linkage, truthful inline review-thread evidence, Stage 4-aligned reviewer guidance and ordinary-work proof. Mechanical completeness remains separate from approval readiness and human review/merge authority remains unchanged.
 
 ## Completed contemporaneous initiatives
 
@@ -47,16 +50,12 @@ The modular-session initiative delivered compact session grants, repository-nati
 
 ## Active approved roadmap
 
-- [Stage 5 — Operational evidence assistance](stage-05-operational-evidence-assistance.md) — approved through planning issue [#90](https://github.com/8ft0-ai/IssueOps/issues/90); roadmap formalisation is governed by issue [#155](https://github.com/8ft0-ai/IssueOps/issues/155).
-
-Stage 5 retains the bounded human-triggered, read-only evidence-assistance model. Its approved adaptation boundary is canonical non-closing execution-contract linkage plus truthful inline review-thread evidence or explicit unavailable/incomplete representation, followed by ordinary-PR proof before a final **Adopt**, **Adapt** or **Reject** decision.
-
-The completed [#141](https://github.com/8ft0-ai/IssueOps/issues/141) / [#144](https://github.com/8ft0-ai/IssueOps/issues/144) execution-bridge lineage provides the proved exact `/collect-evidence` transport used by the Stage 5 target workflow. That completed transport is a dependency/capability, not evidence that Stage 5 has already been adopted.
+No stage-level roadmap is currently active or approved for delivery.
 
 ## Future stages
 
 No later stage is currently approved. Any stage after Stage 5 must begin as a separately governed planning question.
 
-The modular-session and portable-bootstrap initiatives, active Stage 5 roadmap, completed #141/#144 execution-bridge lineage and separate #148/#149 PR-diff-validation lineage remain independently governed. Completion or approval of one does not grant execution authority to another.
+The modular-session and portable-bootstrap initiatives, completed Stage 5 roadmap, completed #141/#144 execution-bridge lineage and separate #148/#149 PR-diff-validation lineage remain independently governed. Completion or adoption of one does not grant execution authority to another.
 
-No roadmap approval should be interpreted as authority for lifecycle automation, new execution-trigger surfaces, auto-merge configuration, repository-setting changes or broader operational rollout unless those capabilities are explicitly shaped, approved and delivered through their own execution contracts.
+No roadmap approval or completed-stage adoption should be interpreted as authority for lifecycle automation, new execution-trigger surfaces, auto-merge configuration, repository-setting changes or broader operational rollout unless those capabilities are explicitly shaped, approved and delivered through their own execution contracts.
