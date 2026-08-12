@@ -3,7 +3,7 @@ name: Collect pull-request evidence pack
 run-name: >-
   ${{ github.event_name == 'workflow_dispatch' &&
       format('Collect evidence for PR #{0} [workflow_dispatch]', inputs.pull_request) ||
-      format('Collect evidence for PR #{0} [issue_comment #{1}]', github.event.issue.number, github.event.comment.id) }}
+      format('Collect evidence for PR #{0} [routed comment #{1}]', inputs.routed_pr_number, inputs.request_comment_id) }}
 
 on:
   workflow_dispatch:
@@ -12,9 +12,20 @@ on:
         description: Pull-request number in this repository
         required: true
         type: string
-  issue_comment:
-    types:
-      - created
+  workflow_call:
+    inputs:
+      routed_pr_number:
+        description: Event-derived pull-request number from the fixed comment router
+        required: true
+        type: number
+      request_comment_id:
+        description: Event-derived request comment ID from the fixed comment router
+        required: true
+        type: number
+      comment_actor:
+        description: Event-derived comment actor from the fixed comment router
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -26,12 +37,6 @@ permissions:
 jobs:
   collect:
     name: Collect read-only evidence
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issue_comment' &&
-       github.event.action == 'created' &&
-       github.event.issue.pull_request &&
-       github.event.comment.body == '/collect-evidence')
     runs-on: ubuntu-latest
     steps:
       - name: Derive and validate pull-request target
@@ -40,52 +45,54 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           MANUAL_PULL_REQUEST: ${{ inputs.pull_request }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          REQUEST_COMMENT_ID: ${{ github.event.comment.id }}
+          ROUTED_PR_NUMBER: ${{ inputs.routed_pr_number }}
+          REQUEST_COMMENT_ID: ${{ inputs.request_comment_id }}
+          COMMENT_ACTOR: ${{ inputs.comment_actor }}
         run: |
           set -euo pipefail
 
-          case "$EVENT_NAME" in
-            workflow_dispatch)
-              pr_number="$MANUAL_PULL_REQUEST"
-              request_comment_id=""
-              trigger_kind="workflow_dispatch"
-              ;;
-            issue_comment)
-              pr_number="$ISSUE_NUMBER"
-              request_comment_id="$REQUEST_COMMENT_ID"
-              trigger_kind="issue_comment"
-              ;;
-            *)
-              echo "unsupported trigger: $EVENT_NAME" >&2
-              exit 1
-              ;;
-          esac
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            pr_number="$MANUAL_PULL_REQUEST"
+            request_comment_id=""
+            comment_actor=""
+            trigger_kind="workflow_dispatch"
+          else
+            pr_number="$ROUTED_PR_NUMBER"
+            request_comment_id="$REQUEST_COMMENT_ID"
+            comment_actor="$COMMENT_ACTOR"
+            trigger_kind="issue_comment_router"
+          fi
 
           if [[ ! "$pr_number" =~ ^[1-9][0-9]*$ ]]; then
-            if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            if [[ "$trigger_kind" == "workflow_dispatch" ]]; then
               echo "pull_request must be a positive integer" >&2
             else
-              echo "event-derived PR number is invalid" >&2
+              echo "event-derived routed PR number is invalid" >&2
             fi
             exit 1
           fi
 
-          if [[ "$EVENT_NAME" == "issue_comment" && ! "$request_comment_id" =~ ^[1-9][0-9]*$ ]]; then
-            echo "event-derived request comment ID is invalid" >&2
+          if [[ "$trigger_kind" == "issue_comment_router" && ! "$request_comment_id" =~ ^[1-9][0-9]*$ ]]; then
+            echo "event-derived routed request comment ID is invalid" >&2
+            exit 1
+          fi
+
+          if [[ "$trigger_kind" == "issue_comment_router" && -z "$comment_actor" ]]; then
+            echo "event-derived routed comment actor is unavailable" >&2
             exit 1
           fi
 
           echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
           echo "request_comment_id=$request_comment_id" >> "$GITHUB_OUTPUT"
+          echo "comment_actor=$comment_actor" >> "$GITHUB_OUTPUT"
           echo "trigger_kind=$trigger_kind" >> "$GITHUB_OUTPUT"
 
       - name: Check comment actor effective repository permission
-        if: github.event_name == 'issue_comment'
+        if: steps.target.outputs.trigger_kind == 'issue_comment_router'
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          COMMENT_ACTOR: ${{ github.event.comment.user.login }}
+          COMMENT_ACTOR: ${{ steps.target.outputs.comment_actor }}
         run: |
           set -euo pipefail
 
@@ -125,8 +132,8 @@ jobs:
               ;;
           esac
 
-      - name: Revalidate comment-triggered pull request
-        if: github.event_name == 'issue_comment'
+      - name: Revalidate routed pull request
+        if: steps.target.outputs.trigger_kind == 'issue_comment_router'
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -188,6 +195,9 @@ jobs:
             fi
             echo "- Workflow run ID: \`$GITHUB_RUN_ID\`"
             echo "- Run attempt: \`$GITHUB_RUN_ATTEMPT\`"
+            echo "- Called workflow path: \`.github/workflows/collect-evidence-pack.yml\`"
+            echo "- Caller workflow ref: \`$GITHUB_WORKFLOW_REF\`"
+            echo "- Caller workflow SHA: \`$GITHUB_WORKFLOW_SHA\`"
             echo
           } >> "$GITHUB_STEP_SUMMARY"
 

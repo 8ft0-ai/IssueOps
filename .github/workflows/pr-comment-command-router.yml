@@ -1,0 +1,43 @@
+name: Route pull-request comment commands
+
+run-name: >-
+  Route issue/PR #${{ github.event.issue.number }} comment #${{ github.event.comment.id }}
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  validate-pr-diff:
+    name: Route exact /validate-pr-diff
+    if: >-
+      github.event.action == 'created' &&
+      github.event.issue.pull_request &&
+      github.event.comment.body == '/validate-pr-diff'
+    permissions:
+      contents: read
+      pull-requests: read
+    uses: ./.github/workflows/pr-diff-validation.yml
+    with:
+      routed_pr_number: ${{ github.event.issue.number }}
+      request_comment_id: ${{ github.event.comment.id }}
+      comment_actor: ${{ github.event.comment.user.login }}
+
+  collect-evidence:
+    name: Route exact /collect-evidence
+    if: >-
+      github.event.action == 'created' &&
+      github.event.issue.pull_request &&
+      github.event.comment.body == '/collect-evidence'
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      checks: read
+      actions: read
+    uses: ./.github/workflows/collect-evidence-pack.yml
+    with:
+      routed_pr_number: ${{ github.event.issue.number }}
+      request_comment_id: ${{ github.event.comment.id }}
+      comment_actor: ${{ github.event.comment.user.login }}
