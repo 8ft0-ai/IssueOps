@@ -84,7 +84,7 @@ This position retained material negative evidence. The initial exact-pair valida
 - terminal conclusion: `success`
 - artifact: `9087581658` / `evidence-pack-pr-176-31454688542`
 - artifact digest: `sha256:616585851638ce26b8d078cdb7934606ee239f457007754400d26c1ed087d5a1`
-- independent review: `4901871525`
+- independent review: `4903280549`
 - review outcome: **Approve**
 
 PR #176 was still a draft and unmerged when the final Stage 5 decision was made. That state is positive authority evidence: favourable Stage 5 proof did not confer merge authority on the ordinary pull request.
