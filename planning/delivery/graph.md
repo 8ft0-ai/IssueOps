@@ -49,9 +49,6 @@ flowchart LR
   n_initiative_modular_sessions["Modular IssueOps session architecture\n(stage)"]
   n_stage_5["Stage 5 — Operational evidence assistance\n(stage)"]
   n_issue_163["Issue #163 — Stage 5 ordinary-work proof\n(issue)"]
-  n_pr_167["PR #167 — Stage 5 proof position 1\n(pull request)"]
-  n_pr_173["PR #173 — Stage 5 proof position 2\n(pull request)"]
-  n_pr_176["PR #176 — Stage 5 proof position 3\n(pull request)"]
   n_decision_adopt_stage_5["Adopt operational evidence assistance\n(decision)"]
 
   n_stage_1 -->|implemented by| n_pr_2
@@ -116,9 +113,6 @@ flowchart LR
   n_initiative_modular_sessions -->|preserved| n_boundary_bounded_automation
   n_issue_90 -->|enabled| n_stage_5
   n_stage_5 -->|proved by| n_issue_163
-  n_issue_163 -->|proved by| n_pr_167
-  n_issue_163 -->|proved by| n_pr_173
-  n_issue_163 -->|proved by| n_pr_176
   n_issue_163 -->|produced| n_decision_adopt_stage_5
   n_stage_5 -->|preserved| n_boundary_human_authority
   n_stage_5 -->|preserved| n_boundary_bounded_automation
