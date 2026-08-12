@@ -16,12 +16,13 @@ Stage 3 proved manually invoked, read-only pull-request evidence collection and 
 
 The exact former alpha page remains available at the verified [pre-migration snapshot](https://github.com/8ft0-ai/IssueOps/blob/318d4b4f7c9490365033ff8363d42cd940d6b900/docs/releases/stage-3-alpha.md).
 
-## Current experimental guidance
+## Current related guidance
 
 - [Evidence-pack schema](../evidence-pack-schema.md)
-- [Possible Stage 5 shaping issue](https://github.com/8ft0-ai/IssueOps/issues/90)
+- [Completed Stage 5 roadmap](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/stage-05-operational-evidence-assistance.md)
+- [Roadmap index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/index.md)
 
-Issue #90 remains shaping-only. No Stage 5 implementation is authorised by Stage 3 or Stage 4.
+Stage 5 completed with decision **Adopt**. Its detailed delivery, proof and close-out evidence remain owned by the canonical roadmap and planning records. Stage 5 adoption does not rewrite the historical Stage 3 **Adapt** outcome or make this alpha snapshot the recommended baseline.
 
 ## Compatibility note
 
