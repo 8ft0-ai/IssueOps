@@ -1,601 +1,124 @@
 {
   "schema_version": "delivery-graph/v1",
   "nodes": [
-    {
-      "id": "stage-1",
-      "type": "stage",
-      "title": "Stage 1 — Manual execution-contract foundation",
-      "summary": "Established the manual issue-contract, evidence-pack and human-approval baseline.",
-      "status": "completed",
-      "path": "planning/delivery/stage-01-manual-execution-contract-foundation.md"
-    },
-    {
-      "id": "pr-2",
-      "type": "pull_request",
-      "title": "PR #2 — Stage 1 foundation",
-      "summary": "Implemented the first execution-contract IssueOps baseline.",
-      "url": "https://github.com/8ft0-ai/IssueOps/pull/2"
-    },
-    {
-      "id": "release-v0-1",
-      "type": "release",
-      "title": "v0.1.0 baseline",
-      "summary": "Recorded the stable manual Stage 1 baseline.",
-      "path": "docs/releases/stage-1.md"
-    },
-    {
-      "id": "lesson-safe-operation",
-      "type": "lesson",
-      "title": "Safe actuation needs its own gate",
-      "summary": "A correct contract and plan do not prevent an agent from invoking the wrong mutating tool."
-    },
-    {
-      "id": "problem-fragmented-model",
-      "type": "problem",
-      "title": "Fragmented and lightly evidenced operating model",
-      "summary": "Stage 1 guidance was usable but not yet canonical, published or repository-validated."
-    },
-    {
-      "id": "stage-2",
-      "type": "stage",
-      "title": "Stage 2 — Published and hardened operating model",
-      "summary": "Published, consolidated, dogfooded and repository-validated the IssueOps protocol.",
-      "status": "completed",
-      "path": "planning/delivery/stage-02-operating-model-hardening.md"
-    },
-    {
-      "id": "artifact-docs-site",
-      "type": "artifact",
-      "title": "Canonical MkDocs documentation",
-      "summary": "Created the public documentation and GitHub Pages delivery surface.",
-      "path": "docs/index.md"
-    },
-    {
-      "id": "artifact-operating-protocol",
-      "type": "artifact",
-      "title": "Canonical IssueOps operating protocol",
-      "summary": "Consolidated the lifecycle from readiness through post-merge verification.",
-      "path": "docs/issueops-protocol.md"
-    },
-    {
-      "id": "pr-60",
-      "type": "pull_request",
-      "title": "PR #60 — Full-protocol dogfood",
-      "summary": "Exercised the complete Stage 2 protocol and retained circuit-breaker evidence.",
-      "url": "https://github.com/8ft0-ai/IssueOps/pull/60"
-    },
-    {
-      "id": "pr-61",
-      "type": "pull_request",
-      "title": "PR #61 — Repository-native validation",
-      "summary": "Added automatic PR validation and separated it from production deployment.",
-      "url": "https://github.com/8ft0-ai/IssueOps/pull/61"
-    },
-    {
-      "id": "release-v0-2",
-      "type": "release",
-      "title": "v0.2.0 recommended baseline",
-      "summary": "Recorded the published and hardened Stage 2 baseline.",
-      "path": "docs/releases/stage-2.md"
-    },
-    {
-      "id": "boundary-human-authority",
-      "type": "boundary",
-      "title": "Human contract and merge authority",
-      "summary": "Humans retain authority over scope changes, evidence acceptance, merge and publication."
-    },
-    {
-      "id": "boundary-bounded-automation",
-      "type": "boundary",
-      "title": "Automation remains bounded",
-      "summary": "The baseline does not authorise automatic agent execution, lifecycle transitions or auto-merge."
-    },
-    {
-      "id": "decision-planning-adoption",
-      "type": "decision",
-      "title": "Adopt stage planning for multi-issue work",
-      "summary": "Use the planning model proportionately for cross-cutting, governance-sensitive or proof-dependent stages."
-    },
-    {
-      "id": "pr-70",
-      "type": "pull_request",
-      "title": "PR #70 — Planning control surface",
-      "summary": "Added separate roadmap and delivery records, templates and structural validation.",
-      "url": "https://github.com/8ft0-ai/IssueOps/pull/70"
-    },
-    {
-      "id": "pr-73",
-      "type": "pull_request",
-      "title": "PR #73 — Compact delivery graph",
-      "summary": "Proved the causal graph, schema validation, rendering and freshness checks.",
-      "url": "https://github.com/8ft0-ai/IssueOps/pull/73"
-    },
-    {
-      "id": "artifact-adoption-record",
-      "type": "artifact",
-      "title": "Planning-process adoption record",
-      "summary": "Records the adopted model, proportionality rule, graph threshold and Stage 3 boundary.",
-      "path": "planning/delivery/planning-process-adoption.md"
-    },
-    {
-      "id": "decision-stage-3",
-      "type": "decision",
-      "title": "Stage 3 requires deliberate shaping",
-      "summary": "Choose one evidence-based automation boundary and approve its roadmap before execution issues."
-    },
-    {
-      "id": "stage-3",
-      "type": "stage",
-      "title": "Stage 3 — Read-only evidence-pack assistance",
-      "summary": "Delivered and dogfooded bounded read-only PR evidence assistance; closed with an Adapt decision.",
-      "status": "completed",
-      "path": "planning/delivery/stage-03-read-only-evidence-pack-assistance.md"
-    },
-    {
-      "id": "artifact-evidence-pack-v1",
-      "type": "artifact",
-      "title": "evidence-pack/v1",
-      "summary": "Provides deterministic evidence classification, provenance, rendering and fail-closed status semantics.",
-      "path": "docs/evidence-pack-schema.md"
-    },
-    {
-      "id": "pr-85",
-      "type": "pull_request",
-      "title": "PR #85 — Stage 3 live dogfood and recovery",
-      "summary": "Proved pending-to-final reporting, read-only authority and the recovery from a premature close-out merge.",
-      "url": "https://github.com/8ft0-ai/IssueOps/pull/85"
-    },
-    {
-      "id": "decision-adapt-evidence-assistance",
-      "type": "decision",
-      "title": "Adapt evidence-pack assistance before broader adoption",
-      "summary": "Retain controlled read-only use while separately planning non-closing issue linkage and simpler invocation."
-    },
-    {
-      "id": "problem-mixed-documentation",
-      "type": "problem",
-      "title": "Reader journeys obscured by mixed documentation",
-      "summary": "Accurate guidance mixed learning, task, reference, explanation and project-history needs across component-based pages."
-    },
-    {
-      "id": "stage-4",
-      "type": "stage",
-      "title": "Stage 4 — Diátaxis documentation architecture",
-      "summary": "Organised user-facing guidance around four reader needs and preserved project records outside the substantive documentation tree.",
-      "status": "completed",
-      "path": "planning/delivery/stage-04-diataxis-documentation-architecture.md"
-    },
-    {
-      "id": "artifact-diataxis-docs",
-      "type": "artifact",
-      "title": "Diátaxis-aligned IssueOps documentation",
-      "summary": "Provides explicit Tutorial, How-to, Reference and Explanation journeys with a concise lifecycle protocol and compatibility boundaries.",
-      "path": "docs/index.md"
-    },
-    {
-      "id": "decision-adopt-diataxis",
-      "type": "decision",
-      "title": "Adopt the Diátaxis documentation architecture",
-      "summary": "Representative reader journeys, strict builds and link checks support adoption with temporary compatibility pages retained."
-    },
-    {
-      "id": "issue-90",
-      "type": "issue",
-      "title": "Issue #90 — Shape operational evidence assistance",
-      "summary": "Possible Stage 5 remains shaping-only and must use the adopted documentation ownership and project-record boundaries.",
-      "url": "https://github.com/8ft0-ai/IssueOps/issues/90"
-    },
-    {
-      "id": "initiative-portable-bootstrap",
-      "type": "stage",
-      "title": "Portable IssueOps bootstrap and adoption",
-      "summary": "Delivered the pinned manual bootstrap and proved external adoption through a fresh independent-agent pilot.",
-      "status": "completed",
-      "path": "planning/delivery/portable-issueops-bootstrap-and-adoption.md"
-    },
-    {
-      "id": "artifact-bootstrap-v0-1",
-      "type": "artifact",
-      "title": "IssueOps Bootstrap 0.1",
-      "summary": "Provides the pinned external entry point, proportional adoption method and local-authority handoff.",
-      "path": "BOOTSTRAP.md"
-    },
-    {
-      "id": "external-pr-bootstrap",
-      "type": "pull_request",
-      "title": "mri-fourier-lab PR #2 — Minimal bootstrap adoption",
-      "summary": "Proved first-write discipline and delivered three target-local manual control surfaces.",
-      "url": "https://github.com/8ft0-ai/mri-fourier-lab/pull/2"
-    },
-    {
-      "id": "external-pr-genuine-change",
-      "type": "pull_request",
-      "title": "mri-fourier-lab PR #4 — Genuine adopted-process change",
-      "summary": "Proved the adopted lifecycle through a source-backed keyboard-accessibility improvement.",
-      "url": "https://github.com/8ft0-ai/mri-fourier-lab/pull/4"
-    },
-    {
-      "id": "decision-adopt-portable-bootstrap",
-      "type": "decision",
-      "title": "Adopt the portable IssueOps bootstrap",
-      "summary": "Level 3 external proof supports adoption without changing the manual authority or merge boundary."
-    },
-    {
-      "id": "issue-113",
-      "type": "issue",
-      "title": "Issue #113 — Modular IssueOps session architecture",
-      "summary": "Separately governs a possible thin invocation and session architecture informed by proven manual portability.",
-      "url": "https://github.com/8ft0-ai/IssueOps/issues/113"
-    },
-    {
-      "id": "decision-adapt-modular-sessions",
-      "type": "decision",
-      "title": "Adapt the modular-session direction",
-      "summary": "Focus the remaining modular-session work on thin invocation, repository-native reconciliation, role separation and verifiable handover rather than a second kernel/profile/manifest architecture."
-    },
-    {
-      "id": "artifact-modular-session-roadmap",
-      "type": "artifact",
-      "title": "Adapted modular-session roadmap",
-      "summary": "Defines the approved modular-session initiative intent and staged evidence path.",
-      "path": "planning/roadmap/modular-issueops-session-architecture.md"
-    },
-    {
-      "id": "artifact-modular-session-ownership",
-      "type": "artifact",
-      "title": "Modular-session contract ownership",
-      "summary": "Records the delivered Slice 1 ownership and decomposition for grants, roles, handovers and supporting guidance.",
-      "path": "planning/roadmap/modular-session-contract-ownership.md"
-    },
-    {
-      "id": "artifact-modular-session-v0-1",
-      "type": "artifact",
-      "title": "Manual modular-session Version 0.1 contract",
-      "summary": "Defines the delivered normative contract for bounded session grants, role invariants, durable handovers and receiving-session verification.",
-      "path": "docs/reference/session-grants-roles-and-handovers.md"
-    },
-    {
-      "id": "issue-137",
-      "type": "issue",
-      "title": "Issue #137 — Slice 3 role-and-resume pilot programme",
-      "summary": "Governed the completed Slice 3 evidence programme for fresh role-bounded sessions and supplied the evidence carried into Slice 4.",
-      "url": "https://github.com/8ft0-ai/IssueOps/issues/137"
-    },
-    {
-      "id": "issue-142",
-      "type": "issue",
-      "title": "Issue #142 — Slice 4 comparative close-out",
-      "summary": "Compared the modular-session evidence, first requiring Adapt and later supporting Adopt after bounded correction and proof.",
-      "url": "https://github.com/8ft0-ai/IssueOps/issues/142"
-    },
-    {
-      "id": "decision-adapt-modular-baseline",
-      "type": "decision",
-      "title": "Adapt the modular-session baseline before adoption",
-      "summary": "Pilot evidence exposed material reviewer-session, merge-provenance and stale-classification weaknesses that required bounded correction before adoption."
-    },
-    {
-      "id": "pr-145",
-      "type": "pull_request",
-      "title": "PR #145 — Modular-session boundary correction",
-      "summary": "Corrected reviewer termination, durable exact-state human merge authority and explicit stale reclassification, then proved the corrected lifecycle.",
-      "url": "https://github.com/8ft0-ai/IssueOps/pull/145"
-    },
-    {
-      "id": "decision-adopt-modular-baseline",
-      "type": "decision",
-      "title": "Adopt the corrected modular-session baseline",
-      "summary": "The post-adaptation Slice 4 reassessment found the material adoption blockers resolved while retaining historical negative and unavailable evidence."
-    },
-    {
-      "id": "initiative-modular-sessions",
-      "type": "stage",
-      "title": "Modular IssueOps session architecture",
-      "summary": "Completed the manual modular-session initiative and adopted compact grants, repository-native reconciliation, bounded roles and verifiable handovers into the recommended baseline.",
-      "status": "completed",
-      "path": "planning/delivery/modular-issueops-session-architecture.md"
-    }
+    {"id":"stage-1","type":"stage","title":"Stage 1 — Manual execution-contract foundation","summary":"Established the manual issue-contract, evidence-pack and human-approval baseline.","status":"completed","path":"planning/delivery/stage-01-manual-execution-contract-foundation.md"},
+    {"id":"pr-2","type":"pull_request","title":"PR #2 — Stage 1 foundation","summary":"Implemented the first execution-contract IssueOps baseline.","url":"https://github.com/8ft0-ai/IssueOps/pull/2"},
+    {"id":"release-v0-1","type":"release","title":"v0.1.0 baseline","summary":"Recorded the stable manual Stage 1 baseline.","path":"docs/releases/stage-1.md"},
+    {"id":"lesson-safe-operation","type":"lesson","title":"Safe actuation needs its own gate","summary":"A correct contract and plan do not prevent an agent from invoking the wrong mutating tool."},
+    {"id":"problem-fragmented-model","type":"problem","title":"Fragmented and lightly evidenced operating model","summary":"Stage 1 guidance was usable but not yet canonical, published or repository-validated."},
+    {"id":"stage-2","type":"stage","title":"Stage 2 — Published and hardened operating model","summary":"Published, consolidated, dogfooded and repository-validated the IssueOps protocol.","status":"completed","path":"planning/delivery/stage-02-operating-model-hardening.md"},
+    {"id":"artifact-docs-site","type":"artifact","title":"Canonical MkDocs documentation","summary":"Created the public documentation and GitHub Pages delivery surface.","path":"docs/index.md"},
+    {"id":"artifact-operating-protocol","type":"artifact","title":"Canonical IssueOps operating protocol","summary":"Consolidated the lifecycle from readiness through post-merge verification.","path":"docs/issueops-protocol.md"},
+    {"id":"pr-60","type":"pull_request","title":"PR #60 — Full-protocol dogfood","summary":"Exercised the complete Stage 2 protocol and retained circuit-breaker evidence.","url":"https://github.com/8ft0-ai/IssueOps/pull/60"},
+    {"id":"pr-61","type":"pull_request","title":"PR #61 — Repository-native validation","summary":"Added automatic PR validation and separated it from production deployment.","url":"https://github.com/8ft0-ai/IssueOps/pull/61"},
+    {"id":"release-v0-2","type":"release","title":"v0.2.0 recommended baseline","summary":"Recorded the published and hardened Stage 2 baseline.","path":"docs/releases/stage-2.md"},
+    {"id":"boundary-human-authority","type":"boundary","title":"Human contract and merge authority","summary":"Humans retain authority over scope changes, evidence acceptance, merge and publication."},
+    {"id":"boundary-bounded-automation","type":"boundary","title":"Automation remains bounded","summary":"The baseline does not authorise automatic agent execution, lifecycle transitions or auto-merge."},
+    {"id":"decision-planning-adoption","type":"decision","title":"Adopt stage planning for multi-issue work","summary":"Use the planning model proportionately for cross-cutting, governance-sensitive or proof-dependent stages."},
+    {"id":"pr-70","type":"pull_request","title":"PR #70 — Planning control surface","summary":"Added separate roadmap and delivery records, templates and structural validation.","url":"https://github.com/8ft0-ai/IssueOps/pull/70"},
+    {"id":"pr-73","type":"pull_request","title":"PR #73 — Compact delivery graph","summary":"Proved the causal graph, schema validation, rendering and freshness checks.","url":"https://github.com/8ft0-ai/IssueOps/pull/73"},
+    {"id":"artifact-adoption-record","type":"artifact","title":"Planning-process adoption record","summary":"Records the adopted model, proportionality rule, graph threshold and Stage 3 boundary.","path":"planning/delivery/planning-process-adoption.md"},
+    {"id":"decision-stage-3","type":"decision","title":"Stage 3 requires deliberate shaping","summary":"Choose one evidence-based automation boundary and approve its roadmap before execution issues."},
+    {"id":"stage-3","type":"stage","title":"Stage 3 — Read-only evidence-pack assistance","summary":"Delivered and dogfooded bounded read-only PR evidence assistance; closed with an Adapt decision.","status":"completed","path":"planning/delivery/stage-03-read-only-evidence-pack-assistance.md"},
+    {"id":"artifact-evidence-pack-v1","type":"artifact","title":"evidence-pack/v1","summary":"Provides deterministic evidence classification, provenance, rendering and fail-closed status semantics.","path":"docs/evidence-pack-schema.md"},
+    {"id":"pr-85","type":"pull_request","title":"PR #85 — Stage 3 live dogfood and recovery","summary":"Proved pending-to-final reporting, read-only authority and the recovery from a premature close-out merge.","url":"https://github.com/8ft0-ai/IssueOps/pull/85"},
+    {"id":"decision-adapt-evidence-assistance","type":"decision","title":"Adapt evidence-pack assistance before broader adoption","summary":"Retain controlled read-only use while separately planning non-closing issue linkage and simpler invocation."},
+    {"id":"problem-mixed-documentation","type":"problem","title":"Reader journeys obscured by mixed documentation","summary":"Accurate guidance mixed learning, task, reference, explanation and project-history needs across component-based pages."},
+    {"id":"stage-4","type":"stage","title":"Stage 4 — Diátaxis documentation architecture","summary":"Organised user-facing guidance around four reader needs and preserved project records outside the substantive documentation tree.","status":"completed","path":"planning/delivery/stage-04-diataxis-documentation-architecture.md"},
+    {"id":"artifact-diataxis-docs","type":"artifact","title":"Diátaxis-aligned IssueOps documentation","summary":"Provides explicit Tutorial, How-to, Reference and Explanation journeys with a concise lifecycle protocol and compatibility boundaries.","path":"docs/index.md"},
+    {"id":"decision-adopt-diataxis","type":"decision","title":"Adopt the Diátaxis documentation architecture","summary":"Representative reader journeys, strict builds and link checks support adoption with temporary compatibility pages retained."},
+    {"id":"issue-90","type":"issue","title":"Issue #90 — Shape operational evidence assistance","summary":"Governed Stage 5 planning, ordinary-work adoption proof and the final owner Adopt decision.","url":"https://github.com/8ft0-ai/IssueOps/issues/90"},
+    {"id":"initiative-portable-bootstrap","type":"stage","title":"Portable IssueOps bootstrap and adoption","summary":"Delivered the pinned manual bootstrap and proved external adoption through a fresh independent-agent pilot.","status":"completed","path":"planning/delivery/portable-issueops-bootstrap-and-adoption.md"},
+    {"id":"artifact-bootstrap-v0-1","type":"artifact","title":"IssueOps Bootstrap 0.1","summary":"Provides the pinned external entry point, proportional adoption method and local-authority handoff.","path":"BOOTSTRAP.md"},
+    {"id":"external-pr-bootstrap","type":"pull_request","title":"mri-fourier-lab PR #2 — Minimal bootstrap adoption","summary":"Proved first-write discipline and delivered three target-local manual control surfaces.","url":"https://github.com/8ft0-ai/mri-fourier-lab/pull/2"},
+    {"id":"external-pr-genuine-change","type":"pull_request","title":"mri-fourier-lab PR #4 — Genuine adopted-process change","summary":"Proved the adopted lifecycle through a source-backed keyboard-accessibility improvement.","url":"https://github.com/8ft0-ai/mri-fourier-lab/pull/4"},
+    {"id":"decision-adopt-portable-bootstrap","type":"decision","title":"Adopt the portable IssueOps bootstrap","summary":"Level 3 external proof supports adoption without changing the manual authority or merge boundary."},
+    {"id":"issue-113","type":"issue","title":"Issue #113 — Modular IssueOps session architecture","summary":"Separately governs a possible thin invocation and session architecture informed by proven manual portability.","url":"https://github.com/8ft0-ai/IssueOps/issues/113"},
+    {"id":"decision-adapt-modular-sessions","type":"decision","title":"Adapt the modular-session direction","summary":"Focus the remaining modular-session work on thin invocation, repository-native reconciliation, role separation and verifiable handover rather than a second kernel/profile/manifest architecture."},
+    {"id":"artifact-modular-session-roadmap","type":"artifact","title":"Adapted modular-session roadmap","summary":"Defines the approved modular-session initiative intent and staged evidence path.","path":"planning/roadmap/modular-issueops-session-architecture.md"},
+    {"id":"artifact-modular-session-ownership","type":"artifact","title":"Modular-session contract ownership","summary":"Records the delivered Slice 1 ownership and decomposition for grants, roles, handovers and supporting guidance.","path":"planning/roadmap/modular-session-contract-ownership.md"},
+    {"id":"artifact-modular-session-v0-1","type":"artifact","title":"Manual modular-session Version 0.1 contract","summary":"Defines the delivered normative contract for bounded session grants, role invariants, durable handovers and receiving-session verification.","path":"docs/reference/session-grants-roles-and-handovers.md"},
+    {"id":"issue-137","type":"issue","title":"Issue #137 — Slice 3 role-and-resume pilot programme","summary":"Governed the completed Slice 3 evidence programme for fresh role-bounded sessions and supplied the evidence carried into Slice 4.","url":"https://github.com/8ft0-ai/IssueOps/issues/137"},
+    {"id":"issue-142","type":"issue","title":"Issue #142 — Slice 4 comparative close-out","summary":"Compared the modular-session evidence, first requiring Adapt and later supporting Adopt after bounded correction and proof.","url":"https://github.com/8ft0-ai/IssueOps/issues/142"},
+    {"id":"decision-adapt-modular-baseline","type":"decision","title":"Adapt the modular-session baseline before adoption","summary":"Pilot evidence exposed material reviewer-session, merge-provenance and stale-classification weaknesses that required bounded correction before adoption."},
+    {"id":"pr-145","type":"pull_request","title":"PR #145 — Modular-session boundary correction","summary":"Corrected reviewer termination, durable exact-state human merge authority and explicit stale reclassification, then proved the corrected lifecycle.","url":"https://github.com/8ft0-ai/IssueOps/pull/145"},
+    {"id":"decision-adopt-modular-baseline","type":"decision","title":"Adopt the corrected modular-session baseline","summary":"The post-adaptation Slice 4 reassessment found the material adoption blockers resolved while retaining historical negative and unavailable evidence."},
+    {"id":"initiative-modular-sessions","type":"stage","title":"Modular IssueOps session architecture","summary":"Completed the manual modular-session initiative and adopted compact grants, repository-native reconciliation, bounded roles and verifiable handovers into the recommended baseline.","status":"completed","path":"planning/delivery/modular-issueops-session-architecture.md"},
+    {"id":"stage-5","type":"stage","title":"Stage 5 — Operational evidence assistance","summary":"Adopted human-triggered, read-only normal-review evidence assistance after bounded completeness changes and ordinary-work proof.","status":"completed","path":"planning/delivery/stage-05-operational-evidence-assistance.md"},
+    {"id":"issue-163","type":"issue","title":"Issue #163 — Stage 5 ordinary-work proof","summary":"Governed prospective suitability, three qualifying ordinary-PR proof positions, exclusions, synthesis and authority audit.","url":"https://github.com/8ft0-ai/IssueOps/issues/163"},
+    {"id":"pr-167","type":"pull_request","title":"PR #167 — Stage 5 proof position 1","summary":"First qualifying ordinary PR using the evidence pack at a genuine review boundary.","url":"https://github.com/8ft0-ai/IssueOps/pull/167"},
+    {"id":"pr-173","type":"pull_request","title":"PR #173 — Stage 5 proof position 2","summary":"Second qualifying ordinary PR; retained a genuine validation failure and remediation before final proof.","url":"https://github.com/8ft0-ai/IssueOps/pull/173"},
+    {"id":"pr-176","type":"pull_request","title":"PR #176 — Stage 5 proof position 3","summary":"Third qualifying ordinary PR; remained draft and unmerged at the Stage 5 adoption decision boundary.","url":"https://github.com/8ft0-ai/IssueOps/pull/176"},
+    {"id":"decision-adopt-stage-5","type":"decision","title":"Adopt operational evidence assistance","summary":"Ordinary-work proof and authority audit support adopting the human-triggered, read-only evidence-assistance model."}
   ],
   "edges": [
-    {
-      "from": "stage-1",
-      "to": "pr-2",
-      "type": "implemented_by"
-    },
-    {
-      "from": "stage-1",
-      "to": "release-v0-1",
-      "type": "produced"
-    },
-    {
-      "from": "stage-1",
-      "to": "lesson-safe-operation",
-      "type": "revealed_problem"
-    },
-    {
-      "from": "stage-1",
-      "to": "problem-fragmented-model",
-      "type": "revealed_problem"
-    },
-    {
-      "from": "stage-1",
-      "to": "stage-2",
-      "type": "enabled"
-    },
-    {
-      "from": "problem-fragmented-model",
-      "to": "stage-2",
-      "type": "resolved_by"
-    },
-    {
-      "from": "lesson-safe-operation",
-      "to": "stage-2",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "stage-2",
-      "to": "artifact-docs-site",
-      "type": "produced"
-    },
-    {
-      "from": "stage-2",
-      "to": "artifact-operating-protocol",
-      "type": "produced"
-    },
-    {
-      "from": "stage-2",
-      "to": "pr-60",
-      "type": "proved_by"
-    },
-    {
-      "from": "stage-2",
-      "to": "pr-61",
-      "type": "validated_by"
-    },
-    {
-      "from": "stage-2",
-      "to": "release-v0-2",
-      "type": "produced"
-    },
-    {
-      "from": "stage-1",
-      "to": "boundary-human-authority",
-      "type": "preserved"
-    },
-    {
-      "from": "stage-2",
-      "to": "boundary-human-authority",
-      "type": "preserved"
-    },
-    {
-      "from": "stage-2",
-      "to": "boundary-bounded-automation",
-      "type": "preserved"
-    },
-    {
-      "from": "stage-2",
-      "to": "decision-planning-adoption",
-      "type": "motivated"
-    },
-    {
-      "from": "decision-planning-adoption",
-      "to": "pr-70",
-      "type": "implemented_by"
-    },
-    {
-      "from": "decision-planning-adoption",
-      "to": "pr-73",
-      "type": "validated_by"
-    },
-    {
-      "from": "decision-planning-adoption",
-      "to": "artifact-adoption-record",
-      "type": "produced"
-    },
-    {
-      "from": "decision-planning-adoption",
-      "to": "decision-stage-3",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "boundary-bounded-automation",
-      "to": "decision-stage-3",
-      "type": "motivated"
-    },
-    {
-      "from": "decision-stage-3",
-      "to": "stage-3",
-      "type": "enabled"
-    },
-    {
-      "from": "stage-3",
-      "to": "artifact-evidence-pack-v1",
-      "type": "produced"
-    },
-    {
-      "from": "stage-3",
-      "to": "pr-85",
-      "type": "proved_by"
-    },
-    {
-      "from": "stage-3",
-      "to": "boundary-human-authority",
-      "type": "preserved"
-    },
-    {
-      "from": "stage-3",
-      "to": "boundary-bounded-automation",
-      "type": "preserved"
-    },
-    {
-      "from": "stage-3",
-      "to": "decision-adapt-evidence-assistance",
-      "type": "produced"
-    },
-    {
-      "from": "artifact-docs-site",
-      "to": "problem-mixed-documentation",
-      "type": "revealed_problem"
-    },
-    {
-      "from": "artifact-operating-protocol",
-      "to": "problem-mixed-documentation",
-      "type": "revealed_problem"
-    },
-    {
-      "from": "problem-mixed-documentation",
-      "to": "stage-4",
-      "type": "resolved_by"
-    },
-    {
-      "from": "decision-planning-adoption",
-      "to": "stage-4",
-      "type": "enabled"
-    },
-    {
-      "from": "stage-4",
-      "to": "artifact-diataxis-docs",
-      "type": "produced"
-    },
-    {
-      "from": "stage-4",
-      "to": "boundary-human-authority",
-      "type": "preserved"
-    },
-    {
-      "from": "stage-4",
-      "to": "boundary-bounded-automation",
-      "type": "preserved"
-    },
-    {
-      "from": "stage-4",
-      "to": "decision-adopt-diataxis",
-      "type": "produced"
-    },
-    {
-      "from": "decision-adapt-evidence-assistance",
-      "to": "issue-90",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "decision-adopt-diataxis",
-      "to": "issue-90",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "decision-planning-adoption",
-      "to": "initiative-portable-bootstrap",
-      "type": "enabled"
-    },
-    {
-      "from": "stage-4",
-      "to": "initiative-portable-bootstrap",
-      "type": "enabled"
-    },
-    {
-      "from": "initiative-portable-bootstrap",
-      "to": "artifact-bootstrap-v0-1",
-      "type": "produced"
-    },
-    {
-      "from": "initiative-portable-bootstrap",
-      "to": "external-pr-bootstrap",
-      "type": "proved_by"
-    },
-    {
-      "from": "initiative-portable-bootstrap",
-      "to": "external-pr-genuine-change",
-      "type": "proved_by"
-    },
-    {
-      "from": "initiative-portable-bootstrap",
-      "to": "boundary-human-authority",
-      "type": "preserved"
-    },
-    {
-      "from": "initiative-portable-bootstrap",
-      "to": "boundary-bounded-automation",
-      "type": "preserved"
-    },
-    {
-      "from": "initiative-portable-bootstrap",
-      "to": "decision-adopt-portable-bootstrap",
-      "type": "produced"
-    },
-    {
-      "from": "decision-adopt-portable-bootstrap",
-      "to": "issue-113",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "issue-113",
-      "to": "decision-adapt-modular-sessions",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "decision-adapt-modular-sessions",
-      "to": "artifact-modular-session-roadmap",
-      "type": "produced"
-    },
-    {
-      "from": "artifact-modular-session-roadmap",
-      "to": "artifact-modular-session-ownership",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "artifact-modular-session-ownership",
-      "to": "artifact-modular-session-v0-1",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "artifact-modular-session-v0-1",
-      "to": "issue-137",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "artifact-modular-session-v0-1",
-      "to": "boundary-human-authority",
-      "type": "preserved"
-    },
-    {
-      "from": "artifact-modular-session-v0-1",
-      "to": "boundary-bounded-automation",
-      "type": "preserved"
-    },
-    {
-      "from": "issue-137",
-      "to": "issue-142",
-      "type": "carried_forward_to"
-    },
-    {
-      "from": "issue-142",
-      "to": "decision-adapt-modular-baseline",
-      "type": "produced"
-    },
-    {
-      "from": "decision-adapt-modular-baseline",
-      "to": "pr-145",
-      "type": "implemented_by"
-    },
-    {
-      "from": "pr-145",
-      "to": "decision-adopt-modular-baseline",
-      "type": "proved_by"
-    },
-    {
-      "from": "decision-adopt-modular-baseline",
-      "to": "initiative-modular-sessions",
-      "type": "produced"
-    },
-    {
-      "from": "initiative-modular-sessions",
-      "to": "boundary-human-authority",
-      "type": "preserved"
-    },
-    {
-      "from": "initiative-modular-sessions",
-      "to": "boundary-bounded-automation",
-      "type": "preserved"
-    }
+    {"from":"stage-1","to":"pr-2","type":"implemented_by"},
+    {"from":"stage-1","to":"release-v0-1","type":"produced"},
+    {"from":"stage-1","to":"lesson-safe-operation","type":"revealed_problem"},
+    {"from":"stage-1","to":"problem-fragmented-model","type":"revealed_problem"},
+    {"from":"stage-1","to":"stage-2","type":"enabled"},
+    {"from":"problem-fragmented-model","to":"stage-2","type":"resolved_by"},
+    {"from":"lesson-safe-operation","to":"stage-2","type":"carried_forward_to"},
+    {"from":"stage-2","to":"artifact-docs-site","type":"produced"},
+    {"from":"stage-2","to":"artifact-operating-protocol","type":"produced"},
+    {"from":"stage-2","to":"pr-60","type":"proved_by"},
+    {"from":"stage-2","to":"pr-61","type":"validated_by"},
+    {"from":"stage-2","to":"release-v0-2","type":"produced"},
+    {"from":"stage-1","to":"boundary-human-authority","type":"preserved"},
+    {"from":"stage-2","to":"boundary-human-authority","type":"preserved"},
+    {"from":"stage-2","to":"boundary-bounded-automation","type":"preserved"},
+    {"from":"stage-2","to":"decision-planning-adoption","type":"motivated"},
+    {"from":"decision-planning-adoption","to":"pr-70","type":"implemented_by"},
+    {"from":"decision-planning-adoption","to":"pr-73","type":"validated_by"},
+    {"from":"decision-planning-adoption","to":"artifact-adoption-record","type":"produced"},
+    {"from":"decision-planning-adoption","to":"decision-stage-3","type":"carried_forward_to"},
+    {"from":"boundary-bounded-automation","to":"decision-stage-3","type":"motivated"},
+    {"from":"decision-stage-3","to":"stage-3","type":"enabled"},
+    {"from":"stage-3","to":"artifact-evidence-pack-v1","type":"produced"},
+    {"from":"stage-3","to":"pr-85","type":"proved_by"},
+    {"from":"stage-3","to":"boundary-human-authority","type":"preserved"},
+    {"from":"stage-3","to":"boundary-bounded-automation","type":"preserved"},
+    {"from":"stage-3","to":"decision-adapt-evidence-assistance","type":"produced"},
+    {"from":"artifact-docs-site","to":"problem-mixed-documentation","type":"revealed_problem"},
+    {"from":"artifact-operating-protocol","to":"problem-mixed-documentation","type":"revealed_problem"},
+    {"from":"problem-mixed-documentation","to":"stage-4","type":"resolved_by"},
+    {"from":"decision-planning-adoption","to":"stage-4","type":"enabled"},
+    {"from":"stage-4","to":"artifact-diataxis-docs","type":"produced"},
+    {"from":"stage-4","to":"boundary-human-authority","type":"preserved"},
+    {"from":"stage-4","to":"boundary-bounded-automation","type":"preserved"},
+    {"from":"stage-4","to":"decision-adopt-diataxis","type":"produced"},
+    {"from":"decision-adapt-evidence-assistance","to":"issue-90","type":"carried_forward_to"},
+    {"from":"decision-adopt-diataxis","to":"issue-90","type":"carried_forward_to"},
+    {"from":"decision-planning-adoption","to":"initiative-portable-bootstrap","type":"enabled"},
+    {"from":"stage-4","to":"initiative-portable-bootstrap","type":"enabled"},
+    {"from":"initiative-portable-bootstrap","to":"artifact-bootstrap-v0-1","type":"produced"},
+    {"from":"initiative-portable-bootstrap","to":"external-pr-bootstrap","type":"proved_by"},
+    {"from":"initiative-portable-bootstrap","to":"external-pr-genuine-change","type":"proved_by"},
+    {"from":"initiative-portable-bootstrap","to":"boundary-human-authority","type":"preserved"},
+    {"from":"initiative-portable-bootstrap","to":"boundary-bounded-automation","type":"preserved"},
+    {"from":"initiative-portable-bootstrap","to":"decision-adopt-portable-bootstrap","type":"produced"},
+    {"from":"decision-adopt-portable-bootstrap","to":"issue-113","type":"carried_forward_to"},
+    {"from":"issue-113","to":"decision-adapt-modular-sessions","type":"carried_forward_to"},
+    {"from":"decision-adapt-modular-sessions","to":"artifact-modular-session-roadmap","type":"produced"},
+    {"from":"artifact-modular-session-roadmap","to":"artifact-modular-session-ownership","type":"carried_forward_to"},
+    {"from":"artifact-modular-session-ownership","to":"artifact-modular-session-v0-1","type":"carried_forward_to"},
+    {"from":"artifact-modular-session-v0-1","to":"issue-137","type":"carried_forward_to"},
+    {"from":"artifact-modular-session-v0-1","to":"boundary-human-authority","type":"preserved"},
+    {"from":"artifact-modular-session-v0-1","to":"boundary-bounded-automation","type":"preserved"},
+    {"from":"issue-137","to":"issue-142","type":"carried_forward_to"},
+    {"from":"issue-142","to":"decision-adapt-modular-baseline","type":"produced"},
+    {"from":"decision-adapt-modular-baseline","to":"pr-145","type":"implemented_by"},
+    {"from":"pr-145","to":"decision-adopt-modular-baseline","type":"proved_by"},
+    {"from":"decision-adopt-modular-baseline","to":"initiative-modular-sessions","type":"produced"},
+    {"from":"initiative-modular-sessions","to":"boundary-human-authority","type":"preserved"},
+    {"from":"initiative-modular-sessions","to":"boundary-bounded-automation","type":"preserved"},
+    {"from":"issue-90","to":"stage-5","type":"enabled"},
+    {"from":"stage-5","to":"issue-163","type":"proved_by"},
+    {"from":"issue-163","to":"pr-167","type":"proved_by"},
+    {"from":"issue-163","to":"pr-173","type":"proved_by"},
+    {"from":"issue-163","to":"pr-176","type":"proved_by"},
+    {"from":"issue-163","to":"decision-adopt-stage-5","type":"produced"},
+    {"from":"stage-5","to":"boundary-human-authority","type":"preserved"},
+    {"from":"stage-5","to":"boundary-bounded-automation","type":"preserved"}
   ]
 }
