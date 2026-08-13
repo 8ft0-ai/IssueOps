@@ -404,9 +404,9 @@ def _verify_plan_approvals(
             elif plan.get("record_class") != "implementation_plan":
                 reasons.append("referenced comment is not a recognised implementation plan")
             else:
-                plan_ts = plan.get("created_at")
-                approval_ts = record.get("created_at")
-                if not isinstance(plan_ts, str) or not isinstance(approval_ts, str):
+                plan_ts = _parse_github_timestamp(plan.get("created_at"))
+                approval_ts = _parse_github_timestamp(record.get("created_at"))
+                if plan_ts is None or approval_ts is None:
                     reasons.append("plan/approval chronology is unavailable")
                 elif plan_ts >= approval_ts:
                     reasons.append("referenced plan does not predate approval")
