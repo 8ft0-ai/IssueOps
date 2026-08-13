@@ -19,7 +19,7 @@ on:
         type: boolean
         default: false
       target_sha:
-        description: Exact 40-character IssueOps commit SHA to validate
+        description: Exact lowercase 40-character IssueOps commit SHA to validate
         required: false
         type: string
       issue_number:
@@ -70,8 +70,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [[ ! "$TARGET_SHA" =~ ^[0-9a-fA-F]{40}$ ]]; then
-            echo "target_sha must be exactly 40 hexadecimal characters" >&2
+          if [[ ! "$TARGET_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "target_sha must be exactly 40 lowercase hexadecimal characters" >&2
             exit 1
           fi
 
@@ -130,6 +130,9 @@ jobs:
           status=$?
           set -e
 
+          output_bytes="$(wc -c < "$output_file" | tr -d ' ')"
+          output_sha256="$(sha256sum "$output_file" | awk '{print $1}')"
+
           {
             echo "## Read-only live inspector validation"
             echo
@@ -142,31 +145,19 @@ jobs:
             echo "- Target issue: \`#$ISSUE_NUMBER\`"
             echo "- Supported tool: \`scripts/inspect_issueops_issue.py\`"
             echo "- Process exit code: \`$status\`"
+            echo "- Inspector JSON bytes: \`$output_bytes\`"
+            echo "- Inspector JSON SHA-256: \`$output_sha256\`"
+            echo
+            echo "The inspector output itself is not copied into this Markdown summary because it may contain untrusted GitHub text."
             echo
             echo "This workflow provides validation evidence only. It grants no lifecycle, review, approval or merge authority."
-            echo
-
-            if [[ -s "$output_file" ]]; then
-              echo "### Bounded inspector output"
-              echo
-              echo '```json'
-              head -c 20000 "$output_file"
-              echo
-              echo '```'
-              echo
-            fi
-
-            if [[ "$status" -ne 0 && -s "$error_file" ]]; then
-              echo "### Bounded inspector error"
-              echo
-              echo '```text'
-              head -c 4000 "$error_file"
-              echo
-              echo '```'
-              echo
-            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
           if [[ "$status" -ne 0 ]]; then
+            if [[ -s "$error_file" ]]; then
+              echo "live inspector failed; see the sanitised process error in the step log" >&2
+              head -c 4000 "$error_file" >&2
+              echo >&2
+            fi
             exit "$status"
           fi
