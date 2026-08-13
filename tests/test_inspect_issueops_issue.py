@@ -359,6 +359,28 @@ class InspectorTests(unittest.TestCase):
         self.assertEqual(report["recorded_next_boundary"]["status"], "ambiguous")
         self.assertEqual(len(report["recorded_next_boundary"]["candidates"]), 2)
 
+    def test_competing_boundary_with_unavailable_chronology_is_ambiguous(self):
+        dated = comment_payload(
+            5151,
+            "## Planning readiness\n\nThe next permitted action is dated action",
+            created_at="2026-08-12T07:50:00Z",
+        )
+        unavailable = comment_payload(
+            5152,
+            "## Planning readiness\n\nThe next permitted action is unknown-date action",
+            created_at=None,
+        )
+        report = inspector.collect_report(
+            REPO,
+            ISSUE,
+            client(FakeTransport(comment_pages={1: [dated, unavailable]})),
+        )
+        boundary = report["recorded_next_boundary"]
+        self.assertEqual(boundary["status"], "ambiguous")
+        self.assertEqual(boundary["classification"], "ambiguous_or_unsupported")
+        self.assertIn("chronology is unavailable", boundary["summary"])
+        self.assertNotIn("value", boundary)
+
     def test_boundary_triggers_ignore_ineligible_markdown_regions(self):
         hidden_regions = {
             "fenced": "```text\nThe next permitted action is ship it\n```",
@@ -457,6 +479,52 @@ class InspectorTests(unittest.TestCase):
                     )
                 )
 
+    def test_supersession_with_unavailable_chronology_is_ambiguous(self):
+        cases = [
+            [
+                comment_payload(
+                    6251,
+                    "## Planning readiness\n\nReady.",
+                    created_at=None,
+                ),
+                comment_payload(
+                    6252,
+                    "## Planning readiness\n\nsupersedes issue comment 6251",
+                    created_at="2026-08-12T07:32:00Z",
+                ),
+            ],
+            [
+                comment_payload(
+                    6253,
+                    "## Planning readiness\n\nsuperseded by issue comment 6254",
+                    created_at="malformed",
+                ),
+                comment_payload(
+                    6254,
+                    "## Planning readiness\n\nReplacement.",
+                    created_at="2026-08-12T07:33:00Z",
+                ),
+            ],
+        ]
+        for comments in cases:
+            with self.subTest(reference=comments[0]["id"]):
+                report = inspector.collect_report(
+                    REPO,
+                    ISSUE,
+                    client(FakeTransport(comment_pages={1: comments})),
+                )
+                observations = [
+                    item
+                    for item in report["derived_observations"]
+                    if item.get("kind") in {"explicit_supersession", "supersession"}
+                ]
+                self.assertEqual(len(observations), 1)
+                self.assertEqual(
+                    observations[0]["classification"],
+                    "ambiguous_or_unsupported",
+                )
+                self.assertIn("chronology", observations[0]["summary"])
+
     def test_zero_verified_related_prs_is_observed_absence(self):
         report = inspector.collect_report(REPO, ISSUE, client(FakeTransport()))
         related = report["related_pull_request"]
@@ -475,6 +543,95 @@ class InspectorTests(unittest.TestCase):
         self.assertEqual(related["status"], "verified")
         self.assertEqual(related["pull_request"]["number"], number)
         self.assertEqual(related["pull_request"]["linkage_method"], "canonical")
+
+    def test_missing_draft_cannot_become_verified_false(self):
+        number = 707
+        payload = pr_payload(
+            number, f"## Execution contract\n\nIssue #{ISSUE}\n"
+        )
+        del payload["draft"]
+        report = inspector.collect_report(
+            REPO,
+            ISSUE,
+            client(
+                FakeTransport(
+                    timeline_pages={1: [timeline_candidate(number)]},
+                    prs={number: payload},
+                )
+            ),
+        )
+        related = report["related_pull_request"]
+        self.assertEqual(related["status"], "unavailable")
+        self.assertNotIn("pull_request", related)
+        self.assertNotIn('"draft": false', inspector.render_json(report))
+
+    def test_malformed_pr_currentness_fails_conservatively(self):
+        number = 708
+        body = f"## Execution contract\n\nIssue #{ISSUE}\n"
+        mutations = {
+            "missing_state": lambda payload: payload.pop("state"),
+            "malformed_draft": lambda payload: payload.update(draft="false"),
+            "missing_merged": lambda payload: payload.pop("merged"),
+            "malformed_merged_at": lambda payload: payload.update(
+                merged=True, merged_at="not-a-timestamp", state="closed"
+            ),
+            "inconsistent_merge": lambda payload: payload.update(
+                merged=False, merged_at="2026-08-12T08:00:00Z"
+            ),
+        }
+        for name, mutate in mutations.items():
+            with self.subTest(field=name):
+                payload = pr_payload(number, body)
+                mutate(payload)
+                report = inspector.collect_report(
+                    REPO,
+                    ISSUE,
+                    client(
+                        FakeTransport(
+                            timeline_pages={1: [timeline_candidate(number)]},
+                            prs={number: payload},
+                        )
+                    ),
+                )
+                self.assertEqual(
+                    report["related_pull_request"]["status"], "unavailable"
+                )
+                self.assertEqual(report["collection_status"], "incomplete")
+
+    def test_incomplete_pr_identity_body_or_refs_cannot_be_verified(self):
+        number = 709
+        body = f"## Execution contract\n\nIssue #{ISSUE}\n"
+        mutations = {
+            "wrong_number": lambda payload: payload.update(number=999),
+            "missing_url": lambda payload: payload.pop("html_url"),
+            "malformed_url": lambda payload: payload.update(
+                html_url="not-a-pull-request-url"
+            ),
+            "missing_body": lambda payload: payload.pop("body"),
+            "malformed_body": lambda payload: payload.update(body=None),
+            "missing_base": lambda payload: payload.pop("base"),
+            "missing_head_sha": lambda payload: payload["head"].pop("sha"),
+            "malformed_head_sha": lambda payload: payload["head"].update(
+                sha="not-a-sha"
+            ),
+        }
+        for name, mutate in mutations.items():
+            with self.subTest(field=name):
+                payload = pr_payload(number, body)
+                mutate(payload)
+                report = inspector.collect_report(
+                    REPO,
+                    ISSUE,
+                    client(
+                        FakeTransport(
+                            timeline_pages={1: [timeline_candidate(number)]},
+                            prs={number: payload},
+                        )
+                    ),
+                )
+                related = report["related_pull_request"]
+                self.assertEqual(related["status"], "unavailable")
+                self.assertNotIn("pull_request", related)
 
     def test_legacy_closing_reference_is_verified(self):
         number = 702

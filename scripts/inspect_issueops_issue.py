@@ -9,6 +9,7 @@ confirm contract fulfilment, authorise continuation, or authorise merge.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import json
 import os
 import re
@@ -184,6 +185,13 @@ def _require_string(value: Any, context: str) -> str:
     return value
 
 
+def _require_git_sha(value: Any, context: str) -> str:
+    sha = _require_string(value, context)
+    if not re.fullmatch(r"[0-9a-fA-F]{40}", sha):
+        raise CollectionFailure(f"{context} was malformed")
+    return sha
+
+
 def _source_ref(kind: str, identifier: int | str, url: str) -> dict[str, Any]:
     return {"kind": kind, "id": identifier, "url": url}
 
@@ -350,6 +358,18 @@ def _comment_record(comment: Mapping[str, Any]) -> dict[str, Any]:
 def _chronology_key(record: Mapping[str, Any]) -> tuple[str, int]:
     timestamp = record.get("created_at")
     return (timestamp if isinstance(timestamp, str) else "", int(record["id"]))
+
+
+def _parse_github_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not re.fullmatch(
+        r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?Z",
+        value,
+    ):
+        return None
+    try:
+        return datetime.fromisoformat(value[:-1] + "+00:00")
+    except ValueError:
+        return None
 
 
 def _verify_plan_approvals(
@@ -530,14 +550,32 @@ def _recorded_next_boundary(
             "status": "not_recorded",
             "summary": "No explicit recorded next boundary was recognised.",
         }
-    latest = sorted(
-        candidates,
-        key=lambda item: (
-            str(item["timestamp"]),
-            str(item["source"].get("kind", "")),
-            str(item["source"].get("id", "")),
-        ),
-    )[-1]
+    if len(candidates) == 1:
+        latest = candidates[0]
+    else:
+        dated = [
+            (candidate, _parse_github_timestamp(candidate.get("timestamp")))
+            for candidate in candidates
+        ]
+        if any(timestamp is None for _, timestamp in dated):
+            return {
+                "classification": "ambiguous_or_unsupported",
+                "status": "ambiguous",
+                "summary": "Competing explicit boundary sources cannot be safely ordered because created_at chronology is unavailable.",
+                "sources": [candidate["source"] for candidate in candidates],
+            }
+        latest_timestamp = max(timestamp for _, timestamp in dated if timestamp is not None)
+        latest_candidates = [
+            candidate for candidate, timestamp in dated if timestamp == latest_timestamp
+        ]
+        if len(latest_candidates) != 1:
+            return {
+                "classification": "ambiguous_or_unsupported",
+                "status": "ambiguous",
+                "summary": "Competing explicit boundary sources share the latest available chronology.",
+                "sources": [candidate["source"] for candidate in latest_candidates],
+            }
+        latest = latest_candidates[0]
     if len(latest["values"]) != 1:
         return {
             "classification": "ambiguous_or_unsupported",
@@ -576,7 +614,19 @@ def _supersession_observations(
                     }
                 )
                 continue
-            if _chronology_key(target) >= _chronology_key(record):
+            target_timestamp = _parse_github_timestamp(target.get("created_at"))
+            record_timestamp = _parse_github_timestamp(record.get("created_at"))
+            if target_timestamp is None or record_timestamp is None:
+                ambiguous.append(
+                    {
+                        "classification": "ambiguous_or_unsupported",
+                        "kind": "supersession",
+                        "summary": f"Supersession chronology for comment {target_id} is unavailable.",
+                        "source": record["source"],
+                    }
+                )
+                continue
+            if target_timestamp >= record_timestamp:
                 ambiguous.append(
                     {
                         "classification": "ambiguous_or_unsupported",
@@ -600,7 +650,21 @@ def _supersession_observations(
                     }
                 )
                 continue
-            if _chronology_key(replacement) <= _chronology_key(record):
+            record_timestamp = _parse_github_timestamp(record.get("created_at"))
+            replacement_timestamp = _parse_github_timestamp(
+                replacement.get("created_at")
+            )
+            if record_timestamp is None or replacement_timestamp is None:
+                ambiguous.append(
+                    {
+                        "classification": "ambiguous_or_unsupported",
+                        "kind": "supersession",
+                        "summary": f"Superseded-by chronology for comment {replacement_id} is unavailable.",
+                        "source": record["source"],
+                    }
+                )
+                continue
+            if replacement_timestamp <= record_timestamp:
                 ambiguous.append(
                     {
                         "classification": "ambiguous_or_unsupported",
@@ -716,24 +780,60 @@ def _timeline_pr_candidates(
     return sorted(candidates)
 
 
-def _pr_basic(pr: Mapping[str, Any]) -> dict[str, Any]:
+def _pr_basic(
+    pr: Mapping[str, Any], repository: str, expected_number: int
+) -> dict[str, Any]:
     number = pr.get("number")
     if not isinstance(number, int) or isinstance(number, bool) or number <= 0:
         raise CollectionFailure("related pull request was missing a positive number")
+    if number != expected_number:
+        raise CollectionFailure("related pull request number did not match its candidate")
     url = _require_string(pr.get("html_url"), "related pull request html_url")
-    base = pr.get("base") if isinstance(pr.get("base"), Mapping) else {}
-    head = pr.get("head") if isinstance(pr.get("head"), Mapping) else {}
+    parsed_url = urllib.parse.urlparse(url)
+    if (
+        parsed_url.scheme not in {"http", "https"}
+        or not parsed_url.netloc
+        or parsed_url.path.rstrip("/") != f"/{repository}/pull/{number}"
+        or parsed_url.params
+        or parsed_url.query
+        or parsed_url.fragment
+    ):
+        raise CollectionFailure("related pull request html_url was malformed")
+    state = pr.get("state")
+    if state not in {"open", "closed"}:
+        raise CollectionFailure("related pull request state was missing or malformed")
+    draft = pr.get("draft")
+    if not isinstance(draft, bool):
+        raise CollectionFailure("related pull request draft state was missing or malformed")
+    merged = pr.get("merged")
+    if not isinstance(merged, bool):
+        raise CollectionFailure("related pull request merged state was missing or malformed")
+    if "merged_at" not in pr:
+        raise CollectionFailure("related pull request merged_at was missing")
+    merged_at = pr.get("merged_at")
+    if merged_at is not None and _parse_github_timestamp(merged_at) is None:
+        raise CollectionFailure("related pull request merged_at was malformed")
+    if merged != (merged_at is not None):
+        raise CollectionFailure("related pull request merge fields were inconsistent")
+    if merged and state != "closed":
+        raise CollectionFailure("related pull request state was inconsistent with merge state")
+    base = _require_mapping(pr.get("base"), "related pull request base")
+    head = _require_mapping(pr.get("head"), "related pull request head")
     return {
         "number": number,
         "url": url,
-        "state": pr.get("state"),
-        "draft": bool(pr.get("draft")),
-        "merged": bool(pr.get("merged") or pr.get("merged_at")),
-        "merged_at": pr.get("merged_at"),
-        "base_ref": base.get("ref"),
-        "base_sha": base.get("sha"),
-        "head_ref": head.get("ref"),
-        "head_sha": head.get("sha"),
+        "state": state,
+        "draft": draft,
+        "merged": merged,
+        "merged_at": merged_at,
+        "base_ref": _require_string(base.get("ref"), "related pull request base ref"),
+        "base_sha": _require_git_sha(
+            base.get("sha"), "related pull request base sha"
+        ),
+        "head_ref": _require_string(head.get("ref"), "related pull request head ref"),
+        "head_sha": _require_git_sha(
+            head.get("sha"), "related pull request head sha"
+        ),
         "source": _source_ref("pull_request", number, url),
     }
 
@@ -774,7 +874,11 @@ def _related_pr_report(
                 client.get(f"/repos/{repository}/pulls/{candidate}"),
                 "related pull request",
             )
-            pr = _pr_basic(raw_pr)
+            if "body" not in raw_pr or not isinstance(raw_pr.get("body"), str):
+                raise CollectionFailure(
+                    "related pull request body was missing or malformed"
+                )
+            pr = _pr_basic(raw_pr, repository, candidate)
         except (GitHubAPIError, CollectionFailure) as exc:
             if isinstance(exc, GitHubAPIError):
                 message, source_url = exc.message, exc.endpoint
@@ -800,9 +904,7 @@ def _related_pr_report(
                 warnings,
                 False,
             )
-        linkage = resolve_pr_linkage(
-            raw_pr.get("body") if isinstance(raw_pr.get("body"), str) else ""
-        )
+        linkage = resolve_pr_linkage(raw_pr["body"])
         if linkage["conflicts"]:
             conflicts.append(
                 {
