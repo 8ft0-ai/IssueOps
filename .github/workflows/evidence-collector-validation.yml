@@ -33,7 +33,6 @@ permissions:
 jobs:
   validate:
     name: Validate read-only GitHub collection
-    if: ${{ github.event_name == 'pull_request' || inputs.live_inspector != true }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -85,6 +84,7 @@ jobs:
         with:
           ref: ${{ inputs.target_sha }}
           fetch-depth: 1
+          persist-credentials: false
 
       - name: Verify exact checked-out target
         shell: bash
