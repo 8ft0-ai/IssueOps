@@ -329,6 +329,47 @@ class InspectorTests(unittest.TestCase):
         )
         self.assertIn("does not predate", " ".join(approval_item["reasons"]))
 
+    def test_malformed_plan_approval_chronology_is_ambiguous(self):
+        cases = [
+            ("malformed_plan", "malformed", "2026-08-12T07:32:00Z"),
+            ("malformed_approval", "2026-08-12T07:31:00Z", "malformed"),
+        ]
+        for offset, (name, plan_created_at, approval_created_at) in enumerate(
+            cases, start=1
+        ):
+            with self.subTest(case=name):
+                plan_id = 4300 + (offset * 2)
+                approval_id = plan_id + 1
+                plan = comment_payload(
+                    plan_id,
+                    "## Detailed implementation plan\n\nPlan.",
+                    created_at=plan_created_at,
+                )
+                approval = comment_payload(
+                    approval_id,
+                    "## Human implementation-plan approval\n\n"
+                    f"I approve the detailed implementation plan recorded in issue comment `{plan_id}`.",
+                    created_at=approval_created_at,
+                )
+                report = inspector.collect_report(
+                    REPO,
+                    ISSUE,
+                    client(FakeTransport(comment_pages={1: [plan, approval]})),
+                )
+                approval_item = next(
+                    item
+                    for item in report["derived_observations"]
+                    if item.get("kind") == "plan_approval_record"
+                )
+                self.assertEqual(
+                    approval_item["classification"],
+                    "ambiguous_or_unsupported",
+                )
+                self.assertIn(
+                    "plan/approval chronology is unavailable",
+                    approval_item["reasons"],
+                )
+
     def test_explicit_next_boundary_and_provenance(self):
         boundary = comment_payload(
             5001,
