@@ -147,6 +147,7 @@ jobs:
             echo "- Process exit code: \`$status\`"
             echo "- Inspector JSON bytes: \`$output_bytes\`"
             echo "- Inspector JSON SHA-256: \`$output_sha256\`"
+            echo "- Inspector artifact: \`live-inspector-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT\` (7-day retention)"
             echo
             echo "The inspector output itself is not copied into this Markdown summary because it may contain untrusted GitHub text."
             echo
@@ -161,3 +162,11 @@ jobs:
             fi
             exit "$status"
           fi
+
+      - name: Upload live-inspector evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-inspector-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/live-inspector.json
+          if-no-files-found: error
+          retention-days: 7
