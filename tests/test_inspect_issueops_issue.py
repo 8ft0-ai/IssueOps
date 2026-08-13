@@ -209,9 +209,7 @@ class InspectorTests(unittest.TestCase):
         self.assertEqual(len(comments), 101)
         keys = [(item["created_at"], item["id"]) for item in comments]
         self.assertEqual(keys, sorted(keys))
-        comment_urls = [
-            url for url in transport.urls if "/comments?" in url
-        ]
+        comment_urls = [url for url in transport.urls if "/comments?" in url]
         self.assertEqual(len(comment_urls), 2)
 
     def test_free_form_prose_is_not_lifecycle_authority(self):
@@ -275,6 +273,40 @@ class InspectorTests(unittest.TestCase):
             all(item["classification"] == "ambiguous_or_unsupported" for item in approvals)
         )
 
+    def test_approval_reference_ignores_ineligible_markdown_regions(self):
+        plan = comment_payload(
+            4201,
+            "## Detailed implementation plan\n\nPlan.",
+            created_at="2026-08-12T07:31:00Z",
+        )
+        approval_sentence = (
+            "I approve the detailed implementation plan recorded in issue comment `4201`."
+        )
+        hidden_regions = {
+            "fenced": f"```text\n{approval_sentence}\n```",
+            "html_comment": f"<!--\n{approval_sentence}\n-->",
+            "indented": f"    {approval_sentence}",
+        }
+        for offset, (name, hidden) in enumerate(hidden_regions.items(), start=1):
+            with self.subTest(region=name):
+                approval = comment_payload(
+                    4201 + offset,
+                    "## Human implementation-plan approval\n\n" + hidden,
+                    created_at=f"2026-08-12T07:32:0{offset}Z",
+                )
+                transport = FakeTransport(
+                    issue=issue_payload(body="No explicit boundary."),
+                    comment_pages={1: [plan, approval]},
+                )
+                report = inspector.collect_report(REPO, ISSUE, client(transport))
+                item = next(
+                    item
+                    for item in report["derived_observations"]
+                    if item.get("kind") == "plan_approval_record"
+                )
+                self.assertEqual(item["classification"], "ambiguous_or_unsupported")
+                self.assertNotIn("referenced_plan_comment", item)
+
     def test_wrong_chronology_approval_is_ambiguous(self):
         approval = comment_payload(
             4101,
@@ -327,6 +359,39 @@ class InspectorTests(unittest.TestCase):
         self.assertEqual(report["recorded_next_boundary"]["status"], "ambiguous")
         self.assertEqual(len(report["recorded_next_boundary"]["candidates"]), 2)
 
+    def test_boundary_triggers_ignore_ineligible_markdown_regions(self):
+        hidden_regions = {
+            "fenced": "```text\nThe next permitted action is ship it\n```",
+            "html_comment": "<!--\nThe exact next permitted action is: ship it\n-->",
+            "indented": "    The next permitted action is ship it",
+        }
+        for offset, (name, hidden) in enumerate(hidden_regions.items(), start=1):
+            with self.subTest(region=name):
+                boundary = comment_payload(
+                    5200 + offset,
+                    "## Planning readiness\n\nReady.\n\n" + hidden,
+                    created_at=f"2026-08-12T07:50:0{offset}Z",
+                )
+                transport = FakeTransport(
+                    issue=issue_payload(body="No explicit boundary."),
+                    comment_pages={1: [boundary]},
+                )
+                report = inspector.collect_report(REPO, ISSUE, client(transport))
+                self.assertEqual(
+                    report["recorded_next_boundary"]["status"], "not_recorded"
+                )
+
+        issue_boundary = issue_payload(
+            body=(
+                "## Current boundary\n\n"
+                "```text\nThe exact next permitted action is:\nship it\n```"
+            )
+        )
+        report = inspector.collect_report(
+            REPO, ISSUE, client(FakeTransport(issue=issue_boundary))
+        )
+        self.assertEqual(report["recorded_next_boundary"]["status"], "not_recorded")
+
     def test_supersession_is_explicit_not_chronology_only(self):
         old = comment_payload(
             6001,
@@ -360,6 +425,37 @@ class InspectorTests(unittest.TestCase):
             if item.get("kind") == "explicit_supersession"
         )
         self.assertEqual(item["source"]["id"], 6001)
+
+    def test_supersession_ignores_ineligible_markdown_regions(self):
+        old = comment_payload(
+            6201,
+            "## Planning readiness\n\nReady.",
+            created_at="2026-08-12T07:30:00Z",
+        )
+        supersession_sentence = "supersedes issue comment 6201"
+        hidden_regions = {
+            "fenced": f"```text\n{supersession_sentence}\n```",
+            "html_comment": f"<!--\n{supersession_sentence}\n-->",
+            "indented": f"    {supersession_sentence}",
+        }
+        for offset, (name, hidden) in enumerate(hidden_regions.items(), start=1):
+            with self.subTest(region=name):
+                newer = comment_payload(
+                    6201 + offset,
+                    "## Planning readiness\n\nNewer.\n\n" + hidden,
+                    created_at=f"2026-08-12T07:31:0{offset}Z",
+                )
+                transport = FakeTransport(
+                    issue=issue_payload(body="No explicit boundary."),
+                    comment_pages={1: [old, newer]},
+                )
+                report = inspector.collect_report(REPO, ISSUE, client(transport))
+                self.assertFalse(
+                    any(
+                        item.get("kind") in {"explicit_supersession", "supersession"}
+                        for item in report["derived_observations"]
+                    )
+                )
 
     def test_zero_verified_related_prs_is_observed_absence(self):
         report = inspector.collect_report(REPO, ISSUE, client(FakeTransport()))

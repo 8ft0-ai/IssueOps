@@ -255,6 +255,10 @@ def _eligible_lines(text: str) -> list[str]:
     return [raw for _, raw, eligible in _markdown_events(text) if eligible]
 
 
+def _eligible_text(text: str) -> str:
+    return "\n".join(_eligible_lines(text))
+
+
 def _first_h2(text: str) -> str | None:
     for line in _eligible_lines(text):
         match = re.fullmatch(r"[ \t]{0,3}##[ \t]+(.+?)[ \t]*", line)
@@ -362,7 +366,11 @@ def _verify_plan_approvals(
             reasons.append("approval-shaped comment was authored by a Bot")
         if record.get("author_association") != "OWNER":
             reasons.append("author_association is not OWNER")
-        matches = list(APPROVAL_REFERENCE_PATTERN.finditer(str(record.get("body", ""))))
+        matches = list(
+            APPROVAL_REFERENCE_PATTERN.finditer(
+                _eligible_text(str(record.get("body", "")))
+            )
+        )
         if len(matches) != 1:
             reasons.append("expected exactly one canonical plan-reference sentence")
             referenced_id = None
@@ -436,6 +444,9 @@ def _boundaries_in_source(
     body: str, record_class: str | None, *, issue_body: bool = False
 ) -> list[str]:
     lines = body.splitlines()
+    eligible_indices = {
+        index for index, _, eligible in _markdown_events(body) if eligible
+    }
     candidates: list[str] = []
 
     for heading, start, end in _h2_sections(body):
@@ -450,13 +461,18 @@ def _boundaries_in_source(
                 candidates.append(value)
         if issue_body and normal == "current boundary":
             for index in range(start + 1, end):
-                if lines[index].strip() == "The exact next permitted action is:":
+                if (
+                    index in eligible_indices
+                    and lines[index].strip() == "The exact next permitted action is:"
+                ):
                     value = _extract_following_value(lines, index + 1, end)
                     if value:
                         candidates.append(value)
 
     if record_class is not None:
         for index, line in enumerate(lines):
+            if index not in eligible_indices:
+                continue
             match = re.match(
                 r"^[ \t]*(?:The )?(?:exact )?next permitted action is(?P<tail>:|[ \t]+)(?P<rest>.*)$",
                 line,
@@ -546,7 +562,7 @@ def _supersession_observations(
     ambiguous: list[dict[str, Any]] = []
     for record in comments:
         record_id = int(record["id"])
-        body = str(record.get("body", ""))
+        body = _eligible_text(str(record.get("body", "")))
         for match in SUPERSEDES_PATTERN.finditer(body):
             target_id = int(match.group("id"))
             target = by_id.get(target_id)
