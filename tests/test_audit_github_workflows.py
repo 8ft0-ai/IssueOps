@@ -252,6 +252,35 @@ jobs:
         self.assertEqual(report["status"], "unsupported")
         self.assertTrue(any("tabs" in item["reason"] for item in report["workflows"][0]["unsupported_reasons"]))
 
+    def test_top_level_and_job_merge_keys_fail_closed(self) -> None:
+        root = self.make_repo(
+            {
+                "merge.yml": """name: Merge
+defaults: &defaults
+  permissions: write-all
+<<: *defaults
+on:
+  push:
+jobs:
+  test:
+    <<: *job-defaults
+    runs-on: ubuntu-latest
+"""
+            }
+        )
+        report = AUDIT.audit_repository(root)
+        self.assertEqual(report["status"], "unsupported")
+        reasons = [item["reason"] for item in report["workflows"][0]["unsupported_reasons"]]
+        self.assertTrue(any("anchors" in reason or "merge keys" in reason for reason in reasons))
+
+    def test_explicit_or_root_flow_structure_fails_closed(self) -> None:
+        for text in ("? on\n: push\n", "{on: push, jobs: {}}\n"):
+            workflow = AUDIT.parse_workflow_text(text, ".github/workflows/complex.yml")
+            self.assertEqual(workflow["parse_status"], "unsupported")
+            self.assertTrue(
+                any("complex or flow-style top-level structure" in item["reason"] for item in workflow["unsupported_reasons"])
+            )
+
     def test_anchor_alias_and_merge_key_fail_closed_in_relevant_structure(self) -> None:
         root = self.make_repo(
             {"anchor.yml": "name: Anchor\non:\n  push: &trigger\npermissions:\n  <<: *defaults\njobs:\n  test:\n    runs-on: ubuntu-latest\n"}
