@@ -407,6 +407,7 @@ def _parse_jobs(lines: Sequence[str], section: tuple[int, int, str] | None, work
             active_permissions = False
             active_unanalysed = False
             if current is None:
+                _unsupported(workflow, line_no, "jobs", "job attribute has no supported direct job")
                 continue
             stripped = line.strip()
             if re.match(r"^[\"'](?:permissions|uses)[\"']\s*:", stripped):
