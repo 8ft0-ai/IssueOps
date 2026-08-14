@@ -239,6 +239,24 @@ jobs:
         with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
             self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
 
+    def test_top_level_wrappers_and_root_sequence_fail_closed(self) -> None:
+        cases = {
+            "document-marker.yml": "---\n  on:\n    push:\n  jobs:\n    test:\n      runs-on: ubuntu-latest\n",
+            "root-anchor.yml": "&root\n  on:\n    push:\n  jobs:\n    test:\n      runs-on: ubuntu-latest\n",
+            "root-sequence.yml": "- on:\n    push:\n  jobs:\n    test:\n      runs-on: ubuntu-latest\n",
+        }
+        for name, text in cases.items():
+            with self.subTest(name=name):
+                root = self.make_repo({name: text})
+                report = AUDIT.audit_repository(root)
+                self.assertEqual(report["status"], "unsupported")
+                reasons = report["workflows"][0]["unsupported_reasons"]
+                self.assertTrue(any("top-level" in item["reason"] for item in reasons))
+                with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
+                    self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
+                self.tempdir.cleanup()
+                self.tempdir = tempfile.TemporaryDirectory()
+
     def test_filter_mapping_or_nested_sequence_item_fails_closed(self) -> None:
         for item in ("foo: bar", "- nested"):
             root = self.make_repo(
