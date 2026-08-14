@@ -280,6 +280,88 @@ jobs:
             self.tempdir.cleanup()
             self.tempdir = tempfile.TemporaryDirectory()
 
+    def test_unsupported_plain_scalars_fail_closed_with_exit_two(self) -> None:
+        cases = {
+            "at-filter.yml": (
+                "name: At filter\n"
+                "on:\n"
+                "  pull_request:\n"
+                "    paths:\n"
+                "      - @foo\n"
+                "jobs:\n"
+                "  test:\n"
+                "    runs-on: ubuntu-latest\n"
+            ),
+            "backtick-filter.yml": (
+                "name: Backtick filter\n"
+                "on:\n"
+                "  pull_request:\n"
+                "    paths:\n"
+                "      - `foo\n"
+                "jobs:\n"
+                "  test:\n"
+                "    runs-on: ubuntu-latest\n"
+            ),
+            "colon-uses.yml": (
+                "name: Colon uses\n"
+                "on:\n"
+                "  push:\n"
+                "jobs:\n"
+                "  call:\n"
+                "    uses: foo: bar\n"
+            ),
+        }
+        expected = {
+            "at-filter.yml": "plain-scalar leading indicator",
+            "backtick-filter.yml": "plain-scalar leading indicator",
+            "colon-uses.yml": "colon followed by whitespace",
+        }
+        for name, text in cases.items():
+            with self.subTest(name=name):
+                root = self.make_repo({name: text})
+                report = AUDIT.audit_repository(root)
+                workflow = report["workflows"][0]
+                self.assertEqual(report["status"], "unsupported")
+                self.assertEqual(workflow["parse_status"], "unsupported")
+                self.assertTrue(
+                    any(expected[name] in item["reason"] for item in workflow["unsupported_reasons"])
+                )
+                with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
+                    self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
+                self.tempdir.cleanup()
+                self.tempdir = tempfile.TemporaryDirectory()
+
+    def test_quoted_scalars_preserve_reserved_content(self) -> None:
+        root = self.make_repo(
+            {
+                "caller.yml": """name: Caller
+on:
+  pull_request:
+    paths:
+      - "@foo"
+jobs:
+  call:
+    uses: "./.github/workflows/callee.yml"
+""",
+                "callee.yml": """name: Callee
+on:
+  workflow_call:
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+""",
+            }
+        )
+        report = AUDIT.audit_repository(root)
+        self.assertEqual(report["status"], "complete")
+        caller = next(item for item in report["workflows"] if item["path"].endswith("caller.yml"))
+        pull_request = next(event for event in caller["events"] if event["name"] == "pull_request")
+        self.assertEqual(pull_request["filters"][0]["values"], ["@foo"])
+        self.assertEqual(
+            [(edge["job_id"], edge["target"], edge["target_exists"]) for edge in report["local_reusable_workflow_edges"]],
+            [("call", "./.github/workflows/callee.yml", True)],
+        )
+
     def test_flow_style_filter_fails_closed(self) -> None:
         root = self.make_repo(
             {"flow-filter.yml": "name: Flow\non:\n  pull_request:\n    paths: [scripts/**]\njobs:\n  test:\n    runs-on: ubuntu-latest\n"}
