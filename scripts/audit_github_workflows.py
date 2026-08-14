@@ -115,10 +115,17 @@ def _top_sections(lines: Sequence[str], workflow: dict[str, Any]) -> dict[str, t
         if stripped.startswith("%"):
             _unsupported(workflow, i + 1, "global", "YAML directives are unsupported")
             continue
+        if stripped.startswith(("?", "{", "[", "*", "!")):
+            _unsupported(workflow, i + 1, "global", "complex or flow-style top-level structure is unsupported")
+            continue
         parsed = _mapping(lines[i])
         if not parsed:
             continue
         key, value = parsed
+        reason = _meta(key, value)
+        if reason:
+            _unsupported(workflow, i + 1, "global", reason)
+            continue
         if key in {"on", "permissions", "jobs"}:
             if key in seen:
                 _unsupported(workflow, i + 1, key, f"duplicate top-level {key!r} key")
@@ -347,9 +354,12 @@ def _parse_jobs(lines: Sequence[str], section: tuple[int, int, str] | None, work
             if not parsed:
                 continue
             key, value = parsed
+            reason = _meta(key, value)
+            if key == "<<":
+                _unsupported(workflow, line_no, f"jobs.{current['id']}", reason or "YAML merge keys are unsupported")
+                continue
             if key not in {"permissions", "uses"}:
                 continue
-            reason = _meta(key, value)
             if reason:
                 _unsupported(workflow, line_no, f"jobs.{current['id']}", reason)
                 continue
