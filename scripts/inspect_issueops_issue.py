@@ -210,6 +210,18 @@ def _user_type(item: Mapping[str, Any]) -> str | None:
     return None
 
 
+def _markdown_indent_columns(line: str) -> int:
+    columns = 0
+    for character in line:
+        if character == " ":
+            columns += 1
+        elif character == "\t":
+            columns += 4 - (columns % 4)
+        else:
+            break
+    return columns
+
+
 def _markdown_events(text: str) -> list[tuple[int, str, bool]]:
     """Return (line index, raw line, eligible) while excluding code/comments."""
     events: list[tuple[int, str, bool]] = []
@@ -218,14 +230,14 @@ def _markdown_events(text: str) -> list[tuple[int, str, bool]]:
     fence_length = 0
     for index, raw_line in enumerate(text.splitlines()):
         left = raw_line.lstrip(" \t")
-        indent = len(raw_line) - len(left)
+        indent_columns = _markdown_indent_columns(raw_line)
 
         if fence_char is not None:
             closing = re.fullmatch(
                 rf"{re.escape(fence_char)}{{{fence_length},}}[ \t]*", left
             )
             events.append((index, raw_line, False))
-            if indent <= 3 and closing:
+            if indent_columns <= 3 and closing:
                 fence_char = None
                 fence_length = 0
             continue
@@ -236,7 +248,7 @@ def _markdown_events(text: str) -> list[tuple[int, str, bool]]:
                 in_html_comment = False
             continue
 
-        if indent >= 4:
+        if indent_columns >= 4:
             events.append((index, raw_line, False))
             continue
 
