@@ -103,7 +103,18 @@ def _meta(key: str, value: str) -> str | None:
 
 
 def _top_sections(lines: Sequence[str], workflow: dict[str, Any]) -> dict[str, tuple[int, int, str]]:
-    top = [i for i, line in enumerate(lines) if not _ignore(line) and _indent(line) == 0]
+    non_ignored = [i for i, line in enumerate(lines) if not _ignore(line)]
+    if non_ignored:
+        root_indent = min(_indent(lines[i]) for i in non_ignored)
+        if root_indent != 0:
+            _unsupported(
+                workflow,
+                non_ignored[0] + 1,
+                "global",
+                "indented document root is outside the supported top-level structure",
+            )
+            return {}
+    top = [i for i in non_ignored if _indent(lines[i]) == 0]
     starts: dict[str, tuple[int, str]] = {}
     seen: set[str] = set()
     relevant = {"name", "on", "permissions", "jobs"}
@@ -223,8 +234,15 @@ def _parse_events(lines: Sequence[str], section: tuple[int, int, str] | None, wo
             if indent != 6 or not line.strip().startswith("- "):
                 _unsupported(workflow, line_no, "on", f"filter {key!r} expects direct '- scalar' entries")
                 continue
+            raw_item = line.strip()[2:]
+            plain_item = _without_comment(raw_item.strip())
+            if plain_item and plain_item[0] not in {"'", '"'} and (
+                plain_item.startswith(("- ", "? ")) or re.search(r":(?:\s|$)", plain_item)
+            ):
+                _unsupported(workflow, line_no, "on", f"filter {key!r} contains complex sequence structure")
+                continue
             try:
-                values.append(_scalar(line.strip()[2:]))
+                values.append(_scalar(raw_item))
             except ValueError as exc:
                 _unsupported(workflow, line_no, "on", f"unsupported filter scalar: {exc}")
         # Deeper configuration below an unanalysed key is intentionally ignored.
