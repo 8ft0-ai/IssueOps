@@ -20,6 +20,7 @@ FILTER_KEYS = {"branches", "branches-ignore", "paths", "paths-ignore", "types"}
 PERMISSION_VALUES = {"read", "write", "none"}
 PLAIN_KEY = re.compile(r"^[A-Za-z0-9_.-]+$")
 LOCAL_WORKFLOW = re.compile(r"^\./\.github/workflows/[^@\s]+\.(?:yml|yaml)$")
+PLAIN_SCALAR_FORBIDDEN_START = frozenset("&*!|>{[}],#%@`")
 NOTICE = (
     "Static bounded review assistance only. This report does not prove workflow "
     "security, establish IssueOps policy compliance, authorise remediation, approve "
@@ -68,8 +69,8 @@ def _scalar(value: str) -> str:
     value = _without_comment(value.strip())
     if not value:
         raise ValueError("expected scalar")
-    if "${{" in value or value[0] in "&*!|>[{":
-        raise ValueError("complex, templated, or flow-style scalar is unsupported")
+    if "${{" in value:
+        raise ValueError("templated scalar is unsupported")
     if value[0] == "'":
         if len(value) < 2 or value[-1] != "'":
             raise ValueError("unterminated single-quoted scalar")
@@ -84,6 +85,12 @@ def _scalar(value: str) -> str:
         if not isinstance(decoded, str):
             raise ValueError("quoted scalar must decode to text")
         return decoded
+    if value[0] in PLAIN_SCALAR_FORBIDDEN_START or (
+        value[0] in "-?:" and (len(value) == 1 or value[1].isspace())
+    ):
+        raise ValueError("unsupported YAML plain-scalar leading indicator")
+    if re.search(r":(?:\s|$)", value):
+        raise ValueError("colon followed by whitespace is unsupported in a plain scalar")
     return value
 
 
