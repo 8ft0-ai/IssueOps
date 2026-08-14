@@ -803,6 +803,119 @@ class InspectorTests(unittest.TestCase):
         self.assertEqual(parsed["target"]["issue"], ISSUE)
         self.assertNotIn("generated_at", parsed)
 
+    def test_tab_and_mixed_indented_lifecycle_content_is_ineligible(self):
+        for offset, (name, prefix) in enumerate(
+            (("tab", "\t"), ("mixed", " \t")), start=1
+        ):
+            with self.subTest(indent=name):
+                self.assertEqual(
+                    inspector._markdown_indent_columns(prefix + "content"), 4
+                )
+
+                hidden_heading = comment_payload(
+                    11000 + offset,
+                    f"{prefix}## Human implementation-plan approval\n\n"
+                    f"{prefix}I approve the detailed implementation plan recorded in issue comment `1002`.",
+                    created_at=f"2026-08-12T08:00:0{offset}Z",
+                )
+                hidden_report = inspector.collect_report(
+                    REPO,
+                    ISSUE,
+                    client(
+                        FakeTransport(
+                            issue=issue_payload(body="No explicit boundary."),
+                            comment_pages={1: [hidden_heading]},
+                        )
+                    ),
+                )
+                self.assertEqual(hidden_report["lifecycle_records"], [])
+                self.assertFalse(
+                    any(
+                        item.get("kind") == "plan_approval_record"
+                        for item in hidden_report["derived_observations"]
+                    )
+                )
+
+                plan_id = 11100 + (offset * 10)
+                old_id = plan_id + 2
+                plan = comment_payload(
+                    plan_id,
+                    "## Detailed implementation plan\n\nPlan.",
+                    created_at="2026-08-12T08:01:00Z",
+                )
+                approval = comment_payload(
+                    plan_id + 1,
+                    "## Human implementation-plan approval\n\n"
+                    f"{prefix}I approve the detailed implementation plan recorded in issue comment `{plan_id}`.",
+                    created_at="2026-08-12T08:02:00Z",
+                )
+                old = comment_payload(
+                    old_id,
+                    "## Planning readiness\n\nReady.",
+                    created_at="2026-08-12T08:03:00Z",
+                )
+                boundary_and_supersession = comment_payload(
+                    old_id + 1,
+                    "## Planning readiness\n\nNewer.\n\n"
+                    f"{prefix}The next permitted action is ship it\n"
+                    f"{prefix}supersedes issue comment {old_id}",
+                    created_at="2026-08-12T08:04:00Z",
+                )
+                report = inspector.collect_report(
+                    REPO,
+                    ISSUE,
+                    client(
+                        FakeTransport(
+                            issue=issue_payload(body="No explicit boundary."),
+                            comment_pages={
+                                1: [plan, approval, old, boundary_and_supersession]
+                            },
+                        )
+                    ),
+                )
+                approval_item = next(
+                    item
+                    for item in report["derived_observations"]
+                    if item.get("kind") == "plan_approval_record"
+                )
+                self.assertEqual(
+                    approval_item["classification"], "ambiguous_or_unsupported"
+                )
+                self.assertNotIn("referenced_plan_comment", approval_item)
+                self.assertEqual(
+                    report["recorded_next_boundary"]["status"], "not_recorded"
+                )
+                self.assertFalse(
+                    any(
+                        item.get("kind") in {"explicit_supersession", "supersession"}
+                        for item in report["derived_observations"]
+                    )
+                )
+
+    def test_tab_and_mixed_indented_pr_linkage_is_not_verified(self):
+        cases = (
+            ("tab_canonical", "\t", "canonical"),
+            ("mixed_canonical", " \t", "canonical"),
+            ("tab_closing", "\t", "closing"),
+            ("mixed_closing", " \t", "closing"),
+        )
+        for offset, (name, prefix, form) in enumerate(cases, start=1):
+            with self.subTest(case=name):
+                number = 710 + offset
+                if form == "canonical":
+                    body = f"{prefix}## Execution contract\n\n{prefix}Issue #{ISSUE}"
+                else:
+                    body = f"{prefix}Fixes #{ISSUE}"
+                transport = FakeTransport(
+                    issue=issue_payload(body="No explicit boundary."),
+                    timeline_pages={1: [timeline_candidate(number)]},
+                    prs={number: pr_payload(number, body)},
+                )
+                report = inspector.collect_report(REPO, ISSUE, client(transport))
+                related = report["related_pull_request"]
+                self.assertEqual(related["status"], "absent")
+                self.assertEqual(related["candidate_numbers"], [number])
+
     def test_cli_missing_token_is_sanitised_failure(self):
         stderr = StringIO()
         with mock.patch.dict(os.environ, {}, clear=True), redirect_stderr(stderr):
