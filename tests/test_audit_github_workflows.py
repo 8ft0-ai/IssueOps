@@ -230,6 +230,38 @@ jobs:
         with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
             self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
 
+    def test_indented_document_root_fails_closed(self) -> None:
+        root = self.make_repo({"indented.yml": "  on:\n    push:\n  jobs:\n    test:\n      runs-on: ubuntu-latest\n"})
+        report = AUDIT.audit_repository(root)
+        self.assertEqual(report["status"], "unsupported")
+        reasons = report["workflows"][0]["unsupported_reasons"]
+        self.assertTrue(any("indented document root" in item["reason"] for item in reasons))
+        with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
+            self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
+
+    def test_filter_mapping_or_nested_sequence_item_fails_closed(self) -> None:
+        for item in ("foo: bar", "- nested"):
+            root = self.make_repo(
+                {
+                    "complex-filter.yml": (
+                        "name: Complex filter\n"
+                        "on:\n"
+                        "  pull_request:\n"
+                        "    paths:\n"
+                        f"      - {item}\n"
+                        "jobs:\n"
+                        "  test:\n"
+                        "    runs-on: ubuntu-latest\n"
+                    )
+                }
+            )
+            report = AUDIT.audit_repository(root)
+            self.assertEqual(report["status"], "unsupported")
+            reasons = report["workflows"][0]["unsupported_reasons"]
+            self.assertTrue(any("complex sequence structure" in entry["reason"] for entry in reasons))
+            self.tempdir.cleanup()
+            self.tempdir = tempfile.TemporaryDirectory()
+
     def test_flow_style_filter_fails_closed(self) -> None:
         root = self.make_repo(
             {"flow-filter.yml": "name: Flow\non:\n  pull_request:\n    paths: [scripts/**]\njobs:\n  test:\n    runs-on: ubuntu-latest\n"}
