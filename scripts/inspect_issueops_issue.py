@@ -447,7 +447,12 @@ def _verify_plan_approvals(
     return supported, ambiguous
 
 
-def _extract_following_value(lines: list[str], start_index: int, end_index: int) -> str | None:
+def _extract_following_value(
+    lines: list[str],
+    start_index: int,
+    end_index: int,
+    eligible_indices: set[int],
+) -> str | None:
     index = start_index
     while index < end_index and not lines[index].strip():
         index += 1
@@ -456,6 +461,8 @@ def _extract_following_value(lines: list[str], start_index: int, end_index: int)
     stripped = lines[index].strip()
     fence = re.fullmatch(r"(?P<fence>`{3,}|~{3,}).*", stripped)
     if fence:
+        if _markdown_indent_columns(lines[index]) > 3:
+            return None
         marker = fence.group("fence")
         char = marker[0]
         minimum = len(marker)
@@ -469,6 +476,8 @@ def _extract_following_value(lines: list[str], start_index: int, end_index: int)
             index += 1
         value = "\n".join(captured).strip()
         return value or None
+    if index not in eligible_indices:
+        return None
     return stripped or None
 
 
@@ -488,7 +497,9 @@ def _boundaries_in_source(
             "exact next permitted action",
             "next owner decision",
         }:
-            value = _extract_following_value(lines, start + 1, end)
+            value = _extract_following_value(
+                lines, start + 1, end, eligible_indices
+            )
             if value:
                 candidates.append(value)
         if issue_body and normal == "current boundary":
@@ -497,7 +508,9 @@ def _boundaries_in_source(
                     index in eligible_indices
                     and lines[index].strip() == "The exact next permitted action is:"
                 ):
-                    value = _extract_following_value(lines, index + 1, end)
+                    value = _extract_following_value(
+                        lines, index + 1, end, eligible_indices
+                    )
                     if value:
                         candidates.append(value)
 
@@ -516,7 +529,9 @@ def _boundaries_in_source(
             if rest:
                 candidates.append(rest)
             else:
-                value = _extract_following_value(lines, index + 1, len(lines))
+                value = _extract_following_value(
+                    lines, index + 1, len(lines), eligible_indices
+                )
                 if value:
                     candidates.append(value)
 
