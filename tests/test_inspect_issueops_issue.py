@@ -455,6 +455,75 @@ class InspectorTests(unittest.TestCase):
         )
         self.assertEqual(report["recorded_next_boundary"]["status"], "not_recorded")
 
+    def test_boundary_values_ignore_ineligible_markdown_regions(self):
+        hidden_values = {
+            "html_comment": "<!-- example only -->",
+            "four_space": "    example only",
+            "tab": "\texample only",
+            "mixed": " \texample only",
+        }
+        for offset, (name, hidden) in enumerate(hidden_values.items(), start=1):
+            later = "later eligible text must not be selected"
+
+            with self.subTest(region=name, trigger="heading"):
+                boundary = comment_payload(
+                    5300 + offset,
+                    "## Planning readiness\n\nReady.\n\n"
+                    "## Exact next permitted action\n\n"
+                    f"{hidden}\n{later}",
+                    created_at=f"2026-08-12T07:51:0{offset}Z",
+                )
+                report = inspector.collect_report(
+                    REPO,
+                    ISSUE,
+                    client(
+                        FakeTransport(
+                            issue=issue_payload(body="No explicit boundary."),
+                            comment_pages={1: [boundary]},
+                        )
+                    ),
+                )
+                self.assertEqual(
+                    report["recorded_next_boundary"]["status"], "not_recorded"
+                )
+
+            with self.subTest(region=name, trigger="inline"):
+                boundary = comment_payload(
+                    5400 + offset,
+                    "## Planning readiness\n\n"
+                    "The next permitted action is:\n\n"
+                    f"{hidden}\n{later}",
+                    created_at=f"2026-08-12T07:52:0{offset}Z",
+                )
+                report = inspector.collect_report(
+                    REPO,
+                    ISSUE,
+                    client(
+                        FakeTransport(
+                            issue=issue_payload(body="No explicit boundary."),
+                            comment_pages={1: [boundary]},
+                        )
+                    ),
+                )
+                self.assertEqual(
+                    report["recorded_next_boundary"]["status"], "not_recorded"
+                )
+
+            with self.subTest(region=name, trigger="issue"):
+                issue_boundary = issue_payload(
+                    body=(
+                        "## Current boundary\n\n"
+                        "The exact next permitted action is:\n\n"
+                        f"{hidden}\n{later}"
+                    )
+                )
+                report = inspector.collect_report(
+                    REPO, ISSUE, client(FakeTransport(issue=issue_boundary))
+                )
+                self.assertEqual(
+                    report["recorded_next_boundary"]["status"], "not_recorded"
+                )
+
     def test_supersession_is_explicit_not_chronology_only(self):
         old = comment_payload(
             6001,
