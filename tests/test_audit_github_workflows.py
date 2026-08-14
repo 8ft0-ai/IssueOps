@@ -276,6 +276,98 @@ jobs:
                 self.tempdir.cleanup()
                 self.tempdir = tempfile.TemporaryDirectory()
 
+    def test_deeper_even_event_indentation_fails_closed_with_exit_two(self) -> None:
+        root = self.make_repo(
+            {
+                "event-indent.yml": (
+                    "name: Indent\n"
+                    "on:\n"
+                    "      pull_request:\n"
+                    "jobs:\n"
+                    "  test:\n"
+                    "    runs-on: ubuntu-latest\n"
+                )
+            }
+        )
+        report = AUDIT.audit_repository(root)
+        workflow = report["workflows"][0]
+        self.assertEqual(report["status"], "unsupported")
+        self.assertEqual(workflow["parse_status"], "unsupported")
+        self.assertTrue(
+            any("unsupported trigger indentation or structure" in item["reason"] for item in workflow["unsupported_reasons"])
+        )
+        with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
+            self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
+
+    def test_deeper_even_job_indentation_fails_closed_with_exit_two(self) -> None:
+        cases = {
+            "job-id.yml": "name: Job indent\non:\n  push:\njobs:\n    build:\n",
+            "permissions.yml": (
+                "name: Permission indent\n"
+                "on:\n"
+                "  push:\n"
+                "jobs:\n"
+                "  build:\n"
+                "      permissions:\n"
+                "        contents: write\n"
+            ),
+            "uses.yml": (
+                "name: Uses indent\n"
+                "on:\n"
+                "  push:\n"
+                "jobs:\n"
+                "  call:\n"
+                "      uses: ./.github/workflows/callee.yml\n"
+            ),
+        }
+        for name, text in cases.items():
+            with self.subTest(name=name):
+                root = self.make_repo({name: text})
+                report = AUDIT.audit_repository(root)
+                workflow = report["workflows"][0]
+                self.assertEqual(report["status"], "unsupported")
+                self.assertEqual(workflow["parse_status"], "unsupported")
+                self.assertTrue(
+                    any(
+                        "unsupported job indentation or structure" in item["reason"]
+                        or "job attribute has no supported direct job" in item["reason"]
+                        for item in workflow["unsupported_reasons"]
+                    )
+                )
+                with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
+                    self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
+                self.tempdir.cleanup()
+                self.tempdir = tempfile.TemporaryDirectory()
+
+    def test_deeper_unanalysed_subtrees_remain_supported(self) -> None:
+        root = self.make_repo(
+            {
+                "supported.yml": """name: Supported deep subtrees
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        required: true
+        type: string
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Nested step
+        run: echo ok
+        env:
+          VALUE: nested
+"""
+            }
+        )
+        report = AUDIT.audit_repository(root)
+        workflow = report["workflows"][0]
+        self.assertEqual(report["status"], "complete")
+        self.assertEqual(workflow["parse_status"], "supported")
+        dispatch = next(event for event in workflow["events"] if event["name"] == "workflow_dispatch")
+        self.assertEqual(dispatch["unanalysed_configuration_keys"], ["inputs"])
+        self.assertEqual(workflow["jobs"][0]["permissions"]["declaration_kind"], "not-declared")
+
     def test_top_level_wrappers_and_root_sequence_fail_closed(self) -> None:
         cases = {
             "document-marker.yml": "---\n  on:\n    push:\n  jobs:\n    test:\n      runs-on: ubuntu-latest\n",
