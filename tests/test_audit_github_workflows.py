@@ -240,24 +240,41 @@ jobs:
             self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
 
     def test_mixed_root_indentation_fails_closed_with_exit_two(self) -> None:
-        root = self.make_repo(
-            {
-                "mixed-root.yml": (
-                    "  on:\n"
-                    "    push:\n"
-                    "jobs:\n"
-                    "  test:\n"
-                    "    runs-on: ubuntu-latest\n"
+        cases = {
+            "leading-indented.yml": (
+                "  on:\n"
+                "    push:\n"
+                "jobs:\n"
+                "  test:\n"
+                "    runs-on: ubuntu-latest\n"
+            ),
+            "after-scalar.yml": (
+                "name: Mixed root\n"
+                "  on:\n"
+                "    push:\n"
+                "jobs:\n"
+                "  test:\n"
+                "    runs-on: ubuntu-latest\n"
+            ),
+        }
+        for name, text in cases.items():
+            with self.subTest(name=name):
+                root = self.make_repo({name: text})
+                report = AUDIT.audit_repository(root)
+                workflow = report["workflows"][0]
+                self.assertEqual(report["status"], "unsupported")
+                self.assertEqual(workflow["parse_status"], "unsupported")
+                self.assertTrue(
+                    any(
+                        "indented document root" in item["reason"]
+                        or "indented content cannot follow a scalar top-level entry" in item["reason"]
+                        for item in workflow["unsupported_reasons"]
+                    )
                 )
-            }
-        )
-        report = AUDIT.audit_repository(root)
-        workflow = report["workflows"][0]
-        self.assertEqual(report["status"], "unsupported")
-        self.assertEqual(workflow["parse_status"], "unsupported")
-        self.assertTrue(any("indented document root" in item["reason"] for item in workflow["unsupported_reasons"]))
-        with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
-            self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
+                with mock.patch("sys.stdout", io.StringIO()), mock.patch("sys.stderr", io.StringIO()):
+                    self.assertEqual(AUDIT.main(["--root", str(root)]), 2)
+                self.tempdir.cleanup()
+                self.tempdir = tempfile.TemporaryDirectory()
 
     def test_top_level_wrappers_and_root_sequence_fail_closed(self) -> None:
         cases = {
