@@ -137,7 +137,7 @@ def _top_sections(lines: Sequence[str], workflow: dict[str, Any]) -> dict[str, t
     starts: dict[str, tuple[int, str]] = {}
     seen: set[str] = set()
     relevant = {"name", "on", "permissions", "jobs"}
-    for i in top:
+    for position, i in enumerate(top):
         stripped = lines[i].strip()
         if re.match(r"^[\"'](?:on|permissions|jobs)[\"']\s*:", stripped):
             _unsupported(workflow, i + 1, "global", "quoted relevant top-level keys are unsupported")
@@ -153,6 +153,15 @@ def _top_sections(lines: Sequence[str], workflow: dict[str, Any]) -> dict[str, t
             _unsupported(workflow, i + 1, "global", "top-level entries must use plain mapping syntax")
             continue
         key, value = parsed
+        next_top = top[position + 1] if position + 1 < len(top) else len(lines)
+        child = next((j for j in non_ignored if i < j < next_top), None)
+        if child is not None and _without_comment(value).strip():
+            _unsupported(
+                workflow,
+                child + 1,
+                "global",
+                "indented content cannot follow a scalar top-level entry in the supported structure",
+            )
         reason = _meta(key, value)
         if reason:
             _unsupported(workflow, i + 1, "global", reason)
