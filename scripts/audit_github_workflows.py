@@ -192,6 +192,7 @@ def _parse_events(lines: Sequence[str], section: tuple[int, int, str] | None, wo
     events: dict[str, dict[str, Any]] = {}
     current: dict[str, Any] | None = None
     active_filter: tuple[str, list[str], int] | None = None
+    active_unanalysed = False
     seen_events: set[str] = set()
     seen_filters: dict[str, set[str]] = {}
     for i in range(start + 1, end):
@@ -205,9 +206,11 @@ def _parse_events(lines: Sequence[str], section: tuple[int, int, str] | None, wo
         if indent <= 6 and indent % 2:
             _unsupported(workflow, line_no, "on", "ambiguous trigger indentation")
             active_filter = None
+            active_unanalysed = False
             continue
         if indent == 2:
             active_filter = None
+            active_unanalysed = False
             parsed = _mapping(line)
             if not parsed:
                 _unsupported(workflow, line_no, "on", "event entries must be mapping keys")
@@ -234,6 +237,7 @@ def _parse_events(lines: Sequence[str], section: tuple[int, int, str] | None, wo
             continue
         if indent == 4:
             active_filter = None
+            active_unanalysed = False
             if current is None:
                 _unsupported(workflow, line_no, "on", "event configuration has no supported event")
                 continue
@@ -249,6 +253,7 @@ def _parse_events(lines: Sequence[str], section: tuple[int, int, str] | None, wo
             if key not in FILTER_KEYS:
                 if key not in current["unanalysed_configuration_keys"]:
                     current["unanalysed_configuration_keys"].append(key)
+                active_unanalysed = not _without_comment(raw).strip()
                 continue
             if key in seen_filters[current["name"]]:
                 _unsupported(workflow, line_no, "on", f"duplicate filter key {key!r}")
@@ -277,7 +282,10 @@ def _parse_events(lines: Sequence[str], section: tuple[int, int, str] | None, wo
                 values.append(_scalar(raw_item))
             except ValueError as exc:
                 _unsupported(workflow, line_no, "on", f"unsupported filter scalar: {exc}")
-        # Deeper configuration below an unanalysed key is intentionally ignored.
+            continue
+        if active_unanalysed and indent > 4:
+            continue
+        _unsupported(workflow, line_no, "on", "unsupported trigger indentation or structure")
     for event in events.values():
         event["filters"].sort(key=lambda item: item["name"])
         event["unanalysed_configuration_keys"].sort()
@@ -349,6 +357,7 @@ def _parse_jobs(lines: Sequence[str], section: tuple[int, int, str] | None, work
     jobs: dict[str, dict[str, Any]] = {}
     current: dict[str, Any] | None = None
     active_permissions = False
+    active_unanalysed = False
     seen_jobs: set[str] = set()
     seen_attrs: dict[str, set[str]] = {}
     seen_scopes: dict[str, set[str]] = {}
@@ -363,9 +372,11 @@ def _parse_jobs(lines: Sequence[str], section: tuple[int, int, str] | None, work
         if indent <= 6 and indent % 2:
             _unsupported(workflow, line_no, "jobs", "ambiguous jobs indentation")
             active_permissions = False
+            active_unanalysed = False
             continue
         if indent == 2:
             active_permissions = False
+            active_unanalysed = False
             parsed = _mapping(line)
             if not parsed:
                 _unsupported(workflow, line_no, "jobs", "job entries must be mapping keys")
@@ -394,6 +405,7 @@ def _parse_jobs(lines: Sequence[str], section: tuple[int, int, str] | None, work
             continue
         if indent == 4:
             active_permissions = False
+            active_unanalysed = False
             if current is None:
                 continue
             stripped = line.strip()
@@ -402,6 +414,7 @@ def _parse_jobs(lines: Sequence[str], section: tuple[int, int, str] | None, work
                 continue
             parsed = _mapping(line)
             if not parsed:
+                _unsupported(workflow, line_no, f"jobs.{current['id']}", "job attributes must use mapping entries")
                 continue
             key, value = parsed
             reason = _meta(key, value)
@@ -409,6 +422,7 @@ def _parse_jobs(lines: Sequence[str], section: tuple[int, int, str] | None, work
                 _unsupported(workflow, line_no, f"jobs.{current['id']}", reason or "YAML merge keys are unsupported")
                 continue
             if key not in {"permissions", "uses"}:
+                active_unanalysed = not _without_comment(value).strip()
                 continue
             if reason:
                 _unsupported(workflow, line_no, f"jobs.{current['id']}", reason)
@@ -455,6 +469,11 @@ def _parse_jobs(lines: Sequence[str], section: tuple[int, int, str] | None, work
                 _unsupported(workflow, line_no, f"jobs.{current['id']}.permissions", f"unsupported permission value for {key!r}")
                 continue
             current["permissions"]["scopes"].append({"name": key, "value": scalar, "line": line_no})
+            continue
+        if active_unanalysed and indent > 4:
+            continue
+        section_name = f"jobs.{current['id']}" if current is not None else "jobs"
+        _unsupported(workflow, line_no, section_name, "unsupported job indentation or structure")
     workflow["jobs"] = list(jobs.values())
 
 
