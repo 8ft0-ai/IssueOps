@@ -74,7 +74,19 @@ def _scalar(value: str) -> str:
     if value[0] == "'":
         if len(value) < 2 or value[-1] != "'":
             raise ValueError("unterminated single-quoted scalar")
-        return value[1:-1].replace("''", "'")
+        inner = value[1:-1]
+        decoded: list[str] = []
+        index = 0
+        while index < len(inner):
+            if inner[index] != "'":
+                decoded.append(inner[index])
+                index += 1
+                continue
+            if index + 1 >= len(inner) or inner[index + 1] != "'":
+                raise ValueError("undoubled quote is unsupported in a single-quoted scalar")
+            decoded.append("'")
+            index += 2
+        return "".join(decoded)
     if value[0] == '"':
         if len(value) < 2 or value[-1] != '"':
             raise ValueError("unterminated double-quoted scalar")
@@ -112,8 +124,8 @@ def _meta(key: str, value: str) -> str | None:
 def _top_sections(lines: Sequence[str], workflow: dict[str, Any]) -> dict[str, tuple[int, int, str]]:
     non_ignored = [i for i, line in enumerate(lines) if not _ignore(line)]
     if non_ignored:
-        root_indent = min(_indent(lines[i]) for i in non_ignored)
-        if root_indent != 0:
+        first_indent = _indent(lines[non_ignored[0]])
+        if first_indent != 0:
             _unsupported(
                 workflow,
                 non_ignored[0] + 1,
