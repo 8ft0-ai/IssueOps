@@ -131,11 +131,15 @@ def _top_sections(lines: Sequence[str], workflow: dict[str, Any]) -> dict[str, t
             continue
         parsed = _mapping(lines[i])
         if not parsed:
+            _unsupported(workflow, i + 1, "global", "top-level entries must use plain mapping syntax")
             continue
         key, value = parsed
         reason = _meta(key, value)
         if reason:
             _unsupported(workflow, i + 1, "global", reason)
+            continue
+        if not PLAIN_KEY.fullmatch(key):
+            _unsupported(workflow, i + 1, "global", "complex top-level mapping keys are unsupported")
             continue
         if key in {"on", "permissions", "jobs"}:
             if key in seen:
