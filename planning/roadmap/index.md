@@ -50,12 +50,14 @@ The modular-session initiative delivered compact session grants, repository-nati
 
 ## Active approved roadmap
 
-No stage-level roadmap is currently active or approved for delivery.
+No numbered stage-level roadmap is currently active or approved for delivery.
+
+- [Post-v0.3.0 consolidation, proportionality and operational hardening](post-v0.3.0-consolidation.md) — approved as an unnumbered consolidation initiative through issue [#197](https://github.com/8ft0-ai/IssueOps/issues/197). It coordinates bounded evaluation records [#198](https://github.com/8ft0-ai/IssueOps/issues/198)–[#201](https://github.com/8ft0-ai/IssueOps/issues/201) and explicitly does not create Stage 6, pre-authorise child evaluation sessions or grant implementation authority for any later recommendation.
 
 ## Future stages
 
 No later stage is currently approved. Any stage after Stage 5 must begin as a separately governed planning question.
 
-The modular-session and portable-bootstrap initiatives, completed Stage 5 roadmap, completed #141/#144 execution-bridge lineage and separate #148/#149 PR-diff-validation lineage remain independently governed. Completion or adoption of one does not grant execution authority to another.
+The active post-`v0.3.0` consolidation initiative, modular-session and portable-bootstrap initiatives, completed Stage 5 roadmap, completed #141/#144 execution-bridge lineage and separate #148/#149 PR-diff-validation lineage remain independently governed. Completion or adoption of one does not grant execution authority to another.
 
 No roadmap approval or completed-stage adoption should be interpreted as authority for lifecycle automation, new execution-trigger surfaces, auto-merge configuration, repository-setting changes or broader operational rollout unless those capabilities are explicitly shaped, approved and delivered through their own execution contracts.
