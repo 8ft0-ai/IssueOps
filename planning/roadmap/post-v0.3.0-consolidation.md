@@ -21,7 +21,7 @@ Creating or listing those issues does not itself authorise their substantive eva
 
 `v0.3.0` is a coherent stable operating baseline. The post-baseline review nevertheless identified three areas where more evidence would materially improve confidence in the operating model:
 
-1. **Mechanical enforcement versus procedural control.** The authority and evidence rules are strong, but many are procedural. The project needs to determine whether any small deterministic safeguard would prevent meaningful mistakes without turning IssueOps into an automated lifecycle or approval system.
+1. **Mechanical enforcement versus procedural control.** The authority and evidence rules are strong, but many are procedural. The project needs to determine whether small deterministic safeguards or gate-progress rules would prevent meaningful mistakes and avoid unnecessary human ceremony without turning IssueOps into an automated judgement or authority system.
 2. **Process cost and proportionality.** Prior modular-session evidence recorded real session, decision and intervention cost. The project needs to measure where that cost is incurred and which gates actually produce safety/review value before proposing any shorter path.
 3. **Portability breadth.** Portable bootstrap/adoption is adopted and has a genuine Level 3 external proof, but one target repository does not establish broad generalisability across different engineering contexts or independent operators.
 
@@ -56,7 +56,7 @@ Treat these as presumptive operating-model invariants during the evaluations:
 7. substantive contract review; and
 8. separate human merge authority.
 
-The proportionality work may test whether low-risk transitions, presentation or session boundaries can be collapsed. It must not silently erase these distinctions.
+The mechanical-safeguard and proportionality work may test whether deterministic gates, low-risk transitions, presentation or session boundaries can be collapsed. They must not silently erase these distinctions or convert evidence automation into judgement/authority automation.
 
 ## Non-goals
 
@@ -66,8 +66,9 @@ This initiative does not authorise:
 - implementation of #182 as a standalone mechanical review-preflight tool;
 - implementation of #184 as a standalone baseline/documentation drift command;
 - a new programme-state manifest created to make checking easy;
-- automatic readiness, planning, remediation, substantive approval, merge or release decisions;
-- automatic lifecycle transitions;
+- implementation of automatic gate progression before #198 produces evidence and a separately governed implementation contract exists;
+- automatic human judgement or authority decisions, including intent/scope choice, material risk/deviation acceptance, judgement-bearing plan approval, substantive approval, merge or human-governed release/publication decisions;
+- lifecycle progression where the gate is not fully deterministic, current, unambiguous, fail-closed and already covered by existing authority;
 - generic workflow, ref, input, command or shell execution;
 - broader PR-comment command-router scope;
 - auto-merge or automated release publication;
@@ -95,7 +96,9 @@ approved consolidation roadmap
   -> separate implementation only when justified
 ```
 
-The roadmap authorises creation and tracking of the bounded evaluation issues. Each substantive evaluation still requires repository-standard readiness, a detailed evaluation plan and separate owner execution authority.
+The roadmap authorises creation and tracking of the bounded evaluation issues. Each substantive evaluation still requires repository-standard readiness, a detailed evaluation plan and separate owner execution authority under the current protocol.
+
+#198 may evaluate whether some of those existing gates should later be mechanically satisfied or progressed when the condition is deterministic and no new human judgement or authority is introduced. That evaluation does not itself change the current protocol or authorise such progression.
 
 A child recommendation is not implementation authority.
 
@@ -109,7 +112,7 @@ The intended programme flow is:
 
 ```text
 roadmap formalisation
-  -> #198 mechanical-safeguards evaluation
+  -> #198 mechanical-safeguards / deterministic-gate evaluation
   -> #199 process-cost/proportionality evaluation
   -> #200 portability-breadth evaluation
   -> #201 final consolidation comparison
@@ -122,11 +125,11 @@ roadmap formalisation
 
 #201 remains blocked on sufficiently complete durable evidence from #198–#200.
 
-### Workstream 1 target — minimum mechanical safeguards
+### Workstream 1 target — minimum mechanical safeguards and deterministic gate progression
 
-#198 evaluates the minimum useful mechanical safeguard, if any, for IssueOps repository mutations.
+#198 evaluates the minimum useful mechanical safeguard and deterministic gate-progression model, if any, for IssueOps after `v0.3.0`.
 
-It must reconstruct representative ordinary PR changes, exceptional/direct-main changes and relevant execution deviations, then compare at least:
+It must reconstruct representative ordinary PR changes, exceptional/direct-main changes and relevant execution deviations, then compare at least these repository-mutation safeguards:
 
 1. no mechanical change;
 2. baseline validation on pushes to `main`;
@@ -137,6 +140,26 @@ It must reconstruct representative ordinary PR changes, exceptional/direct-main 
 For every candidate safeguard, assess observed preventable/detectable failures, existing human-control effectiveness, blocking/false-positive cost, exception auditability and whether the safeguard is deterministic rather than a disguised approval judgement.
 
 It must also assess whether unsigned Git-data commits materially weaken provenance for authorised exceptional direct-main changes or whether verified ancestry plus durable owner authority is sufficient.
+
+The workstream must additionally classify lifecycle gates into:
+
+- **candidate mechanical gates** — current evidence can prove the condition unambiguously, the next action is already authorised and progressing the gate creates no new human choice, risk acceptance or authority grant;
+- **human-decision gates** — intent/scope choice, material risk/deviation acceptance, judgement-bearing plan approval, substantive contract review, authority-expanding exceptions, merge and human-governed release/publication decisions; or
+- **not safely classifiable** — evidence or semantics are too ambiguous to automate safely.
+
+At minimum, test whether readiness conditions, exact-candidate validation, evidence-currentness/preflight and other already-authorised deterministic transitions can be auto-satisfied or auto-progressed. A plan transition may be considered only when it is a mechanical instantiation of already-approved intent and introduces no new trade-off, risk or authority decision.
+
+Any proposed automatic gate must define:
+
+```text
+exact proof facts
+stale/ambiguous conditions
+fail-closed behaviour
+whether progression introduces new authority
+how the automated result is durably evidenced
+```
+
+Green CI or complete mechanical evidence must never be treated as a substitute for a human-decision gate.
 
 ### Workstream 2 target — process cost and proportionality
 
@@ -207,7 +230,8 @@ No scheduled implementation work is created for these areas:
 
 - [ ] The initiative remains an unnumbered consolidation programme rather than becoming Stage 6 by implication.
 - [ ] Child issue creation is not treated as execution authority.
-- [ ] #198–#201 each pass their own required gates before substantive work.
+- [ ] #198–#201 each pass their own required gates before substantive work under the current protocol.
+- [ ] #198 may evaluate deterministic automatic gate progression without treating that evaluation as present authority to use it.
 - [ ] No child recommendation becomes implementation authority automatically.
 - [ ] `v0.3.0` remains the stable baseline unless a later separately governed release decision changes it.
 
@@ -215,8 +239,12 @@ No scheduled implementation work is created for these areas:
 
 - [ ] #198 compares candidate controls against observed failure/prevention evidence and blocking cost.
 - [ ] Procedural versus mechanical enforcement is distinguished explicitly.
-- [ ] Any recommended safeguard remains deterministic and bounded.
-- [ ] Settings/workflow implementation is deferred to a separate issue if recommended.
+- [ ] Lifecycle gates are classified as mechanical, human-decision or not safely classifiable.
+- [ ] Any candidate automatic gate has exact proof facts, stale/ambiguity handling, fail-closed behaviour and durable evidence.
+- [ ] Automatic progression is considered only where the next action is already authorised and no new human judgement, risk acceptance or authority grant is introduced.
+- [ ] Substantive review, judgement-bearing plan approval, material-risk/deviation acceptance, authority expansion, merge and human-governed release/publication remain human-decision gates.
+- [ ] Any recommended safeguard or progression rule remains deterministic and bounded.
+- [ ] Settings/workflow/protocol/lifecycle implementation is deferred to a separate issue if recommended.
 
 ### Proportionality evidence
 
@@ -252,18 +280,18 @@ No scheduled implementation work is created for these areas:
 
 The initiative uses four bounded issue records rather than one broad execution issue.
 
-### Slice 1 — mechanical safeguards
+### Slice 1 — mechanical safeguards and deterministic gate progression
 
 Issue: [#198](https://github.com/8ft0-ai/IssueOps/issues/198)
 
 Required output:
 
 - **Maintain procedural controls**;
-- **Adopt one bounded mechanical safeguard**;
-- **Adapt through a small combination of safeguards**; or
+- **Adopt one bounded mechanical safeguard / deterministic gate-progression rule**;
+- **Adapt through a small combination of safeguards and deterministic progression rules**; or
 - **Collect more evidence**.
 
-No safeguard is implemented inside #198.
+No safeguard or automatic gate progression is implemented inside #198.
 
 ### Slice 2 — lifecycle proportionality
 
@@ -319,7 +347,7 @@ Control: `Maintain` is a successful result, the active children are evaluations 
 
 ### Risk: mechanical enforcement crowds out human judgement
 
-Control: #198 evaluates deterministic safeguards only and keeps substantive review, approval and merge decisions human.
+Control: #198 explicitly distinguishes deterministic evidence/progression from judgement and authority. Any automatic gate must be current, unambiguous, fail-closed and already authorised; substantive review, material-risk acceptance, authority expansion, merge and human-governed publication remain human decisions.
 
 ### Risk: proportionality work becomes a pretext to remove safety gates
 
@@ -346,7 +374,7 @@ Control: #201 is decision-only; implementation or a new roadmap requires a later
 The initiative is complete when:
 
 - [ ] this roadmap is approved, merged and indexed;
-- [ ] #198 has a durable mechanical-safeguards conclusion;
+- [ ] #198 has a durable mechanical-safeguards / deterministic-gate conclusion;
 - [ ] #199 has a durable cost/proportionality conclusion and reusable measurement model;
 - [ ] #200 has a durable portability-breadth conclusion with exact evidence levels and target authority provenance;
 - [ ] recurrence-triggered watchpoints are assessed without speculative implementation;
