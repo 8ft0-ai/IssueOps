@@ -4,7 +4,9 @@
 
 IssueOps is an experiment in making agentic coding safer and easier to review by turning the GitHub issue into an execution contract. The issue defines the work. The branch contains the implementation. The pull request carries the evidence pack that a human verifies before deciding whether to merge.
 
-IssueOps has grown through four completed delivery stages. Stage 1 established the manual workflow, Stage 2 hardened it into the current recommended operating protocol, Stage 3 tested read-only evidence-pack assistance as an experimental alpha capability, and Stage 4 adopted a Diátaxis-aligned documentation architecture without changing the operating or authority model.
+IssueOps has grown through five completed delivery stages. Stage 1 established the manual workflow, Stage 2 hardened it into a published operating protocol, Stage 3 tested read-only evidence-pack assistance as an experimental alpha capability and closed **Adapt**, Stage 4 adopted a Diátaxis-aligned documentation architecture, and Stage 5 adopted bounded human-triggered read-only evidence assistance for normal IssueOps review without changing human approval or merge authority.
+
+Portable IssueOps bootstrap/adoption and modular-session guidance are also completed **Adopt** capabilities. They are cross-cutting operating capabilities rather than additional numbered delivery stages.
 
 Current programme status is maintained in the [planning control surface](https://github.com/8ft0-ai/IssueOps/blob/main/planning/README.md) and [roadmap index](https://github.com/8ft0-ai/IssueOps/blob/main/planning/roadmap/index.md), rather than duplicated on this landing page.
 
@@ -57,8 +59,10 @@ Existing public project-record URLs remain concise compatibility surfaces. The [
 
 ## Current baseline
 
-The recommended stable baseline is [Stage 2 — Published and Hardened IssueOps Operating Model](releases/stage-2.md), `v0.2.0`.
+The recommended stable baseline is [`v0.3.0`](releases/v0.3.0.md), a compatible successor to `v0.2.0`.
 
-[Stage 3 Alpha — Read-only Evidence-pack Assistance](releases/stage-3-alpha.md), proposed as `v0.3.0-alpha.1`, is an experimental snapshot for controlled evaluation. It does not replace the stable baseline, establish routine operational adoption or expand human-controlled approval or merge authority.
+It carries forward the Stage 2 execution-contract foundation and reconciles the adopted Stage 4 documentation architecture, Stage 5 human-triggered read-only evidence assistance, portable bootstrap/adoption and modular-session guidance. The `/collect-evidence` bridge and repository-native PR-diff validation are bounded supporting mechanisms; the primary-record inspector and static workflow auditor remain optional/advisory aids.
 
-Stage 4 completed with decision **Adopt**. It changes documentation architecture only and does not authorise automatic execution, lifecycle transitions, review decisions, merge authority, repository-setting changes or operational evidence-assistance implementation.
+[Stage 3 Alpha — Read-only Evidence-pack Assistance](releases/stage-3-alpha.md), `v0.3.0-alpha.1`, remains a historical experimental snapshot with an **Adapt** outcome. The stable `v0.3.0` recommendation reflects the later consolidated adopted model rather than reclassifying that alpha snapshot.
+
+Human substantive review, approval and merge authority remain unchanged. The stable baseline does not authorise generic execution, lifecycle automation, required-check/ruleset changes, auto-merge, automated publication, or broader repository-setting or merge-authority expansion.

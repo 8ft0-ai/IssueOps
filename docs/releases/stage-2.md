@@ -1,6 +1,6 @@
 # Stage 2 baseline release
 
-`v0.2.0` is the recommended stable IssueOps operating baseline.
+`v0.2.0` records the Stage 2 published and hardened IssueOps operating baseline.
 
 Stage 2 published and hardened the manual execution-contract model with dependency-aware readiness, repository-native validation, review remediation, bounded delegated batch mode and canonical documentation, while preserving human approval and merge authority.
 
@@ -14,7 +14,7 @@ The exact former release page remains available at the verified [pre-migration s
 
 ## Baseline status
 
-Stage 2 remains the recommended stable baseline. Stage 3 is an experimental alpha snapshot and does not replace it.
+Stage 2 remains the historical `v0.2.0` stable baseline. The current successor stable recommendation is [`v0.3.0`](v0.3.0.md). Stage 3 remains an experimental alpha snapshot and is not itself reclassified as stable.
 
 Use the [documentation home](../index.md) for current guidance.
 

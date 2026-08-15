@@ -4,7 +4,7 @@ Proposed version: `v0.3.0-alpha.1`
 
 Classification: experimental prerelease snapshot.
 
-Recommended stable baseline: [`v0.2.0`](stage-2.md).
+Recommended stable baseline: [`v0.3.0`](v0.3.0.md).
 
 Stage 3 proved manually invoked, read-only pull-request evidence collection and closed with decision **Adapt**. The capability remains experimental: it does not represent routine adoption, replace the stable baseline or transfer readiness, review, approval, merge, publication or deployment authority from humans.
 
