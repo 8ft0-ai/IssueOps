@@ -10,9 +10,13 @@ The issue defines the problem, expected outcome, scope, non-goals, acceptance cr
 
 ## Current baseline
 
-Stage 1 established the manual execution-contract model. Stage 2 hardened that foundation into the current recommended stable operating protocol through dependency-aware readiness, safe tool-operation controls, change-specific validation, review remediation, compact evidence formats, bounded delegated batch mode, repository-native pull-request validation and published canonical documentation.
+Stage 1 established the manual execution-contract model. Stage 2 hardened that foundation through dependency-aware readiness, safe tool-operation controls, change-specific validation, review remediation, compact evidence formats, bounded delegated batch mode, repository-native pull-request validation and published canonical documentation.
 
-Stage 3 added an experimental, manually invoked and read-only pull-request evidence collector. It is retained for controlled evaluation with an **Adapt** decision and is not the recommended operational baseline.
+The current recommended stable baseline is `v0.3.0`. It consolidates the compatible operating model proved after `v0.2.0`: Stage 4's adopted Diátaxis documentation architecture, Stage 5's adopted human-triggered read-only evidence assistance, portable IssueOps bootstrap/adoption and adopted modular-session guidance.
+
+The `/collect-evidence` execution bridge and repository-native PR-diff validation are bounded supporting mechanisms within that model; they do not create generic execution authority. The primary-record inspector and static GitHub Actions workflow auditor remain optional/advisory tools rather than lifecycle authorities.
+
+Stage 3's `v0.3.0-alpha.1` release remains a historical experimental snapshot with an **Adapt** decision. The stable `v0.3.0` baseline reflects the later consolidated adopted operating model; it does not reclassify the Stage 3 alpha itself as stable.
 
 The core loop remains human-controlled:
 
@@ -49,7 +53,8 @@ Project planning, delivery evidence and historical snapshots remain outside the 
 Baseline compatibility pages remain available for public links:
 
 - [`v0.1.0` Stage 1 baseline](docs/releases/stage-1.md)
-- [`v0.2.0` recommended stable baseline](docs/releases/stage-2.md)
-- [Proposed `v0.3.0-alpha.1` experimental snapshot](docs/releases/stage-3-alpha.md)
+- [`v0.2.0` Stage 2 baseline](docs/releases/stage-2.md)
+- [`v0.3.0-alpha.1` Stage 3 experimental snapshot](docs/releases/stage-3-alpha.md)
+- [`v0.3.0` recommended stable baseline](docs/releases/v0.3.0.md)
 
-The stable baseline remains deliberately bounded. It does not provide automatic agent execution, automatic lifecycle transitions, required status checks, branch protection changes, auto-merge or automatic publication. The Stage 3 alpha does not expand those authority boundaries or represent routine operational adoption.
+The stable baseline remains deliberately bounded. It does not provide generic workflow or command execution, automatic agent execution, automatic lifecycle transitions or readiness/approval decisions, required status checks or ruleset/branch-protection changes, auto-merge, automatic release publication, or broader repository-setting/merge-authority expansion.
