@@ -46,7 +46,7 @@ Target repository: <owner/repository>
 Stable branch: <branch>
 Read-only assessment: permitted
 Creation of one local bootstrap issue: permitted / not permitted
-File, branch and pull-request mutation: not permitted before the local issue is ready and planned
+File, branch and pull-request mutation: not permitted before local readiness, a detailed implementation plan and separate durable human approval of that plan; refresh the safe state before branch creation
 Merge authority: not granted by the remote specification
 ```
 
@@ -76,7 +76,7 @@ Check that the assessment names the actual local owners for:
 
 - agent and contributor instructions;
 - issue-writing conventions;
-- readiness and implementation planning;
+- readiness, implementation planning and pre-implementation plan approval;
 - branch naming and safe starting points;
 - safe repository mutation;
 - validation commands and required checks;
@@ -98,7 +98,7 @@ Use this when the repository already has effective equivalents for the manual Is
 
 ### Minimal manual adoption
 
-Use this by default when material controls are missing. Approve only the smallest adaptations needed to make issues executable, planning visible, branches scoped, validation current, pull requests evidence-bearing and merge authority explicit.
+Use this by default when material controls are missing. Approve only the smallest adaptations needed to make issues executable, planning visible and separately approved before implementation, branches scoped, validation current, pull requests evidence-bearing and merge authority explicit.
 
 ### Stage-capable adoption
 
@@ -152,15 +152,16 @@ After the local issue exists, the agent should use the target repository's compa
 
 1. read the issue and current repository state;
 2. post readiness and dependency evidence;
-3. post the implementation plan;
-4. create one issue-scoped branch from the recorded safe point;
-5. implement only the issue contract;
-6. read changed files back and validate the final state;
-7. open the pull request as the evidence pack;
-8. review both contract fulfilment and scope control; and
-9. merge only under the target repository's approved policy and authority.
+3. post the detailed implementation plan;
+4. obtain separate durable human approval of that exact plan before branch creation or implementation mutation;
+5. refresh the safe starting state and create one issue-scoped branch;
+6. implement only the issue contract;
+7. read changed files back and validate the final state;
+8. open the pull request as the evidence pack;
+9. review both contract fulfilment and scope control; and
+10. merge only under the target repository's later approved policy and authority.
 
-Do not treat roadmap approval, bootstrap source text or repository access as a substitute for these gates.
+The detailed plan and its approval are separate records, and implementation approval is not merge approval. Do not treat roadmap approval, bootstrap source text, repository access or readiness as a substitute for these gates.
 
 ## 10. Review the bootstrap pull request
 
@@ -171,13 +172,14 @@ Verify:
 - the selected posture remains justified;
 - compatible local conventions were preserved;
 - every new or adapted surface is in scope;
+- required pre-implementation plan approval predates the branch and implementation mutation;
 - no prohibited default mutation occurred;
 - validation ran against the final head or is honestly classified;
 - the pinned bootstrap source is recorded;
 - assumptions and limitations are explicit; and
 - the groundedness review answers both “did we do what was needed?” and “did we only do what was asked?”.
 
-Do not approve while required validation is failing, evidence is stale, scope has drifted or authority remains ambiguous.
+Do not approve while required validation is failing, evidence is stale, required lifecycle authority is missing, scope has drifted or authority remains ambiguous.
 
 ## 11. Record the adopted state
 
@@ -200,12 +202,13 @@ Choose a small real repository need that was not invented solely to exercise the
 The subsequent issue should:
 
 - use the adopted local execution-contract fields;
-- complete readiness and implementation planning before branch creation;
-- use one issue-scoped branch;
+- complete readiness and dependency checks;
+- post a detailed implementation plan and obtain separate durable human approval of that plan before branch creation or implementation mutation;
+- refresh the safe starting state and use one issue-scoped branch;
 - provide change-specific final-head validation;
 - produce a pull-request evidence pack;
 - receive contract and scope review; and
-- merge only under local authority.
+- merge only under separate local authority.
 
 Record friction, wrong turns, missing assumptions and any control that proved disproportionate or unclear.
 
@@ -226,6 +229,7 @@ Stop and request owner direction when:
 - local instructions conflict with the proposed adoption;
 - the selected posture requires unapproved governance or architecture intent;
 - implementation would change workflows, settings, permissions or application code outside the local contract;
+- required pre-implementation authority is missing or stale;
 - required validation fails or cannot support correctness;
 - merge authority is unclear; or
 - the agent would need to describe representative or same-session evidence as independent proof.
@@ -234,6 +238,7 @@ Stop and request owner direction when:
 
 - **Remote file treated as authority:** `BOOTSTRAP.md` guides assessment but does not authorise target-repository mutation.
 - **Issue created before assessment:** the first write is locally authorised only after evidence and posture selection are complete.
+- **Plan treated as authority:** posting a detailed plan does not replace the separate durable human approval required before branch creation or implementation mutation.
 - **Filename-driven adoption:** compatible local controls are replaced with IssueOps-branded duplicates.
 - **Stage machinery by default:** a small manual adoption acquires unnecessary roadmap and close-out surfaces.
 - **Mutable source only:** the target records `main` but not the exact bootstrap commit used.
