@@ -41,23 +41,24 @@ Stage 5 adopted the bounded human-triggered, read-only evidence-assistance model
 
 - [Portable IssueOps bootstrap and adoption](portable-issueops-bootstrap-and-adoption.md) — completed with an **Adopt** decision after a Level 3 external pilot in `8ft0-ai/mri-fourier-lab`; actual delivery is recorded in the [portable bootstrap delivery record](../delivery/portable-issueops-bootstrap-and-adoption.md).
 - [Modular IssueOps session architecture](modular-issueops-session-architecture.md) — completed with an **Adopt** decision after the Slice 4 **Adapt** finding, bounded correction/proof through issue [#143](https://github.com/8ft0-ai/IssueOps/issues/143) / PR [#145](https://github.com/8ft0-ai/IssueOps/pull/145), and the accepted post-adaptation reassessment on issue [#142](https://github.com/8ft0-ai/IssueOps/issues/142); actual delivery is recorded in the [modular-session delivery record](../delivery/modular-issueops-session-architecture.md).
+- [Post-v0.3.0 consolidation, proportionality and operational hardening](post-v0.3.0-consolidation.md) — completed with a **Maintain** decision after one separately governed bounded safeguard and evidence-led proportionality/portability evaluation; actual delivery is recorded in the [consolidation delivery record](../delivery/post-v0.3.0-consolidation.md).
 
 The portable initiative proved read-only assessment, capability-first posture selection, first-local-issue authority handoff, minimal target adoption, one subsequent genuine issue and per-PR human merge control from the pinned `IssueOps Bootstrap 0.1` source.
 
 The modular-session initiative delivered compact session grants, repository-native state reconciliation, bounded session roles and durable verifiable handovers without creating a second kernel, mandatory repository profile or parallel initiative manifest. Its completed sequence was Slice 1 ownership/decomposition through [#133](https://github.com/8ft0-ai/IssueOps/issues/133) / [PR #134](https://github.com/8ft0-ai/IssueOps/pull/134), Slice 2 manual Version 0.1 guidance through [#135](https://github.com/8ft0-ai/IssueOps/issues/135) / [PR #136](https://github.com/8ft0-ai/IssueOps/pull/136), Slice 3 evidence through [#137](https://github.com/8ft0-ai/IssueOps/issues/137), Pilot A [#138](https://github.com/8ft0-ai/IssueOps/issues/138) and Pilot B [#139](https://github.com/8ft0-ai/IssueOps/issues/139), then Slice 4 comparison [#142](https://github.com/8ft0-ai/IssueOps/issues/142), bounded adaptation [#143](https://github.com/8ft0-ai/IssueOps/issues/143) / [PR #145](https://github.com/8ft0-ai/IssueOps/pull/145), and final **Adopt**.
 
+The post-`v0.3.0` consolidation concluded that the stable human-governed operating model should be maintained with the already-completed #203 ordinary-PR safeguard retained. The lifecycle evidence did not justify a fast path; portability evidence remained explicitly **More breadth required**; and no Stage 6 or further adaptation was approved.
+
 [Modular session contract ownership and Slice 2 decomposition](modular-session-contract-ownership.md) remains the historical Slice 1 ownership/decomposition record within that completed initiative. It is not an active approved roadmap item.
 
 ## Active approved roadmap
 
-No numbered stage-level roadmap is currently active or approved for delivery.
-
-- [Post-v0.3.0 consolidation, proportionality and operational hardening](post-v0.3.0-consolidation.md) — approved as an unnumbered consolidation initiative through issue [#197](https://github.com/8ft0-ai/IssueOps/issues/197). It coordinates bounded evaluation records [#198](https://github.com/8ft0-ai/IssueOps/issues/198)–[#201](https://github.com/8ft0-ai/IssueOps/issues/201) and explicitly does not create Stage 6, pre-authorise child evaluation sessions or grant implementation authority for any later recommendation.
+No numbered or unnumbered roadmap is currently active or approved for delivery.
 
 ## Future stages
 
 No later stage is currently approved. Any stage after Stage 5 must begin as a separately governed planning question.
 
-The active post-`v0.3.0` consolidation initiative, modular-session and portable-bootstrap initiatives, completed Stage 5 roadmap, completed #141/#144 execution-bridge lineage and separate #148/#149 PR-diff-validation lineage remain independently governed. Completion or adoption of one does not grant execution authority to another.
+The completed post-`v0.3.0` consolidation initiative, modular-session and portable-bootstrap initiatives, completed Stage 5 roadmap, completed #141/#144 execution-bridge lineage and separate #148/#149 PR-diff-validation lineage remain independently governed. Completion or adoption of one does not grant execution authority to another.
 
 No roadmap approval or completed-stage adoption should be interpreted as authority for lifecycle automation, new execution-trigger surfaces, auto-merge configuration, repository-setting changes or broader operational rollout unless those capabilities are explicitly shaped, approved and delivered through their own execution contracts.
