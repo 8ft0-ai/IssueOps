@@ -153,7 +153,7 @@ Safe starting state:
 
 ## Authority boundary
 
-Before readiness, the detailed implementation plan and separate durable human approval of that exact plan are complete, this issue does not authorise a branch, file change or pull request. Refresh the safe starting state immediately before an authorised branch is created.
+Until readiness, the detailed implementation plan and separate durable human approval of that exact plan are all complete, this issue does not authorise a branch, file change or pull request. Refresh the safe starting state immediately before an authorised branch is created.
 
 This issue authorises only the scope above. It does not authorise:
 
