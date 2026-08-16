@@ -50,6 +50,9 @@ flowchart LR
   n_stage_5["Stage 5 — Operational evidence assistance\n(stage)"]
   n_issue_163["Issue #163 — Stage 5 ordinary-work proof\n(issue)"]
   n_decision_adopt_stage_5["Adopt operational evidence assistance\n(decision)"]
+  n_initiative_post_v0_3_consolidation["Post-v0.3.0 consolidation, proportionality and operational hardening\n(stage)"]
+  n_issue_201["Issue #201 — Final post-v0.3.0 consolidation comparison\n(issue)"]
+  n_decision_maintain_post_v0_3["Maintain the post-v0.3.0 operating model\n(decision)"]
 
   n_stage_1 -->|implemented by| n_pr_2
   n_stage_1 -->|produced| n_release_v0_1
@@ -116,4 +119,11 @@ flowchart LR
   n_issue_163 -->|produced| n_decision_adopt_stage_5
   n_stage_5 -->|preserved| n_boundary_human_authority
   n_stage_5 -->|preserved| n_boundary_bounded_automation
+  n_stage_5 -->|carried forward to| n_initiative_post_v0_3_consolidation
+  n_initiative_portable_bootstrap -->|carried forward to| n_initiative_post_v0_3_consolidation
+  n_initiative_modular_sessions -->|carried forward to| n_initiative_post_v0_3_consolidation
+  n_initiative_post_v0_3_consolidation -->|proved by| n_issue_201
+  n_issue_201 -->|produced| n_decision_maintain_post_v0_3
+  n_initiative_post_v0_3_consolidation -->|preserved| n_boundary_human_authority
+  n_initiative_post_v0_3_consolidation -->|preserved| n_boundary_bounded_automation
 ```
