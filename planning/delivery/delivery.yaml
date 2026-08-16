@@ -315,6 +315,27 @@
       "type": "decision",
       "title": "Adopt operational evidence assistance",
       "summary": "Ordinary-work proof and authority audit support adopting the human-triggered, read-only evidence-assistance model."
+    },
+    {
+      "id": "initiative-post-v0-3-consolidation",
+      "type": "stage",
+      "title": "Post-v0.3.0 consolidation, proportionality and operational hardening",
+      "summary": "Evaluated safeguards, lifecycle proportionality and portability breadth after v0.3.0; completed Maintain after one separately governed bounded safeguard.",
+      "status": "completed",
+      "path": "planning/delivery/post-v0.3.0-consolidation.md"
+    },
+    {
+      "id": "issue-201",
+      "type": "issue",
+      "title": "Issue #201 — Final post-v0.3.0 consolidation comparison",
+      "summary": "Compared the completed consolidation evidence and recommended Maintain with explicit limitations retained.",
+      "url": "https://github.com/8ft0-ai/IssueOps/issues/201"
+    },
+    {
+      "id": "decision-maintain-post-v0-3",
+      "type": "decision",
+      "title": "Maintain the post-v0.3.0 operating model",
+      "summary": "Retain the human-governed model and completed bounded safeguard; no further adaptation, Stage 6 or successor roadmap is justified by the consolidation evidence."
     }
   ],
   "edges": [
@@ -640,6 +661,41 @@
     },
     {
       "from": "stage-5",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "stage-5",
+      "to": "initiative-post-v0-3-consolidation",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "initiative-portable-bootstrap",
+      "to": "initiative-post-v0-3-consolidation",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "initiative-modular-sessions",
+      "to": "initiative-post-v0-3-consolidation",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "initiative-post-v0-3-consolidation",
+      "to": "issue-201",
+      "type": "proved_by"
+    },
+    {
+      "from": "issue-201",
+      "to": "decision-maintain-post-v0-3",
+      "type": "produced"
+    },
+    {
+      "from": "initiative-post-v0-3-consolidation",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "initiative-post-v0-3-consolidation",
       "to": "boundary-bounded-automation",
       "type": "preserved"
     }
