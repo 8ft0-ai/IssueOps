@@ -28,6 +28,7 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 - [Planning-process adoption](planning-process-adoption.md)
 - [Portable IssueOps bootstrap and adoption](portable-issueops-bootstrap-and-adoption.md) — completed with an **Adopt** decision after a Level 3 external pilot and one subsequent genuine target-repository issue.
 - [Modular IssueOps session architecture](modular-issueops-session-architecture.md) — completed with an **Adopt** decision after bounded adaptation and corrective proof.
+- [Post-v0.3.0 consolidation, proportionality and operational hardening](post-v0.3.0-consolidation.md) — completed with a **Maintain** decision after one separately governed bounded safeguard and evidence-led proportionality/portability review.
 
 ## Causal delivery graph
 
