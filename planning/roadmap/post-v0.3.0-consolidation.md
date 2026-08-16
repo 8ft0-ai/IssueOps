@@ -1,10 +1,12 @@
 # Post-v0.3.0 consolidation, proportionality and operational hardening
 
-Status: approved.
+Status: completed.
 
 Record type: contemporaneous.
 
 Approved through [planning issue #197](https://github.com/8ft0-ai/IssueOps/issues/197) on 15 August 2026.
+
+Completed delivery is recorded in the [consolidation delivery record](../delivery/post-v0.3.0-consolidation.md); the accepted final decision is **Maintain**.
 
 This is an unnumbered consolidation initiative after the `v0.3.0` stable baseline. It is deliberately **not Stage 6** and does not assume that IssueOps needs more features.
 
@@ -373,16 +375,16 @@ Control: #201 is decision-only; implementation or a new roadmap requires a later
 
 The initiative is complete when:
 
-- [ ] this roadmap is approved, merged and indexed;
-- [ ] #198 has a durable mechanical-safeguards / deterministic-gate conclusion;
-- [ ] #199 has a durable cost/proportionality conclusion and reusable measurement model;
-- [ ] #200 has a durable portability-breadth conclusion with exact evidence levels and target authority provenance;
-- [ ] recurrence-triggered watchpoints are assessed without speculative implementation;
-- [ ] #201 records the final Maintain / Adapt / New shaping question recommendation;
-- [ ] the owner accepts, rejects or amends that final recommendation;
-- [ ] any required implementation is moved to separately governed issues rather than absorbed into the comparison record;
-- [ ] actual delivery/evidence is recorded separately from this intent roadmap; and
-- [ ] the next decision boundary is explicit without automatically creating Stage 6.
+- [x] this roadmap is approved, merged and indexed;
+- [x] #198 has a durable mechanical-safeguards / deterministic-gate conclusion;
+- [x] #199 has a durable cost/proportionality conclusion and reusable measurement model;
+- [x] #200 has a durable portability-breadth conclusion with exact evidence levels and target authority provenance;
+- [x] recurrence-triggered watchpoints are assessed without speculative implementation;
+- [x] #201 records the final Maintain / Adapt / New shaping question recommendation;
+- [x] the owner accepts, rejects or amends that final recommendation;
+- [x] any required implementation is moved to separately governed issues rather than absorbed into the comparison record;
+- [x] actual delivery/evidence is recorded separately from this intent roadmap; and
+- [x] the next decision boundary is explicit without automatically creating Stage 6.
 
 ## Likely next decision boundary
 
