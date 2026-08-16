@@ -22,7 +22,7 @@ https://github.com/8ft0-ai/IssueOps/blob/<commit-sha>/BOOTSTRAP.md
 
 Record both the pinned URL and `IssueOps Bootstrap 0.1` in the target repository's local bootstrap issue and pull request.
 
-The bootstrap represents the completed manual IssueOps baseline documented in the [IssueOps operating protocol](docs/issueops-protocol.md). It does not include planned capabilities from issue #90 or issue #113.
+The bootstrap represents the completed manual IssueOps baseline documented in the [IssueOps operating protocol](docs/issueops-protocol.md). Bootstrap 0.1 deliberately does not include the later operational-evidence-assistance work associated with issue #90 or modular-session-architecture work associated with issue #113; their current repository status does not expand this specification.
 
 ## Authority boundary
 
@@ -37,7 +37,7 @@ read-only repository assessment
 
 The remote specification does not itself authorise issue creation.
 
-Before the local issue is ready and its implementation plan is recorded, do not:
+Before the local issue has readiness and dependency evidence, a detailed implementation plan and separate durable human approval of that exact plan, do not:
 
 - create or change files;
 - create a branch or pull request;
@@ -47,7 +47,7 @@ Before the local issue is ready and its implementation plan is recorded, do not:
 - change application code; or
 - claim approval, merge or publication authority.
 
-The target repository's local instructions, issue, validation rules, review requirements and human authority govern every mutation.
+Immediately before an authorised branch is created, refresh the target repository's safe starting state. The target repository's local instructions, issue, validation rules, review requirements and human authority govern every mutation.
 
 ## Required starting information
 
@@ -93,7 +93,7 @@ Use when effective local equivalents already exist. Propose only material correc
 
 #### Minimal manual adoption
 
-Use by default when material controls are missing but dependent stage planning is not justified. Add or adapt only the minimum surfaces needed for executable issues, readiness and planning, scoped branches, safe mutation, validation, pull-request evidence and explicit human authority.
+Use by default when material controls are missing but dependent stage planning is not justified. Add or adapt only the minimum surfaces needed for executable issues, readiness and planning, separate pre-implementation human plan approval, scoped branches, safe mutation, validation, pull-request evidence and explicit human authority.
 
 #### Stage-capable adoption
 
@@ -128,15 +128,16 @@ After the local issue exists:
 1. read it back with all comments;
 2. determine whether it is executable;
 3. post readiness and dependency evidence;
-4. post an implementation plan;
-5. create one issue-scoped branch from the recorded safe starting point;
-6. implement only the local contract;
-7. validate against the final branch or pull-request head;
-8. open the pull request as the evidence pack;
-9. review both contract fulfilment and scope control; and
-10. merge only under the target repository's approved authority and policy.
+4. post a detailed implementation plan;
+5. obtain separate durable human approval of that exact plan before branch creation or implementation mutation;
+6. refresh the safe starting state and create one issue-scoped branch;
+7. implement only the local contract;
+8. validate against the final branch or pull-request head;
+9. open the pull request as the evidence pack;
+10. review both contract fulfilment and scope control; and
+11. merge only under the target repository's later approved authority and policy.
 
-Use the target repository's conventions where they are compatible. The detailed lifecycle and evidence vocabulary are available in the [canonical IssueOps documentation](docs/issueops-protocol.md).
+The plan approval authorises implementation only; it is not merge approval. Use the target repository's conventions where they are compatible. The detailed lifecycle and evidence vocabulary are available in the [canonical IssueOps documentation](docs/issueops-protocol.md).
 
 ## Prohibited default changes
 
