@@ -29,7 +29,7 @@ Creation of one local bootstrap issue:
 
 Other mutation authority:
 
-- None before a local issue is ready and planned.
+- None before a local issue is ready, a detailed implementation plan is recorded and a separate durable human approval of that exact plan is recorded.
 
 If the repository, branch or authority is unclear, stop and record the missing decision.
 
@@ -55,13 +55,15 @@ Use `Present`, `Partial`, `Missing`, `Conflicting` or `Not applicable`.
 | --- | --- | --- | --- |
 | An issue can act as an executable contract |  |  |  |
 | Readiness and dependencies are checked before branch creation |  |  |  |
-| An implementation plan is recorded before mutation |  |  |  |
+| A detailed implementation plan is recorded before branch creation or implementation mutation |  |  |  |
+| Separate durable human approval of that exact plan is recorded before branch creation or implementation mutation |  |  |  |
+| The safe starting state is refreshed before branch creation |  |  |  |
 | One issue-scoped branch contains the change |  |  |  |
 | Mutating operations have an explicit safety check |  |  |  |
 | Validation is change-specific and tied to the final state |  |  |  |
 | The pull request carries scope and evidence |  |  |  |
 | Review checks both fulfilment and scope control |  |  |  |
-| Human approval or bounded local delegation governs merge |  |  |  |
+| Human merge approval or bounded local delegation is separate from implementation approval |  |  |  |
 | Dependent multi-issue planning exists when genuinely needed |  |  |  |
 
 ## Convention map
@@ -74,6 +76,7 @@ Record the local surface that should be preserved or adapted.
 | Execution-contract fields |  |  |  |
 | Readiness and dependency evidence |  |  |  |
 | Implementation-plan format |  |  |  |
+| Implementation-plan approval record |  |  |  |
 | Branch naming and base selection |  |  |  |
 | Safe mutation guidance |  |  |  |
 | Validation commands and statuses |  |  |  |

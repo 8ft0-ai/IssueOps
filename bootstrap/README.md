@@ -17,18 +17,20 @@ Start from the root [bootstrap entry point](../BOOTSTRAP.md).
 The bootstrap exports only the implemented manual IssueOps baseline:
 
 - the GitHub issue is the execution contract;
-- readiness and dependency evidence precede branch creation;
-- an implementation plan records the proposed path;
+- readiness and dependency evidence establish executability and a safe starting point;
+- a detailed implementation plan records the proposed path before mutation;
+- separate durable human approval of that exact plan precedes branch creation or implementation mutation;
+- the safe starting state is refreshed before the issue-scoped branch is created;
 - safe-operation checks govern mutation;
 - one issue-scoped branch contains the change;
 - validation matches the change and final state;
 - the pull request is the evidence pack;
 - review checks both contract fulfilment and scope control; and
-- human approval or explicit bounded local delegation governs merge.
+- human approval or explicit bounded local delegation governs merge separately from implementation approval.
 
 The authoritative lifecycle is the [IssueOps operating protocol](../docs/issueops-protocol.md). Exact fields, formats and boundaries remain in the focused [Reference documentation](../docs/reference/index.md).
 
-The bootstrap does not export planned operational evidence assistance from issue #90 or planned modular session architecture from issue #113.
+Bootstrap 0.1 deliberately does not export the later operational-evidence-assistance work associated with issue #90 or modular-session-architecture work associated with issue #113. Their current repository status does not silently expand this source pack.
 
 ## Authority handoff
 
@@ -41,11 +43,11 @@ read-only target-repository assessment
   -> normal local IssueOps lifecycle begins
 ```
 
-Before a local issue exists and is ready, an agent may inspect repository instructions, contributor guidance, issue and pull-request templates, validation commands, branch conventions, merge policy and existing planning records. It may map capabilities, identify gaps and prepare the proposed local issue.
+Before a local issue exists, an agent may inspect repository instructions, contributor guidance, issue and pull-request templates, validation commands, branch conventions, merge policy and existing planning records. It may map capabilities, identify gaps and prepare the proposed local issue.
 
 Creating that one local issue requires target-repository owner permission. The remote specification does not itself grant permission to create the issue.
 
-Before the local issue is ready and planned, the agent must not:
+Before the local issue is ready, has a detailed implementation plan and has separate durable human approval of that exact plan, the agent must not:
 
 - create or change repository files;
 - create a branch or pull request;
@@ -55,7 +57,7 @@ Before the local issue is ready and planned, the agent must not:
 - change application code; or
 - treat the remote specification as approval, merge or publication authority.
 
-The target repository's local issue, instructions, validation rules and human authority govern every mutation.
+Immediately before an authorised branch is created, refresh the safe starting state. The target repository's local issue, instructions, validation rules and human authority govern every mutation.
 
 ## Adoption postures
 
@@ -67,7 +69,7 @@ Use when the repository already has effective equivalents for the manual IssueOp
 
 ### Minimal manual adoption
 
-Use by default when material controls are missing but dependent stage planning is not justified. Add or adapt only the minimum surfaces needed for execution contracts, agent guidance, pull-request evidence, validation and explicit human authority.
+Use by default when material controls are missing but dependent stage planning is not justified. Add or adapt only the minimum surfaces needed for execution contracts, agent guidance, readiness, detailed planning, separate pre-implementation plan approval, pull-request evidence, validation and explicit human authority.
 
 ### Stage-capable adoption
 
@@ -83,6 +85,7 @@ Before proposing a new artefact, map the local equivalent for:
 - contributor guidance;
 - issue contracts;
 - readiness and implementation planning;
+- separate human approval of the detailed plan before implementation;
 - branch naming and base selection;
 - validation commands and required evidence;
 - pull-request templates and review rules;

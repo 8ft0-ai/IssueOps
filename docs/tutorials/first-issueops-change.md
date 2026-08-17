@@ -2,7 +2,7 @@
 
 This tutorial teaches the complete manual IssueOps loop through one low-risk documentation change.
 
-You will create an issue, prove that it is ready, plan the implementation, make one file change, validate it, prepare a pull-request evidence pack, review it against the contract, merge it through human authority and verify the result after merge.
+You will create an issue, prove that it is ready, plan the implementation, obtain separate human approval of that plan, make one file change, validate it, prepare a pull-request evidence pack, review it against the contract, merge it through separate human authority and verify the result after merge.
 
 ## What you will produce
 
@@ -29,7 +29,8 @@ You need:
 - a GitHub account;
 - a personal fork or authorised training copy of IssueOps;
 - permission to create issues, branches and pull requests in that repository;
-- permission for a human repository owner to merge the pull request;
+- a human repository owner or authorised maintainer who can approve the implementation plan before branch creation;
+- permission for a human repository owner to make the later merge decision;
 - Git and Python available locally, or a repository-native documentation workflow that can run the strict build; and
 - a clean `main` branch based on the current repository.
 
@@ -149,7 +150,7 @@ Decision:
 
 If the expected file already exists or another open pull request adds it, change the decision to `blocked pending dependency` and stop. Do not create a branch for a known conflict.
 
-See the current [operating protocol](../issueops-protocol.md) for the complete readiness and dependency rules.
+Readiness does not authorise branch creation. See the current [operating protocol](../issueops-protocol.md) for the complete readiness and dependency rules.
 
 ## 3. Post the implementation plan
 
@@ -199,9 +200,29 @@ Replace `<issue-number>` with the real issue number before posting the comment.
 
 **Expected outcome:** the later pull request can be checked against a specific branch, file list, sequence and validation plan.
 
-## 4. Create the feature branch
+The plan is not self-authorising. Do not create the branch yet.
 
-Return to your local clone and refresh `main`:
+## 4. Obtain human approval of the implementation plan
+
+A human repository owner or authorised maintainer must add a separate durable GitHub-native approval after reviewing the detailed plan. The approval must clearly apply to that plan and must exist before branch creation or implementation mutation.
+
+For this training exercise, a suitable approval comment is:
+
+```md
+## Human approval of implementation plan
+
+Approved: the detailed implementation plan above may be executed as written.
+
+This approval authorises the planned branch and bounded implementation only. It does not authorise merge.
+```
+
+If the plan changes materially after approval, record the adaptation and obtain fresh human approval before executing the changed path. Retrospective approval does not repair a missing pre-implementation authority record.
+
+**Expected outcome:** the issue contains distinct durable records for readiness, the implementation plan and human approval of that exact plan, in that order.
+
+## 5. Create the feature branch
+
+After plan approval, return to your local clone and refresh `main`:
 
 ```bash
 git switch main
@@ -230,7 +251,7 @@ git branch --show-current
 git status --short
 ```
 
-## 5. Make the bounded documentation change
+## 6. Make the bounded documentation change
 
 Create the file exactly:
 
@@ -265,7 +286,7 @@ and the file content matches the issue exactly.
 
 If another file changed, stop and remove or separately account for that change. Do not hide unrelated work in this issue.
 
-## 6. Validate the change
+## 7. Validate the change
 
 Install the documented dependencies when they are not already available:
 
@@ -296,7 +317,7 @@ Do not mark the strict build complete.
 
 Commit and push only when the repository workflow can run the same documentation build. Open the pull request as a draft, record `Pending environment-specific validation`, and wait for the repository-native check. Do not merge while correctness depends on validation that has not run.
 
-## 7. Commit and push
+## 8. Commit and push
 
 Commit only the exercise file:
 
@@ -310,16 +331,25 @@ git push -u origin feature/<issue-number>-first-exercise-result
 
 **Expected outcome:** `git diff --cached --name-only` listed one file before the commit, and the branch is now available on GitHub.
 
-## 8. Open a draft pull request
+## 9. Open a draft pull request
 
 Open a pull request from the feature branch to `main`. Keep it as a draft until required validation is complete.
 
-Use this body, replacing `<issue-number>` and the validation status:
+Use this body, replacing `<issue-number>` and the lifecycle/validation references:
 
 ```md
 ## Execution contract
 
+Issue #<issue-number>
+
 Closes #<issue-number>
+
+## Lifecycle authority
+
+- Readiness: <issue comment link or ID>
+- Implementation plan: <issue comment link or ID>
+- Human approval of implementation plan: <issue comment link or ID>
+- Additional procedural authority: N/A
 
 ## Evidence pack
 
@@ -372,17 +402,19 @@ Final recommendation:
 - Approve.
 ```
 
+The standalone `Issue #<issue-number>` line is the canonical IssueOps execution-contract linkage. `Closes #<issue-number>` is optional GitHub lifecycle syntax used here only so merge closes the exercise issue automatically; it is not the canonical evidence linkage.
+
 When local validation was unavailable, leave the relevant checkboxes unchecked and state the exact pending repository-native check. Change the recommendation to `Do not approve yet` until it passes.
 
-**Expected outcome:** the pull request explains the contract, final scope, validation evidence, caveats and remaining post-merge check without relying on the branch author's memory.
+**Expected outcome:** the pull request explains the contract, lifecycle authority, final scope, validation evidence, caveats and remaining post-merge check without relying on the branch author's memory.
 
 See [PR evidence templates](../pr-evidence-templates.md) for the reusable repository formats.
 
-## 9. Verify the pull request against the issue
+## 10. Verify the pull request against the issue
 
 A human repository owner or authorised reviewer should inspect:
 
-- the issue and its readiness, dependency and plan comments;
+- the issue and its readiness, dependency, plan and plan-approval comments;
 - the final changed-file list;
 - the file content;
 - the strict documentation check or repository workflow;
@@ -394,13 +426,13 @@ The review asks two different questions:
 1. Is the evidence present and trustworthy?
 2. Does the result satisfy the issue without exceeding it?
 
-**Expected outcome:** the reviewer can recommend `Approve` only when the one-file contract is satisfied, required validation passed and no material finding remains.
+**Expected outcome:** the reviewer can recommend `Approve` only when the one-file contract is satisfied, required pre-implementation authority is valid, required validation passed and no material finding remains.
 
 A self-review in a personal training fork is still a human decision, but it is not independent review. Record that honestly. Evidence and an agent-generated groundedness review do not themselves provide approval or merge authority.
 
 Use [Contract verification](../contract-verification.md) for the current review procedure.
 
-## 10. Remediate findings
+## 11. Remediate findings
 
 When the reviewer identifies a problem, classify it before changing the branch:
 
@@ -415,19 +447,23 @@ Apply required fixes that belong to the issue. Do not add unrelated optional imp
 
 See [PR review remediation](../review-remediation.md) for the complete handling rules.
 
-## 11. Mark ready and merge through human authority
+## 12. Record exact-state merge authority and merge
 
-Once the final recommendation is `Approve` and checks are not failing, mark the pull request ready for review.
+Once the final recommendation is `Approve` and checks are not failing, mark the pull request ready for review. The recommendation is not merge authority.
 
-The human repository owner may then merge it using the repository's accepted merge method. Platform auto-merge may be enabled only when repository settings already support it; otherwise the authorised human merges directly after the gates pass.
+After the substantive review is complete, a human repository owner must make a separate durable merge decision for the exact state being accepted. The record must identify the pull request, exact accepted head SHA, accepted review state and explicit merge decision.
 
-Do not bypass branch protection, required review or repository permissions.
+Immediately before merge, re-fetch the current pull-request head and material review state. If either has changed since the human decision, that authority is stale: stop and obtain a fresh human merge decision tied to the new exact state.
 
-**Expected outcome:** GitHub records the pull request as merged and the closing keyword closes the issue.
+A human owner may invoke merge directly or may explicitly authorise a separate non-review execution context to invoke it. A completed independent reviewer context is finished after recording its recommendation; later human approval does not reopen that reviewer context to perform the merge.
+
+Do not bypass branch protection, required review or repository permissions. Platform auto-merge may be used only when repository policy already permits it and the exact-state authority boundary remains satisfied.
+
+**Expected outcome:** GitHub contains the accepted review plus a later exact-state human merge decision, and then records the pull request as merged. Because this tutorial example includes the optional matching `Closes` line, the issue closes automatically.
 
 If you do not have merge permission, your tutorial execution stops safely at a ready, fully evidenced pull request. Ask the repository owner to make the merge decision; do not change settings or find a bypass.
 
-## 12. Perform post-merge verification
+## 13. Perform post-merge verification
 
 Refresh local `main`:
 
@@ -448,7 +484,7 @@ In GitHub, confirm:
 
 Add a short post-merge comment to the pull request or issue recording those facts.
 
-**Expected outcome:** the repository, rather than a private conversation, contains the complete contract, implementation, evidence, review, merge and verification trail.
+**Expected outcome:** the repository, rather than a private conversation, contains the complete contract, implementation authority, evidence, review, merge authority and verification trail.
 
 ## What you have learned
 
@@ -458,12 +494,14 @@ You completed the core IssueOps control loop:
 bounded issue
   -> readiness and dependency evidence
   -> implementation plan
-  -> one-issue branch
+  -> separate human plan approval
+  -> refreshed safe state and one-issue branch
   -> scoped mutation
   -> validation
   -> PR evidence pack
-  -> human contract verification
-  -> human merge decision
+  -> contract review and recommendation
+  -> separate exact-state human merge authority
+  -> merge
   -> post-merge verification
 ```
 
@@ -478,10 +516,15 @@ When this tutorial or its destinations change, validate it from a clean represen
 - [ ] the learner knows to use a fork or authorised training repository;
 - [ ] the starting branch and clean-state checks are unambiguous;
 - [ ] the issue body is executable without hidden context;
-- [ ] readiness, dependency and plan evidence precede branch creation;
+- [ ] readiness and dependency evidence precede implementation planning;
+- [ ] a separate durable human approval of the detailed plan precedes branch creation or implementation mutation;
+- [ ] the safe starting state is refreshed before branch creation;
 - [ ] commands create only the specified file;
 - [ ] local and repository-native validation paths stop safely when unavailable;
+- [ ] the PR uses the canonical standalone `Issue #<issue-number>` execution-contract linkage and records lifecycle authority;
 - [ ] the PR evidence body does not claim checks that did not run;
-- [ ] human approval and merge authority remain explicit;
+- [ ] an `Approve` recommendation is not presented as merge authority;
+- [ ] exact-state human merge authority and immediate pre-merge revalidation remain explicit;
+- [ ] an independent reviewer context is not reused as the later merge executor;
 - [ ] the post-merge checks prove the merged repository state; and
 - [ ] all linked pages and commands match the current repository.

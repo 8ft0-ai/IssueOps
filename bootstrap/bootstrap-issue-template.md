@@ -51,6 +51,7 @@ Why this is the lightest sufficient posture:
 - Pull-request and review conventions: <path and treatment>
 - Validation: <commands, workflows or required evidence>
 - Branch and dependency conventions: <rules>
+- Implementation-plan approval convention: <durable record and approver>
 - Merge authority and method: <rules>
 - Planning conventions, when applicable: <rules or not applicable>
 
@@ -79,11 +80,13 @@ A no-change scope is valid for an already-compatible repository.
 - [ ] The selected posture is implemented without adding unnecessary control surfaces.
 - [ ] Existing local conventions are preserved or each adaptation is explicit.
 - [ ] The issue-contract requirements are locally discoverable.
-- [ ] Readiness and implementation planning occur before branch creation.
+- [ ] Readiness and a detailed implementation plan are recorded before branch creation.
+- [ ] Separate durable human approval of that exact plan is recorded before branch creation or implementation mutation.
+- [ ] The safe starting state is refreshed before the branch is created.
 - [ ] One issue-scoped branch is used for the bootstrap change.
 - [ ] Validation and review evidence match the repository's actual conventions.
-- [ ] The pull request records changed scope, exclusions, acceptance evidence, validation, caveats and groundedness.
-- [ ] Human approval or explicitly bounded local delegation governs merge.
+- [ ] The pull request records changed scope, exclusions, lifecycle authority, acceptance evidence, validation, caveats and groundedness.
+- [ ] Human merge approval or explicitly bounded local delegation is separate from implementation approval.
 - [ ] No prohibited default mutation or authority expansion occurs.
 - [ ] The pinned bootstrap source is recorded.
 - [ ] <repository-specific observable criterion>
@@ -100,6 +103,7 @@ Additional evidence:
 
 - changed-file read-back;
 - final diff and final-head identification;
+- lifecycle-authority evidence for readiness, the detailed plan and its separate human approval;
 - link, syntax or generated-output checks relevant to the changed surfaces;
 - compatibility review against existing local conventions;
 - confirmation that prohibited default mutations did not occur; and
@@ -118,7 +122,9 @@ Risk level:
 - Re-read this issue and all comments before implementation.
 - Use repository state rather than chat history as authoritative.
 - Post readiness and dependency evidence before branch creation.
-- Post an implementation plan before mutation.
+- Post a detailed implementation plan before branch creation or implementation mutation.
+- Obtain separate durable human approval of that exact plan before branch creation or implementation mutation.
+- Refresh the safe starting state immediately before branch creation.
 - Make the smallest coherent change that satisfies this contract.
 - Preserve existing repository conventions unless this issue explicitly adapts them.
 - Stop rather than invent missing product, governance, validation or authority intent.
@@ -147,7 +153,7 @@ Safe starting state:
 
 ## Authority boundary
 
-Before readiness and planning are complete, this issue does not authorise a branch, file change or pull request.
+Until readiness is complete, the detailed implementation plan is posted, and separate durable human approval of that exact plan is recorded, this issue does not authorise a branch, file change or pull request. Refresh the safe starting state immediately before an authorised branch is created.
 
 This issue authorises only the scope above. It does not authorise:
 
@@ -155,6 +161,8 @@ This issue authorises only the scope above. It does not authorise:
 - approval or merge contrary to local policy;
 - automatic lifecycle transitions; or
 - mutation of another repository.
+
+Implementation-plan approval authorises the approved implementation path only. It is not merge approval.
 
 Local merge authority:
 
@@ -180,7 +188,7 @@ Do not request creation until:
 - the pinned bootstrap source is known;
 - the assessment supports one posture;
 - scope and non-goals are exact;
-- local validation and merge authority are recorded;
+- local validation, implementation-plan approval and merge authority are recorded;
 - existing conventions to preserve are named;
 - prohibited changes are visible; and
 - implementation can proceed without inventing intent.

@@ -14,7 +14,7 @@ Use the root [bootstrap entry point](https://github.com/8ft0-ai/IssueOps/blob/ma
 | Current entry point | `https://github.com/8ft0-ai/IssueOps/blob/main/BOOTSTRAP.md` |
 | Pinned entry point | `https://github.com/8ft0-ai/IssueOps/blob/<commit-sha>/BOOTSTRAP.md` |
 
-The bootstrap does not include planned operational evidence assistance from issue #90 or planned modular session architecture from issue #113.
+Bootstrap 0.1 deliberately does not include the later operational-evidence-assistance work associated with issue #90 or modular-session-architecture work associated with issue #113. Their current repository status does not expand this specification.
 
 A target repository must record the exact pinned entry point it used. The mutable `main` URL may identify the current recommendation but is not reproducible adoption evidence.
 
@@ -52,12 +52,12 @@ The remote bootstrap does not override local authority. A local execution contra
 | Before assessment authority | None. | Repository access or mutation not explicitly authorised. |
 | Read-only assessment | Read instructions, templates, validation, branches, issues, pull requests, planning records and observable repository policy within the granted scope. Prepare assessment and proposed issue text. | Issue creation, file changes, branch creation, pull-request creation, settings, permissions, workflow or application changes. |
 | Issue-creation handoff | Create one local bootstrap issue only when the owner explicitly permits it, or identify a valid existing equivalent. | Any file, branch or pull-request mutation; approval or merge claims. |
-| Local issue setup | Read the issue and comments, check readiness and dependencies, identify the safe starting state and post the implementation plan. | Branch creation before readiness and planning are complete; file or pull-request changes. |
-| Local implementation | Create one issue-scoped branch, implement only the local contract, read changed files and validate. | Work outside the issue; unsupported automation, authority or settings changes; merge. |
+| Local issue setup | Read the issue and comments, check readiness and dependencies, identify the safe starting state, post the detailed implementation plan and obtain a separate durable human approval of that exact plan. | Branch creation, file mutation or pull-request creation before readiness, the detailed plan and separate human plan approval are complete. |
+| Local implementation | Refresh the safe starting state, create one issue-scoped branch, implement only the local contract, read changed files and validate. | Work outside the issue; unsupported automation, authority or settings changes; merge. |
 | Pull-request review | Open the pull request as the evidence pack, remediate in-scope findings and refresh final-head evidence. | Misstating pending validation, resolving unfixed findings or adding unapproved scope. |
-| Merge and post-merge | Merge only under local policy and authority after all gates pass; complete named post-merge checks. | Merge with blockers, stale evidence, unclear authority or failing required validation. |
+| Merge and post-merge | Merge only under local policy and separate later authority after all gates pass; complete named post-merge checks. | Merge with blockers, stale evidence, unclear authority or failing required validation. |
 
-Repository access is not equivalent to authority for any write.
+Repository access is not equivalent to authority for any write. A posted implementation plan is not equivalent to human approval of that plan, and implementation approval is not merge approval.
 
 ## Adoption postures
 
@@ -66,7 +66,7 @@ Select exactly one posture from repository evidence.
 | Posture | Required conditions | Expected change boundary |
 | --- | --- | --- |
 | **Already compatible** | Effective local equivalents exist for the required manual controls. Naming and layout may differ. | Preserve local owners. Apply only material bounded corrections. A no-change outcome is valid. |
-| **Minimal manual adoption** | One or more required controls are materially missing or incomplete, but dependent stage planning is not justified. | Default posture. Adapt or add the fewest surfaces needed for executable issues, readiness, planning, scoped branches, safe mutation, validation, PR evidence and human authority. |
+| **Minimal manual adoption** | One or more required controls are materially missing or incomplete, but dependent stage planning is not justified. | Default posture. Adapt or add the fewest surfaces needed for executable issues, readiness, detailed planning, separate pre-implementation plan approval, scoped branches, safe mutation, validation, PR evidence and human authority. |
 | **Stage-capable adoption** | The repository genuinely needs dependent multi-issue delivery, cross-cutting governance or authority decisions, end-to-end proof or a formal close-out. | Retain minimal-manual controls and add only justified planning, dependency and delivery-record surfaces. |
 
 A heavier posture must explain why the lighter posture cannot produce the required outcome. Source-repository symmetry is not sufficient justification.
@@ -79,13 +79,15 @@ The selected posture must provide locally owned equivalents for all applicable c
 | --- | --- |
 | Execution contract | One issue or equivalent durable work item contains enough outcome, scope, non-goals, acceptance, validation, risk and instructions to implement without hidden intent. |
 | Readiness and dependency evidence | Executability, dependencies and a safe starting point are recorded before branch creation. |
-| Implementation plan | Proposed branch, files or areas, sequence, validation, assumptions, caveats and exclusions are visible before mutation. |
+| Implementation plan | Proposed branch, files or areas, sequence, validation, assumptions, caveats and exclusions are visible before branch creation or implementation mutation. |
+| Implementation-plan approval | A separate durable human record clearly approves the detailed plan before branch creation or implementation mutation; retrospective approval does not satisfy the normal boundary. |
+| Refreshed safe state | The recorded safe starting point and action-relevant repository state are refreshed immediately before branch creation. |
 | Issue-scoped branch | One change is isolated from a known safe base and does not mix unrelated issues. |
 | Safe mutation | Phase, intended operation, target, expected side effect and forbidden side effects are considered before writes. |
 | Change-specific validation | Evidence matches changed behaviour and risk, identifies the final state and distinguishes completed, pending and post-merge checks honestly. |
-| Pull-request evidence | The pull request records contract, changed scope, exclusions, acceptance evidence, validation, caveats, groundedness and recommendation. |
+| Pull-request evidence | The pull request records contract, lifecycle authority, changed scope, exclusions, acceptance evidence, validation, caveats, groundedness and recommendation. |
 | Contract and scope review | Review answers both whether the change did what was needed and whether it did only what was asked. |
-| Human authority | Approval and merge remain human-controlled unless the local owner explicitly grants bounded delegation after all gates pass. |
+| Human authority | Implementation-plan approval and the later merge decision remain distinct human-controlled boundaries unless the local owner explicitly grants bounded delegation consistent with local policy. |
 | Dependent planning | Required only for Stage-capable adoption and owned separately from actual delivery evidence. |
 
 The [repository assessment form](https://github.com/8ft0-ai/IssueOps/blob/main/bootstrap/repository-assessment.md) records the capability evidence and gaps.
@@ -144,7 +146,7 @@ The first local bootstrap execution contract must contain:
 
 - parent or roadmap relationship when Stage-capable adoption applies;
 - dependencies and safe starting state;
-- authority boundary and local merge policy; and
+- authority boundary, pre-implementation plan-approval convention and local merge policy; and
 - post-merge verification when evidence genuinely cannot exist before merge.
 
 ### Proof continuation
@@ -210,6 +212,7 @@ Required:
 
 - changed files read back;
 - final diff compared with the local issue;
+- required pre-implementation plan approval confirmed to predate branch creation and implementation mutation;
 - existing local conventions checked for preservation or explicit adaptation;
 - repository-native validation completed where available;
 - final head identified;
@@ -223,11 +226,12 @@ Required:
 
 - a real, bounded repository need rather than work manufactured only for the pilot;
 - local execution-contract fields used;
-- readiness and implementation planning before branching;
-- one issue-scoped branch;
+- readiness and dependency evidence recorded;
+- a detailed implementation plan plus separate durable human approval recorded before branching or implementation mutation;
+- the safe starting state refreshed and one issue-scoped branch used;
 - change-specific final-head validation;
 - pull-request evidence and contract review; and
-- merge under local policy and authority.
+- merge under separate local policy and authority.
 
 ## Evidence levels
 
@@ -277,9 +281,10 @@ IssueOps-repository delegated merge authority does not transfer to the target re
 
 - remote authority stops at read-only assessment, proposal and separately authorised local issue creation;
 - the first target write is the local issue or a valid existing equivalent;
-- local readiness and planning precede branch creation;
+- local readiness and dependency evidence, a detailed implementation plan and separate durable human approval of that plan precede branch creation or implementation mutation;
+- the safe starting state is refreshed immediately before branch creation;
 - prohibited default changes do not occur without separate authority; and
-- human approval or bounded local delegation governs merge.
+- human merge approval or bounded local delegation remains separate from implementation approval.
 
 ### Proportionality
 
@@ -330,6 +335,7 @@ A structural or same-session walkthrough alone cannot justify `Adopt`.
 - [Adopt IssueOps in an existing repository](../how-to/adopt-issueops-in-an-existing-repository.md)
 - [IssueOps operating protocol](../issueops-protocol.md)
 - [Execution-contract fields](execution-contract-fields.md)
+- [Implementation-plan format](implementation-plan-format.md)
 - [Operation permissions and evidence](operation-permissions-and-evidence.md)
 - [Validation status and fallback policy](validation-status-and-fallback-policy.md)
 - [Pull-request evidence requirements](pr-evidence-requirements.md)
