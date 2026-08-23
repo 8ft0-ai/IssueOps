@@ -18,6 +18,12 @@ The `/collect-evidence` execution bridge and repository-native PR-diff validatio
 
 Stage 3's `v0.3.0-alpha.1` release remains a historical experimental snapshot with an **Adapt** decision. The stable `v0.3.0` baseline reflects the later consolidated adopted operating model; it does not reclassify the Stage 3 alpha itself as stable.
 
+## External curation
+
+[Praxis](https://github.com/8ft0-ai/praxis/blob/ea41a71b81898945b29d8f60243c1858e8c71741/docs/protocols/issueops.md) has approved exact `8ft0-ai/IssueOps@50b7eb0cf440ab2974f4ec8f48977648e0047885` as governance protocol `praxis-protocol/issueops/v0.1`.
+
+That is an external, bounded and capability-first curation decision owned by Praxis. It is not certification, mandatory adoption or target-repository authority, and it does not automatically approve later IssueOps commits, tags or releases. IssueOps remains independently governed; any future Praxis approval update requires its own separately governed Praxis decision.
+
 The core loop remains human-controlled:
 
 ```text
