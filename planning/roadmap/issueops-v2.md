@@ -1,6 +1,8 @@
 # IssueOps v2 — minimal authority protocol proof programme
 
-Status: approved.
+Status: completed.
+
+Decision: **Reject**.
 
 Record type: contemporaneous.
 
@@ -313,6 +315,8 @@ Control: IssueOps owns protocol semantics only. Credential, host, deployment and
 
 ## Definition of done
 
+The original adoption-path completion gates below are preserved as the programme's documented intent. Because the programme reached an evidence-backed **Reject** decision at the mandatory compatibility boundary, the dogfood, external-pilot and later adoption-qualification gates became unnecessary for this rejected direction; they are intentionally not rewritten as passed.
+
 The initiative is complete when:
 
 - [ ] this roadmap is substantively reviewed, merged and indexed;
@@ -326,6 +330,42 @@ The initiative is complete when:
 - [ ] a completed delivery record separates original intent from actual proof/delivery;
 - [ ] the delivery log and graph are updated only where close-out rules require them; and
 - [ ] any stable-protocol replacement, migration, release/version publication or follow-on implementation remains separately governed after the final decision.
+
+## Close-out decision
+
+The programme completed with an evidence-backed **Reject** decision.
+
+The compatibility proof in issue [#218](https://github.com/8ft0-ai/IssueOps/issues/218) found a material C4 authority-semantic incompatibility against legitimate stable case #196. One bounded remediation cycle under issue [#219](https://github.com/8ft0-ai/IssueOps/issues/219) and PR [#220](https://github.com/8ft0-ai/IssueOps/pull/220) was implemented, reviewed and merged, but the fresh targeted re-proof recorded in comment `5752779607` still concluded `C4_NOT_COMPATIBLE`. Independent re-proof review `5752798842` approved that negative result, and owner close-out `5752832794` accepted it without rewriting historical evidence.
+
+The owner then selected `REJECT_CURRENT_V2_DIRECTION` in issue [#221](https://github.com/8ft0-ai/IssueOps/issues/221), comment `5753118002`.
+
+```text
+Status: completed
+Decision: Reject
+
+stable protocol:
+v0.3.0 retained
+
+compatibility result:
+C4_NOT_COMPATIBLE
+
+historical #196:
+legitimate stable-v0.3.0 behaviour
+not compatible with the accepted v2 semantics
+
+dogfood:
+not required for rejected direction
+
+external private-Free pilot:
+not required for rejected direction
+
+v2 adoption:
+not authorised
+```
+
+Proof A and Proof B remain durable proof-programme artefacts and reusable design evidence. Their acceptance does not adopt the rejected architecture or replace the stable protocol. The unrun dogfood, external-pilot and later adoption-only proof requirements are not treated as passed; they became unnecessary once the owner accepted Reject as the programme outcome.
+
+Any future IssueOps simplification effort requires a new separately governed architecture and roadmap rather than another semantic patch to this completed v2 lineage.
 
 ## Likely next decision boundary
 
