@@ -255,7 +255,7 @@ Identity MAY include:
 | validation/check | run/check identity + exact candidate/state it assessed |
 | substantive review | review/comment identity + exact candidate/state it assessed |
 | authority | durable human authority record + exact state/consequence it permits |
-| consequence attempt | attempt/operation identity when more than one attempt is possible |
+| consequence attempt | attempt/operation identity + deterministic evidence of whether actuation could have crossed the consequence boundary when authority consumption or reuse depends on that fact |
 | outcome | resulting merge commit/object/deployment/publication identity as applicable |
 
 A mutable branch name, tag name, environment name or PR number alone MUST NOT be treated as exact candidate identity when its referenced content or state can move.
@@ -316,6 +316,14 @@ It MUST:
 - remain current at the moment of actuation.
 
 Implementation authority and consequence authority MUST remain separate human decisions. Earlier implementation authority MUST NOT be interpreted as later consequence authority.
+
+CONSEQUENCE_AUTHORITY is single-use for one **possibly-effective actuation attempt**. It is consumed once actuation may have crossed the named consequence boundary.
+
+A failed operation does **not** consume CONSEQUENCE_AUTHORITY only when positive deterministic evidence proves both that actuation never crossed that boundary and that no authoritative target state could have changed. Absence of an observed change is not sufficient proof of non-consumption.
+
+If it is uncertain whether actuation crossed the consequence boundary, or if any authoritative side effect cannot be ruled out, the authority MUST be treated as consumed. A retry, recovery or follow-on actuation after consumed or uncertain authority requires fresh prospective CONSEQUENCE_AUTHORITY.
+
+The same consequence-authority record MAY be reused after a proven pre-actuation/no-effect failure only when the exact candidate, target, named consequence and accepted assurance/review set remain current and an immediate deterministic requalification succeeds.
 
 ### 3.4 Assurance
 
@@ -432,6 +440,8 @@ UNKNOWN
 Outcome identity MUST bind the actual attempt and resulting repository/object/environment identity where material.
 
 Invocation success, an API 2xx response, command exit status or merge request submission is not sufficient by itself. Resulting state MUST be observed at the level required by the governing contract.
+
+A failed operation with positive deterministic proof that no actuation crossed the consequence boundary and no authoritative target state could have changed is not a consequence attempt for lifecycle authority-consumption purposes. Otherwise, any possibly-effective or uncertain actuation MUST proceed to truthful outcome reconstruction, including `UNKNOWN` or `PARTIAL` when the effect cannot be established.
 
 ## 4. Five lifecycle states
 
@@ -623,7 +633,7 @@ pre-action revalidation evidence
 
 #### Blocking conditions
 
-Changed candidate, stale review/validation, moved target, superseded authority, ambiguous accepted evidence set, new material blocker, unresolved deviation or inability to prove currentness.
+Changed candidate, stale review/validation, moved target, superseded authority, ambiguous accepted evidence set, new material blocker, unresolved deviation, inability to prove currentness, or an earlier operation whose authority-consumption state is uncertain.
 
 #### Predicate classification
 
@@ -637,7 +647,11 @@ Any mismatch in exact candidate, named consequence or materially relevant accept
 
 #### Permitted next transition
 
-Only one attempt of the named consequence within the bounded authority, followed by outcome reconstruction and OUTCOME_RECORDED.
+On the first possibly-effective actuation attempt, the bounded CONSEQUENCE_AUTHORITY is consumed and the lifecycle proceeds through outcome reconstruction to OUTCOME_RECORDED.
+
+If an operation fails before actuation with positive deterministic proof that the consequence boundary was never crossed and no authoritative target state could have changed, no consequence attempt has occurred for this purpose. The lifecycle MAY remain at CONSEQUENCE_AUTHORISED only after immediate deterministic requalification confirms that the exact candidate, target, accepted assurance/review set and named consequence remain current.
+
+If non-consumption cannot be proven, the authority is treated as consumed, the actual outcome is reconstructed truthfully, and fresh prospective CONSEQUENCE_AUTHORITY is required before any retry or recovery actuation.
 
 ### 4.5 OUTCOME_RECORDED
 
@@ -670,7 +684,7 @@ A consequence attempt may still be recorded with PARTIAL or UNKNOWN outcome whil
 
 - DETERMINISTIC / MECHANICAL: resulting commit/object IDs, observed workflow/deployment status and verification facts where canonical and deterministic.
 - HUMAN JUDGEMENT: interpretation of mixed evidence, residual risk and whether contract-required verification sufficiently proves the intended result.
-- HUMAN AUTHORITY: none to record truthful outcome; new recovery, retry or follow-on consequence may require new authority.
+- HUMAN AUTHORITY: none to record truthful outcome; any recovery, retry or follow-on actuation after consumed or uncertain consequence authority requires fresh prospective CONSEQUENCE_AUTHORITY.
 
 #### Staleness
 
@@ -678,7 +692,7 @@ Outcome evidence becomes stale when the observed object/environment changes or l
 
 #### Permitted next transition
 
-No automatic next proof or initiative. Recovery, retry, follow-on implementation, adoption, release or another consequence requires the governing contract and authority appropriate to that new action.
+No automatic next proof or initiative. Recovery, retry, follow-on implementation, adoption, release or another consequence requires the governing contract and authority appropriate to that new action. After a consumed or uncertain consequence attempt, any retry or recovery actuation requires fresh prospective CONSEQUENCE_AUTHORITY; only a positively proven pre-actuation/no-effect failure may retain the existing authority, subject to immediate current requalification.
 
 ## 5. Transition predicate summary
 
@@ -688,7 +702,7 @@ No automatic next proof or initiative. Recovery, retry, follow-on implementation
 | CONTRACT_READY -> IMPLEMENTATION_AUTHORISED | plan/authority identity, temporal ordering, base currentness | proportional plan sufficiency, materiality | **yes: IMPLEMENTATION_AUTHORITY** |
 | IMPLEMENTATION_AUTHORISED -> CANDIDATE_QUALIFIED | candidate identity, scope facts, checks/currentness | contract fidelity, substantive independent review, material findings | no consequence authority yet |
 | CANDIDATE_QUALIFIED -> CONSEQUENCE_AUTHORISED | exact-state/evidence requalification | materiality when deterministic rules are insufficient | **yes: CONSEQUENCE_AUTHORITY** |
-| CONSEQUENCE_AUTHORISED -> OUTCOME_RECORDED | attempt/result/object observations | mixed/partial outcome interpretation where needed | no authority to record facts; recovery/retry may need new authority |
+| CONSEQUENCE_AUTHORISED -> OUTCOME_RECORDED | actuation/attempt/result/object observations, including deterministic proof of pre-actuation failure where claimed | mixed/partial outcome interpretation where needed | no authority to record facts; consumed or uncertain authority requires fresh CONSEQUENCE_AUTHORITY before retry, while positively proven pre-actuation/no-effect failure may retain current authority after requalification |
 
 ## 6. Stable-kernel equivalence proof
 
@@ -841,6 +855,11 @@ accepted evidence set is ambiguous
 
 base drift materiality unknown
 -> freshness UNKNOWN; stop
+
+actuation may have reached target / authority consumption uncertain
+-> treat consequence authority as consumed
+-> reconstruct outcome truthfully
+-> fresh CONSEQUENCE_AUTHORITY before retry
 
 outcome cannot be proven
 -> OUTCOME = UNKNOWN, never assumed success
