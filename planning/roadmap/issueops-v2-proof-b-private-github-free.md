@@ -139,6 +139,7 @@ CONSEQUENCE_AUTHORISED
   + named consequence
   + later prospective durable human authority
   + immediate deterministic current requalification
+  + actuation-time binding of decision-critical mutable identity
 
 OUTCOME_RECORDED
   actual consequence-attempt/result identity
@@ -158,8 +159,8 @@ This is a semantic profile, not a requirement to recreate the current twelve-ste
 | **Candidate** | Pull request plus commit history | Exact repository + PR + exact head SHA; material base identity when decision-relevant | PR/head cannot be established exactly or head changed without requalification | Branch protection, rulesets, required PR path |
 | **Assurance** | Commit/PR read-back, diffs, tests, static/manual evidence and optional workflow/check records | Change-appropriate evidence tied to the exact candidate and truthfully classified | Required assurance is missing, failing, stale, inaccessible or applies to another state | Required status checks, merge queue or policy-enforced CI |
 | **Independent Review** | Durable PR review or PR-native review record | Exact candidate/head reviewed, substantive conclusion, independent review context and currentness | Review is self-review/remediation context, stale, materially contradicted or not bound to the exact candidate | Required reviewers, CODEOWNERS enforcement, branch-protection review rules |
-| **Freshness** | Read access to action-relevant current GitHub state | Immediate pre-action re-fetch of candidate, base/dependencies, assurance, review, authority, target and material blockers | Any decision-critical fact is stale, ambiguous, partial, contradictory or inaccessible | Dismiss-stale-review policies, required up-to-date branch, merge queue |
-| **Consequence Authority** | Durable owner/human GitHub-native record plus current-state reads | Exact repository, governing contract, exact candidate/state, named consequence, prospective human authority and immediate requalification; explicit evidence IDs when accepted evidence is ambiguous | Authority names old state/consequence, accepted evidence is ambiguous, or currentness cannot be proved | Protected branches, required reviews/checks, environment approval for separately governed deployment consequences |
+| **Freshness** | Read access to action-relevant current GitHub state plus an atomic expected-state precondition where the consequence mechanism exposes one | Immediate pre-action re-fetch of candidate, base/dependencies, assurance, review, authority, target and material blockers, plus actuation-time binding of decision-critical mutable identity | Any decision-critical fact is stale, ambiguous, partial, contradictory or inaccessible, or an available atomic expected-state precondition is omitted for decision-critical identity | Dismiss-stale-review policies, required up-to-date branch, merge queue |
+| **Consequence Authority** | Durable owner/human GitHub-native record, current-state reads and conditional actuation capability where the consequence mechanism exposes an atomic expected-state precondition | Exact repository, governing contract, exact candidate/state, named consequence, prospective human authority, immediate requalification and actuation-time binding of decision-critical mutable identity; explicit evidence IDs when accepted evidence is ambiguous | Authority names old state/consequence, accepted evidence is ambiguous, currentness cannot be proved, or actuation is not bound to decision-critical identity where an atomic precondition is available | Protected branches, required reviews/checks, environment approval for separately governed deployment consequences |
 | **Outcome** | PR/merge/result object reads and durable issue/PR records | Attempt identity, authorised consequence identity, actual result classification, resulting commit/object/state | Result cannot be observed confidently or invocation success is being substituted for actual outcome | Merge queue/result automation, deployment status policy |
 | **Post-consequence Verification** | Read access to the resulting repository/object/environment state relevant to the contract | Named verification requirement, exact observed resulting identity and PASS/FAIL/PENDING/UNAVAILABLE/UNKNOWN status as applicable | Contract-required verification is absent or falsely represented as complete | Environments, deployment protection, required deployment checks |
 | **Execution Deviation** | Durable issue/PR comments plus repository-state reads | Deviation facts, containment, resulting-state verification, stale-evidence classification, corrective control and required resumption authority | Normal writes continue while authoritative state, scope, authority or evidence is uncertain | Rulesets/protection may reduce some mutation paths but do not replace the circuit breaker |
@@ -337,7 +338,9 @@ execution-deviation / resumption state
 
 If evidence is missing, partial, stale, ambiguous, contradictory or inaccessible in a way that blocks the decision, progression stops.
 
-Candidate-head change always requires requalification of affected assurance/review/currentness. Material base/dependency change requires requalification. Unknown materiality fails closed.
+Pre-consequence requalification and consequence actuation form one correctness boundary. Where the consequence mechanism exposes an atomic expected-state precondition, the conforming path must bind actuation to the qualified decision-critical identity so that movement after requalification causes the consequence to fail closed rather than acting on a different state.
+
+Candidate-head change always requires requalification of affected assurance/review/currentness. For other mutable target or base state, movement is decision-critical only when it can materially affect correctness, validation assumptions, dependencies, security/authority, conflict resolution or resulting consequence identity. When such movement is decision-critical, use an equivalent conditional or isolation mechanism where available, or prove the movement immaterial. Unknown materiality fails closed.
 
 ### Consequence authority
 
@@ -350,7 +353,12 @@ exact repository
 + named consequence
 + prospective durable human consequence authority
 + immediate deterministic current requalification
++ actuation-time binding of decision-critical mutable identity
 ```
+
+Where a consequence mechanism exposes an atomic expected-state precondition, a conforming path must use it to bind actuation to the qualified decision-critical identity. This is part of the minimum private-Free execution mechanism, not optional paid enforcement.
+
+For an ordinary GitHub pull-request merge, the minimum conforming mechanism is an expected-head guarded merge: bind the merge request to the authorised exact head SHA using GitHub's merge `sha` precondition or the connected capability's `expected_head_sha`. If the PR head moved, the merge must be rejected before consequence. When GitHub positively proves that this expected-head precondition rejected actuation before the merge boundary, that is a positively proven pre-actuation/no-effect failure under Proof A's existing authority-consumption rules; it is not a possibly-effective consequence merely because a merge call was attempted.
 
 This minimum is sufficient only when canonical records select one complete accepted assurance/review set unambiguously.
 
@@ -515,6 +523,8 @@ No Proof A stable-kernel property is intentionally removed by the private-Free p
 - [ ] Implementation and consequence authority remain prospective, human and separate.
 - [ ] Consequence-authority ambiguity uses the Proof A explicit-binding/fresh-authority fallback.
 - [ ] Immediate pre-action currentness/requalification is explicit.
+- [ ] Actuation-time binding of decision-critical mutable identity is mandatory where the consequence mechanism exposes an atomic expected-state precondition.
+- [ ] Ordinary GitHub PR merge uses expected-head guarded actuation as the minimum private-Free mechanism, and a positively proven expected-head mismatch fails closed before merge without being classified as a possibly-effective consequence.
 - [ ] Outcome and contract-required post-consequence verification remain truthful.
 - [ ] Proof A authority-consumption/retry semantics remain unchanged.
 - [ ] Execution-deviation circuit breaker remains effective without paid enforcement.
@@ -549,7 +559,11 @@ Control: the profile matrix separates semantic requirements, minimum evidence me
 
 ### Risk: a missing enforcement feature weakens authority semantics
 
-Control: human implementation and consequence authority remain durable semantic predicates. The conforming executor revalidates exact current state before actuation and fails closed when proof is incomplete.
+Control: human implementation and consequence authority remain durable semantic predicates. The conforming executor revalidates exact current state before actuation, binds actuation to decision-critical mutable identity through an available atomic expected-state precondition and fails closed when proof is incomplete.
+
+### Risk: state moves between requalification and consequence actuation
+
+Control: pre-consequence requalification alone is not treated as sufficient. Where the consequence mechanism exposes an atomic expected-state precondition, the conforming path must use it. For ordinary GitHub PR merge, expected-head guarded merge is the minimum private-Free mechanism, so a moved head is rejected before merge without requiring branch protection, rulesets, required reviews/checks or protected environments.
 
 ### Risk: CI becomes a lifecycle engine
 
