@@ -278,7 +278,7 @@ When more than one consequence attempt occurs under the same governing work, eac
 
 Technical capability, repository access, a green check, role name, approval-shaped UI state, absence of blockers or ability to invoke a tool is not authority.
 
-v2 preserves two distinct human authority meanings.
+v2 preserves two distinct human authority meanings: IMPLEMENTATION_AUTHORITY and CONSEQUENCE_AUTHORITY. Those authority roles remain distinct even where the bounded Section 8 atomic-exception rule permits one explicit prospective human decision event to deliberately co-grant both roles. Decision-event cardinality is not itself an authority role.
 
 #### IMPLEMENTATION_AUTHORITY
 
@@ -294,7 +294,7 @@ It MUST:
 - precede the implementation mutation it permits; and
 - remain within the governing contract.
 
-It does NOT authorise:
+By itself, IMPLEMENTATION_AUTHORITY does NOT authorise:
 
 - merge or another later consequence;
 - work outside the approved path;
@@ -306,20 +306,22 @@ A material change to scope, architecture, files/areas, risk treatment, consequen
 
 #### CONSEQUENCE_AUTHORITY
 
-CONSEQUENCE_AUTHORITY permits one named later consequence against one exact qualified state.
+CONSEQUENCE_AUTHORITY permits one named consequence against one exact qualified state. On the normal path, it is a later authority decision made only after CANDIDATE_QUALIFIED has been established.
 
 It MUST:
 
 - be durable;
 - be human;
 - be prospective;
-- occur only after CANDIDATE_QUALIFIED has been established;
+- be exercisable only after CANDIDATE_QUALIFIED has been established;
 - identify the exact repository and governing contract;
 - identify the exact candidate/state;
 - name the permitted consequence; and
 - remain current at the moment of actuation.
 
-Implementation authority and consequence authority MUST remain separate human decisions. Earlier implementation authority MUST NOT be interpreted as later consequence authority.
+Implementation authority and consequence authority MUST remain distinct authority roles. On the normal path, they MUST be supplied by separate human decision events, and earlier implementation authority MUST NOT be interpreted as later consequence authority.
+
+Section 8 defines the sole narrow exception to that normal decision-event cardinality: one explicit prospective human decision MAY deliberately co-grant both roles for one exact bounded atomic exceptional package. The record MUST unambiguously grant each role separately in meaning. CONSEQUENCE_AUTHORITY MUST NOT be inferred from IMPLEMENTATION_AUTHORITY, a generic `go`, technical capability, administrator access or precedent. Any Section 8 consequence grant remains conditional and unusable until the exact exception package satisfies CANDIDATE_QUALIFIED and immediate pre-action currentness requirements.
 
 CONSEQUENCE_AUTHORITY is single-use for one **possibly-effective actuation attempt**. It is consumed once actuation may have crossed the named consequence boundary.
 
@@ -584,7 +586,7 @@ A candidate head change makes exact candidate qualification stale. Material base
 
 #### Permitted next transition
 
-Only to CONSEQUENCE_AUTHORISED after separate prospective durable human consequence authority for the exact qualified state.
+Only to CONSEQUENCE_AUTHORISED after prospective durable human CONSEQUENCE_AUTHORITY applies to the exact qualified state. On the normal path, that authority MUST come from a separate later human decision event. Under the bounded Section 8 atomic exception only, the same explicit prospective human decision event that granted IMPLEMENTATION_AUTHORITY MAY also have recorded conditional CONSEQUENCE_AUTHORITY; that conditional grant is unusable until the exact exception package is CANDIDATE_QUALIFIED and immediate pre-action currentness succeeds.
 
 When CANDIDATE_QUALIFIED is re-established after an OUTCOME_RECORDED attempt for retry or recovery of the same unchanged candidate, every qualification predicate affected by the prior attempt, resulting target state, dependency state or new finding MUST be re-established as current. Prior assurance or independent review MAY remain usable only when its applicability to the unchanged candidate and current decision can be deterministically proven; otherwise the affected evidence MUST be refreshed.
 
@@ -600,6 +602,8 @@ CONSEQUENCE_AUTHORISED holds only when:
 - prospective durable human CONSEQUENCE_AUTHORITY applies to that candidate and consequence;
 - the complete accepted assurance/review set is either selected unambiguously from canonical records or explicitly bound by the authority; and
 - immediate pre-action revalidation confirms currentness.
+
+On the normal path, CONSEQUENCE_AUTHORITY is supplied by a separate later human decision after CANDIDATE_QUALIFIED. Under Section 8 only, an explicit prospective atomic dual-grant decision MAY have recorded conditional CONSEQUENCE_AUTHORITY before qualification. That record satisfies this entry predicate only after the exact exception package is CANDIDATE_QUALIFIED and immediate revalidation confirms that its scope, target, named consequence and accepted assurance/review set remain current. Actuation MUST NOT occur directly from IMPLEMENTATION_AUTHORISED.
 
 #### Minimum safe binding rule
 
@@ -645,7 +649,7 @@ Changed candidate, stale review/validation, moved target, superseded authority, 
 
 - DETERMINISTIC / MECHANICAL: exact candidate match, accepted evidence identity/currentness, target identity/currentness and check/review state where facts are canonical.
 - HUMAN JUDGEMENT: whether a new fact materially changes qualification when not mechanically decidable.
-- HUMAN AUTHORITY: explicit consequence decision.
+- HUMAN AUTHORITY: explicit CONSEQUENCE_AUTHORITY grant; normally a separate later human decision event, with the bounded Section 8 atomic dual-grant as the only exception to decision-event cardinality.
 
 #### Staleness
 
@@ -721,7 +725,7 @@ Only a positively proven pre-actuation/no-effect failure may remain at CONSEQUEN
 | before CONTRACT_READY -> CONTRACT_READY | identity, dependency/current-state facts, exact safe base where deterministic | boundedness, material ambiguity, reviewability | no |
 | CONTRACT_READY -> IMPLEMENTATION_AUTHORISED | plan/authority identity, temporal ordering, base currentness | proportional plan sufficiency, materiality | **yes: IMPLEMENTATION_AUTHORITY** |
 | IMPLEMENTATION_AUTHORISED -> CANDIDATE_QUALIFIED | candidate identity, scope facts, checks/currentness | contract fidelity, substantive independent review, material findings | no consequence authority yet |
-| CANDIDATE_QUALIFIED -> CONSEQUENCE_AUTHORISED | exact-state/evidence requalification | materiality when deterministic rules are insufficient | **yes: CONSEQUENCE_AUTHORITY** |
+| CANDIDATE_QUALIFIED -> CONSEQUENCE_AUTHORISED | exact-state/evidence requalification | materiality when deterministic rules are insufficient | **yes: CONSEQUENCE_AUTHORITY**; normally a separate later human decision, except that Section 8 may use an explicit conditional dual-grant from the same atomic-exception decision event |
 | CONSEQUENCE_AUTHORISED -> OUTCOME_RECORDED | actuation/attempt/result/object observations, including deterministic proof of pre-actuation failure where claimed | mixed/partial outcome interpretation where needed | no authority to record facts; consumed or uncertain authority requires fresh CONSEQUENCE_AUTHORITY before retry, while positively proven pre-actuation/no-effect failure may retain current authority after requalification |
 | OUTCOME_RECORDED -> re-entry at earliest affected state for retry/recovery | prior-attempt identity, current candidate/target/dependency state, which predicates are demonstrably unchanged | materiality of changed state and sufficiency of retained assurance/review | no authority merely to reconstruct/requalify; any affected IMPLEMENTATION_AUTHORITY must be renewed where required, and fresh CONSEQUENCE_AUTHORITY is always required before a new possibly-effective retry |
 
@@ -736,7 +740,7 @@ Only a positively proven pre-actuation/no-effect failure may remain at CONSEQUEN
 | bounded candidate implementation | Intent + Identity + transition to CANDIDATE_QUALIFIED | implementation must stay inside contract and produce exact candidate identity | branch/setup mechanics become evidence rather than first-class state |
 | exact-candidate validation/evidence | Identity + Assurance + Freshness + CANDIDATE_QUALIFIED | assurance is bound to exact candidate and stale evidence cannot qualify changed state | evidence set remains proportional rather than universal |
 | substantive contract review | Assurance + Freshness + CANDIDATE_QUALIFIED | independent substantive exact-candidate review is mandatory; author/remediation context cannot self-qualify | review is a qualification predicate rather than separate lifecycle state |
-| separate human merge/consequence authority | Authority + CONSEQUENCE_AUTHORISED | separate later prospective human decision binds exact qualified candidate and named consequence | **generalised** from merge to named bounded consequence; transport remains outside core |
+| separate human merge/consequence authority | Authority + CONSEQUENCE_AUTHORISED | distinct prospective CONSEQUENCE_AUTHORITY binds the exact qualified state and named consequence; the normal path uses a separate later human decision, while Section 8 alone permits one explicit atomic-exception decision event to co-grant the distinct implementation and conditional consequence roles | **generalised** from merge to named bounded consequence, with a narrow explicit atomic-exception decision-event equivalence that preserves rather than implies consequence authority; transport remains outside core |
 | post-consequence verification | Outcome + Assurance + OUTCOME_RECORDED | contract-required verification remains mandatory; invocation/merge success cannot impersonate verification | verification completeness becomes an outcome predicate, not a separate state |
 | execution-deviation circuit breaker | Authority + Assurance + Freshness cross-cutting rule | deviation suspends progression, stops normal writes, reconstructs state, stales affected evidence and requires evidenced resumption | remains cross-cutting; not a sixth state |
 
@@ -780,9 +784,19 @@ The deviation does not create a sixth normal lifecycle state because it interrup
 
 Exceptional actions use the same five-state semantic model. They MUST NOT create a parallel fast-path lifecycle.
 
-The normal immutable-candidate path remains preferred.
+The normal immutable-candidate path and its separate later human consequence decision remain preferred and mandatory whenever they can be used safely.
 
-When a genuine authorised exceptional action cannot expose a separate immutable candidate before the change becomes effective, CANDIDATE_QUALIFIED MAY bind an **exception package** only if all of these are durable before actuation:
+A bounded atomic exception MAY use one explicit prospective human decision event to deliberately co-grant IMPLEMENTATION_AUTHORITY and conditional CONSEQUENCE_AUTHORITY only when **all** of these predicates hold:
+
+- the action is explicitly classified as a hotfix, bootstrap, direct-`main` or equivalent exceptional path;
+- a normal immutable pre-consequence candidate or meaningful later human consequence-decision point is technically unavailable;
+- implementation and the named direct consequence are intentionally one bounded atomic possibly-effective actuation;
+- ordinary PR delivery is not being bypassed merely for convenience;
+- the exact exception package described below is durable before actuation;
+- the human authority record explicitly grants both authority roles and names the direct consequence; and
+- ambiguity about exceptional classification, atomicity, package identity, dual grant, currentness or outcome fails closed.
+
+When those predicates hold, CANDIDATE_QUALIFIED MAY bind an **exception package** only if all of these are durable before actuation:
 
 ```text
 exact repository
@@ -795,17 +809,32 @@ proportionate pre-action assurance
 known limitation: candidate becomes effective as it is created
 ```
 
-IMPLEMENTATION_AUTHORITY MUST prospectively permit the exceptional implementation path.
+The dual-grant record MUST preserve the two authority meanings explicitly:
 
-CONSEQUENCE_AUTHORITY MUST prospectively authorise that exact exception package and named direct consequence.
+```text
+IMPLEMENTATION_AUTHORITY
+-> permits the exact bounded exceptional implementation path
 
-OUTCOME_RECORDED MUST bind the resulting commit/object/state and all mandatory post-action verification.
+CONSEQUENCE_AUTHORITY
+-> conditionally permits one named direct consequence
+   against that same exact exception package
+```
+
+The consequence grant is conditional rather than immediately exercisable. It becomes usable only after the exact exception package satisfies the applicable CANDIDATE_QUALIFIED predicates and immediate pre-action revalidation confirms that the pre-action state, package, target, named consequence and accepted assurance/review set remain current. The lifecycle MUST NOT actuate the direct consequence from IMPLEMENTATION_AUTHORISED.
+
+A generic `go`, implementation approval, technical capability, administrator access, historical exception or prior precedent MUST NOT be interpreted as the consequence grant unless the durable record unambiguously grants both authority roles for the exact atomic package.
+
+Any material drift in the package, target, consequence, accepted evidence or other decision-relevant state makes the conditional consequence grant unusable until the affected predicates are re-established and whatever fresh human authority the changed path requires is obtained.
+
+The ordinary CONSEQUENCE_AUTHORITY consumption rules remain unchanged. The first possibly-effective actuation consumes the grant; uncertain consumption is treated as consumed; retry or recovery after consumed or uncertain authority requires fresh prospective CONSEQUENCE_AUTHORITY. The dual-grant rule creates no retry token, standing exception or reusable authority.
+
+OUTCOME_RECORDED MUST bind the resulting commit/object/state and all mandatory post-action verification. Invocation or commit success MUST NOT impersonate contract-required verification.
 
 The record MUST explicitly state that normal immutable-candidate / later-consequence separation was technically unavailable. It MUST NOT represent the exceptional path as semantically identical to the normal PR path.
 
 Exceptional capability, administrator access or precedent MUST NOT imply standing exceptional authority.
 
-If a pre-effective candidate can be constructed safely, the normal candidate/consequence separation MUST be used instead.
+If a safe pre-effective candidate or a meaningful later human consequence-decision point can be constructed, the normal candidate/consequence separation and separate later consequence decision MUST be used instead.
 
 ## 9. Private GitHub Free correctness boundary
 
@@ -874,6 +903,12 @@ consequence authority names old candidate
 accepted evidence set is ambiguous
 -> explicitly bind accepted evidence or obtain fresh authority
 
+atomic exception does not unambiguously grant both IMPLEMENTATION_AUTHORITY and CONSEQUENCE_AUTHORITY
+-> no exceptional dual grant; consequence not authorised
+
+atomic exception package, target, consequence or currentness materially drifts after a dual grant
+-> conditional consequence grant unusable; re-establish affected predicates and obtain fresh authority where required
+
 base drift materiality unknown
 -> freshness UNKNOWN; stop
 
@@ -898,7 +933,7 @@ This specification resolves the semantic choices needed before operational proof
 
 - exact five-state ownership;
 - six invariant meanings;
-- implementation and consequence authority separation;
+- distinct implementation and consequence authority roles, normal-path separate decision events and the bounded Section 8 atomic dual-grant exception;
 - independent substantive review;
 - exact-candidate assurance;
 - material base-drift handling;
