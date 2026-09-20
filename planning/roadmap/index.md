@@ -55,6 +55,7 @@ The post-`v0.3.0` consolidation concluded that the stable human-governed operati
 
 - [IssueOps v2 — minimal authority protocol proof programme](issueops-v2.md) — approved unnumbered contemporaneous initiative to prove the accepted five-state / six-invariant architecture against the stable kernel, private GitHub Free, IssueOps dogfood and one genuine private-Free external pilot before an evidence-based **Adopt / Adapt / Reject** decision. Approval of the roadmap does not adopt or release v2 and does not authorise child execution by itself.
 - [IssueOps v2 Proof A — normative semantic specification](issueops-v2-proof-a-semantics.md) — candidate semantic specification for roadmap Slice 1 under issue #214. It is proof-programme material only: `v0.3.0` remains the stable protocol, and Proof B, adoption, merge and operational consequences remain separately governed.
+- [IssueOps v2 Proof B — private GitHub Free operating profile](issueops-v2-proof-b-private-github-free.md) — roadmap Slice 2 under issue #216, defining the minimum private-GitHub-Free capability/evidence profile for the accepted Proof A semantics. It is proof-programme material only: `v0.3.0` remains stable, current IssueOps enforcement is repository-specific hardening, and dogfood, external pilot, adoption, merge and release consequences remain separately governed.
 
 ## Future stages
 
