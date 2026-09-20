@@ -53,7 +53,7 @@ The post-`v0.3.0` consolidation concluded that the stable human-governed operati
 
 ## Active approved roadmap
 
-No numbered or unnumbered roadmap is currently active or approved for delivery.
+- [IssueOps v2 — minimal authority protocol proof programme](issueops-v2.md) — approved unnumbered contemporaneous initiative to prove the accepted five-state / six-invariant architecture against the stable kernel, private GitHub Free, IssueOps dogfood and one genuine private-Free external pilot before an evidence-based **Adopt / Adapt / Reject** decision. Approval of the roadmap does not adopt or release v2 and does not authorise child execution by itself.
 
 ## Future stages
 
