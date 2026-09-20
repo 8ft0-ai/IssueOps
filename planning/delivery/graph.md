@@ -53,6 +53,10 @@ flowchart LR
   n_initiative_post_v0_3_consolidation["Post-v0.3.0 consolidation, proportionality and operational hardening\n(stage)"]
   n_issue_201["Issue #201 — Final post-v0.3.0 consolidation comparison\n(issue)"]
   n_decision_maintain_post_v0_3["Maintain the post-v0.3.0 operating model\n(decision)"]
+  n_initiative_issueops_v2["IssueOps v2 — minimal authority protocol proof programme\n(stage)"]
+  n_issue_219["Issue #219 — C4 remediation and targeted re-proof\n(issue)"]
+  n_issue_221["Issue #221 — v2 roadmap disposition\n(issue)"]
+  n_decision_reject_issueops_v2["Reject the current IssueOps v2 direction\n(decision)"]
 
   n_stage_1 -->|implemented by| n_pr_2
   n_stage_1 -->|produced| n_release_v0_1
@@ -126,4 +130,10 @@ flowchart LR
   n_issue_201 -->|produced| n_decision_maintain_post_v0_3
   n_initiative_post_v0_3_consolidation -->|preserved| n_boundary_human_authority
   n_initiative_post_v0_3_consolidation -->|preserved| n_boundary_bounded_automation
+  n_decision_maintain_post_v0_3 -->|carried forward to| n_initiative_issueops_v2
+  n_initiative_issueops_v2 -->|proved by| n_issue_219
+  n_issue_219 -->|carried forward to| n_issue_221
+  n_issue_221 -->|produced| n_decision_reject_issueops_v2
+  n_initiative_issueops_v2 -->|preserved| n_boundary_human_authority
+  n_initiative_issueops_v2 -->|preserved| n_boundary_bounded_automation
 ```
