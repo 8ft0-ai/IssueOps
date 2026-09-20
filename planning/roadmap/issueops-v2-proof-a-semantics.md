@@ -1,12 +1,146 @@
 # IssueOps v2 Proof A — normative semantic specification
 
-Status: Proof A candidate; not adopted stable protocol.
+Status: delivering.
+
+Record type: contemporaneous.
 
 Governing execution contract: [#214](https://github.com/8ft0-ai/IssueOps/issues/214).
 
 Parent architecture and proof programme: [#212](https://github.com/8ft0-ai/IssueOps/issues/212) and [IssueOps v2 — minimal authority protocol proof programme](issueops-v2.md).
 
 IssueOps `v0.3.0` remains the current stable protocol. This specification defines the semantic model to be tested by later v2 proofs. It does not replace current operating guidance, grant execution authority, create operational capability or begin Proof B.
+
+## Problem statement
+
+The accepted v2 architecture is approved for proof, but later private-GitHub-Free, dogfood and external-pilot work must not invent unresolved lifecycle semantics while executing. Proof A therefore turns the architecture into one precise normative model while the current stable `v0.3.0` protocol remains authoritative for real IssueOps operations.
+
+## Outcome to prove
+
+Prove that one five-state / six-invariant semantic model can preserve every material stable-kernel safety property, resolve the architecture's open semantic choices needed by later proofs, and remain compatible with private GitHub Free without adding operational capability or a parallel lifecycle state store.
+
+## Non-goals
+
+Proof A does not:
+
+- adopt v2 as the stable IssueOps protocol;
+- replace `docs/issueops-protocol.md` or current public operating guidance;
+- define the complete Proof B private-GitHub-Free operational profile;
+- change workflows, repository settings, rulesets, branch protection or required checks/reviewers;
+- create deployment, credential or generic execution transport;
+- run IssueOps dogfood or an external pilot;
+- introduce a lifecycle database, state manifest, queue or central service;
+- publish a release/tag; or
+- authorise later proof work merely because this specification is accepted.
+
+## Operating and autonomy boundary
+
+The current stable IssueOps protocol governs this proof's implementation, review and any eventual merge.
+
+Within the v2 semantics defined here, deterministic mechanisms may establish exact canonical facts and currentness only when no new intent, risk acceptance, substantive judgement or authority is required. Human implementation authority and later consequence authority remain prospective, durable and separate. Independent substantive review remains a human-judgement qualification predicate.
+
+No agent, workflow, check, role, technical capability or successful tool invocation may manufacture human authority.
+
+## Target workflow or target state
+
+The target semantic lifecycle is exactly:
+
+```text
+CONTRACT_READY
+  -> IMPLEMENTATION_AUTHORISED
+  -> CANDIDATE_QUALIFIED
+  -> CONSEQUENCE_AUTHORISED
+  -> OUTCOME_RECORDED
+```
+
+owned cross-cutting by:
+
+```text
+Intent
+Identity
+Authority
+Assurance
+Freshness
+Outcome
+```
+
+The detailed normative rules below define the predicates, evidence, blockers, human/mechanical boundaries, staleness and permitted transition for each state.
+
+## Acceptance gates
+
+- [ ] All six invariants have normative definitions.
+- [ ] All five states define entry predicates, durable evidence, blockers, predicate classes, staleness and permitted next transition.
+- [ ] Implementation and consequence authority remain prospective, durable, human and separate.
+- [ ] Independent substantive review is exact-candidate-bound and cannot be self-satisfied by the authoring/remediation context.
+- [ ] Candidate, base, scope, dependency, intent, review and deviation freshness rules fail closed when currentness is unknown.
+- [ ] Consequence-authority evidence binding is minimal when unambiguous and explicit when ambiguity exists.
+- [ ] `OUTCOME_RECORDED` cannot falsely represent successful verification.
+- [ ] All ten stable-kernel properties are mapped with no intentional loss.
+- [ ] The execution-deviation circuit breaker remains cross-cutting and equivalent or stronger.
+- [ ] Exceptional/direct-main actions use the same semantic model without creating standing authority.
+- [ ] GitHub-native records remain canonical and no parallel lifecycle state store is introduced.
+- [ ] Private GitHub Free remains sufficient for protocol correctness without paid enforcement features.
+- [ ] The specification introduces no operational capability and does not replace the stable protocol.
+
+## Proposed implementation slices
+
+Proof A itself is intentionally one bounded specification slice:
+
+```text
+canonical semantic specification
+  -> exact-head repository validation
+  -> completely fresh independent substantive semantic-specification review
+  -> separate consequence authority if accepted
+```
+
+No Proof B implementation, dogfood, external pilot or speculative later-proof issue is part of this slice.
+
+## Risks and controls
+
+### Risk: semantic simplification silently removes a stable safety property
+
+Control: the specification includes complete stable-kernel traceability and treats any lost or materially ambiguous property as a blocker.
+
+### Risk: deterministic machinery manufactures judgement or authority
+
+Control: predicate classification separates mechanical facts, human judgement and human authority; automation may establish only already-defined exact facts.
+
+### Risk: consequence authority is under-bound
+
+Control: exact candidate + named consequence + prospective human authority + immediate requalification is permitted only when one complete accepted evidence set is unambiguous; otherwise evidence identities must be bound explicitly or fresh authority obtained.
+
+### Risk: outcome recording is mistaken for success
+
+Control: outcome classification and verification completeness are separate; contract-required post-consequence verification cannot be bypassed by invocation or merge success.
+
+### Risk: the exceptional path becomes a hidden fast path
+
+Control: exceptional actions remain in the same five-state model, require prospective exact authority and must disclose when normal pre-effective candidate separation was unavailable.
+
+### Risk: paid GitHub features become hidden correctness dependencies
+
+Control: branch protection, rulesets, required checks/reviewers, protected environments, merge queues and Enterprise features remain optional hardening only.
+
+## Definition of done
+
+Proof A is complete only when:
+
+- [ ] this semantic specification satisfies every acceptance gate above;
+- [ ] repository-native planning/documentation validation is successful against the exact candidate;
+- [ ] base-to-head scope remains within the approved Proof A paths;
+- [ ] a completely fresh independent substantive semantic-specification review accepts the exact candidate;
+- [ ] any review remediation is revalidated and freshly reviewed as required;
+- [ ] any eventual merge occurs only under separate later human consequence authority; and
+- [ ] completion does not automatically begin Proof B or adopt v2.
+
+## Likely next decision boundary
+
+If Proof A is accepted, the next separately governed question is whether to begin:
+
+```text
+V2 PROOF B — PRIVATE_GITHUB_FREE_PROFILE
+```
+
+Proof A acceptance provides semantic input to that decision but does not authorise Proof B implementation.
 
 ## 1. Normative interpretation
 
