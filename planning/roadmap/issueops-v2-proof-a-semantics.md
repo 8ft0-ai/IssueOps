@@ -65,6 +65,8 @@ Outcome
 
 The detailed normative rules below define the predicates, evidence, blockers, human/mechanical boundaries, staleness and permitted transition for each state.
 
+These five names are semantic states, not once-only historical milestones. The ordinary first traversal is the forward sequence shown above. A later retry or recovery after a possibly-effective consequence attempt MAY re-enter an earlier applicable state only under the rules below. Re-entry MUST preserve the durable identity and outcome of every prior attempt, MUST re-establish every predicate made stale by the prior attempt or resulting state, and MUST NOT create a sixth lifecycle state or parallel lifecycle instance.
+
 ## Acceptance gates
 
 - [ ] All six invariants have normative definitions.
@@ -269,6 +271,8 @@ repository
 ```
 
 with base, assurance, review and target identities added whenever they affect the decision.
+
+When more than one consequence attempt occurs under the same governing work, each possibly-effective attempt and its recorded outcome MUST have a distinct durable identity. A later retry or recovery MUST NOT overwrite, replace or relabel the identity or outcome classification of an earlier attempt; later evidence may change which resulting state is current, but historical attempt facts remain durable.
 
 ### 3.3 Authority
 
@@ -582,6 +586,8 @@ A candidate head change makes exact candidate qualification stale. Material base
 
 Only to CONSEQUENCE_AUTHORISED after separate prospective durable human consequence authority for the exact qualified state.
 
+When CANDIDATE_QUALIFIED is re-established after an OUTCOME_RECORDED attempt for retry or recovery of the same unchanged candidate, every qualification predicate affected by the prior attempt, resulting target state, dependency state or new finding MUST be re-established as current. Prior assurance or independent review MAY remain usable only when its applicability to the unchanged candidate and current decision can be deterministically proven; otherwise the affected evidence MUST be refreshed.
+
 ### 4.4 CONSEQUENCE_AUTHORISED
 
 #### Entry predicates
@@ -653,6 +659,8 @@ If an operation fails before actuation with positive deterministic proof that th
 
 If non-consumption cannot be proven, the authority is treated as consumed, the actual outcome is reconstructed truthfully, and fresh prospective CONSEQUENCE_AUTHORITY is required before any retry or recovery actuation.
 
+After a consumed or uncertain attempt reaches OUTCOME_RECORDED, a retry or recovery MUST NOT actuate directly from OUTCOME_RECORDED. For the same unchanged candidate, the lifecycle MUST first re-establish CANDIDATE_QUALIFIED against the current resulting state, then obtain fresh prospective CONSEQUENCE_AUTHORITY and re-enter CONSEQUENCE_AUTHORISED before the next actuation attempt. If recovery changes governing intent, the implementation path or the candidate, the lifecycle MUST instead return to the earliest state whose predicates were invalidated and satisfy all later predicates and human-authority requirements again before consequence.
+
 ### 4.5 OUTCOME_RECORDED
 
 #### Entry predicates
@@ -660,6 +668,8 @@ If non-consumption cannot be proven, the authority is treated as consumed, the a
 OUTCOME_RECORDED holds when the consequence attempt has occurred and the currently knowable actual result is durably recorded with sufficient identity.
 
 The state is deliberately not named OUTCOME_VERIFIED. Verification completeness is a predicate over the outcome, not a sixth lifecycle state.
+
+Each possibly-effective actuation attempt closes one consequence-attempt cycle with its own durable OUTCOME_RECORDED evidence. A later retry or recovery creates a new attempt identity and, if possibly effective, a new outcome record. It MUST NOT overwrite or collapse the earlier attempt/outcome record.
 
 #### Required durable evidence
 
@@ -692,7 +702,17 @@ Outcome evidence becomes stale when the observed object/environment changes or l
 
 #### Permitted next transition
 
-No automatic next proof or initiative. Recovery, retry, follow-on implementation, adoption, release or another consequence requires the governing contract and authority appropriate to that new action. After a consumed or uncertain consequence attempt, any retry or recovery actuation requires fresh prospective CONSEQUENCE_AUTHORITY; only a positively proven pre-actuation/no-effect failure may retain the existing authority, subject to immediate current requalification.
+No automatic next proof or initiative. Recovery, retry, follow-on implementation, adoption, release or another consequence requires the governing contract and authority appropriate to that new action.
+
+For retry or recovery after a consumed or uncertain attempt:
+
+- preserve the prior attempt and OUTCOME_RECORDED evidence;
+- if the same exact candidate remains applicable, re-establish CANDIDATE_QUALIFIED against the current resulting state before seeking fresh consequence authority;
+- if governing intent, implementation path or candidate changed, return to the earliest lifecycle state whose predicates were invalidated and satisfy the affected later states again;
+- obtain fresh prospective CONSEQUENCE_AUTHORITY for the next possibly-effective actuation; and
+- enter CONSEQUENCE_AUTHORISED with immediate current revalidation before actuating.
+
+Only a positively proven pre-actuation/no-effect failure may remain at CONSEQUENCE_AUTHORISED with the existing unconsumed authority, subject to immediate deterministic current requalification.
 
 ## 5. Transition predicate summary
 
@@ -703,6 +723,7 @@ No automatic next proof or initiative. Recovery, retry, follow-on implementation
 | IMPLEMENTATION_AUTHORISED -> CANDIDATE_QUALIFIED | candidate identity, scope facts, checks/currentness | contract fidelity, substantive independent review, material findings | no consequence authority yet |
 | CANDIDATE_QUALIFIED -> CONSEQUENCE_AUTHORISED | exact-state/evidence requalification | materiality when deterministic rules are insufficient | **yes: CONSEQUENCE_AUTHORITY** |
 | CONSEQUENCE_AUTHORISED -> OUTCOME_RECORDED | actuation/attempt/result/object observations, including deterministic proof of pre-actuation failure where claimed | mixed/partial outcome interpretation where needed | no authority to record facts; consumed or uncertain authority requires fresh CONSEQUENCE_AUTHORITY before retry, while positively proven pre-actuation/no-effect failure may retain current authority after requalification |
+| OUTCOME_RECORDED -> re-entry at earliest affected state for retry/recovery | prior-attempt identity, current candidate/target/dependency state, which predicates are demonstrably unchanged | materiality of changed state and sufficiency of retained assurance/review | no authority merely to reconstruct/requalify; any affected IMPLEMENTATION_AUTHORITY must be renewed where required, and fresh CONSEQUENCE_AUTHORITY is always required before a new possibly-effective retry |
 
 ## 6. Stable-kernel equivalence proof
 
@@ -859,7 +880,11 @@ base drift materiality unknown
 actuation may have reached target / authority consumption uncertain
 -> treat consequence authority as consumed
 -> reconstruct outcome truthfully
+-> preserve prior attempt/outcome identity
+-> re-enter at earliest affected lifecycle state
+-> same unchanged candidate must re-establish CANDIDATE_QUALIFIED
 -> fresh CONSEQUENCE_AUTHORITY before retry
+-> no retry actuation directly from OUTCOME_RECORDED
 
 outcome cannot be proven
 -> OUTCOME = UNKNOWN, never assumed success
