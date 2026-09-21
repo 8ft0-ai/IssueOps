@@ -336,6 +336,34 @@
       "type": "decision",
       "title": "Maintain the post-v0.3.0 operating model",
       "summary": "Retain the human-governed model and completed bounded safeguard; no further adaptation, Stage 6 or successor roadmap is justified by the consolidation evidence."
+    },
+    {
+      "id": "initiative-issueops-v2",
+      "type": "stage",
+      "title": "IssueOps v2 — minimal authority protocol proof programme",
+      "summary": "Tested the five-state / six-invariant simplification direction and completed Reject after C4 remained incompatible following one bounded remediation.",
+      "status": "completed",
+      "path": "planning/delivery/issueops-v2-minimal-authority-protocol-proof-programme.md"
+    },
+    {
+      "id": "issue-219",
+      "type": "issue",
+      "title": "Issue #219 — C4 remediation and targeted re-proof",
+      "summary": "Applied one bounded exceptional-authority remediation and re-proved C4, which remained not compatible.",
+      "url": "https://github.com/8ft0-ai/IssueOps/issues/219"
+    },
+    {
+      "id": "issue-221",
+      "type": "issue",
+      "title": "Issue #221 — v2 roadmap disposition",
+      "summary": "Compared the remaining roadmap options and recorded the owner decision to reject the current v2 direction.",
+      "url": "https://github.com/8ft0-ai/IssueOps/issues/221"
+    },
+    {
+      "id": "decision-reject-issueops-v2",
+      "type": "decision",
+      "title": "Reject the current IssueOps v2 direction",
+      "summary": "Retain v0.3.0 and preserve the failed C4 compatibility proof as architectural evidence rather than weakening the stable-kernel claim."
     }
   ],
   "edges": [
@@ -696,6 +724,36 @@
     },
     {
       "from": "initiative-post-v0-3-consolidation",
+      "to": "boundary-bounded-automation",
+      "type": "preserved"
+    },
+    {
+      "from": "decision-maintain-post-v0-3",
+      "to": "initiative-issueops-v2",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "initiative-issueops-v2",
+      "to": "issue-219",
+      "type": "proved_by"
+    },
+    {
+      "from": "issue-219",
+      "to": "issue-221",
+      "type": "carried_forward_to"
+    },
+    {
+      "from": "issue-221",
+      "to": "decision-reject-issueops-v2",
+      "type": "produced"
+    },
+    {
+      "from": "initiative-issueops-v2",
+      "to": "boundary-human-authority",
+      "type": "preserved"
+    },
+    {
+      "from": "initiative-issueops-v2",
       "to": "boundary-bounded-automation",
       "type": "preserved"
     }

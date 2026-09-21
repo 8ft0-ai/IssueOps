@@ -30,6 +30,8 @@ GitHub issues, pull requests, reviews, commits and workflow runs remain the cano
 - [Modular IssueOps session architecture](modular-issueops-session-architecture.md) — completed with an **Adopt** decision after bounded adaptation and corrective proof.
 - [Post-v0.3.0 consolidation, proportionality and operational hardening](post-v0.3.0-consolidation.md) — completed with a **Maintain** decision after one separately governed bounded safeguard and evidence-led proportionality/portability review.
 
+- [IssueOps v2 — minimal authority protocol proof programme](issueops-v2-minimal-authority-protocol-proof-programme.md) — completed with a **Reject** decision after C4 remained incompatible following one bounded remediation; `v0.3.0` remains stable.
+
 ## Causal delivery graph
 
 - [Graph modelling rules](graph-modelling-rules.md)
